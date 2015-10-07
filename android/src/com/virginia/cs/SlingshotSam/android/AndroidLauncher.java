@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.virginia.cs.SlingshotSam.Game;
+import com.virginia.cs.SlingshotSam.main.Game;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override
