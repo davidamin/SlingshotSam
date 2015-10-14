@@ -5,7 +5,11 @@ package com.virginia.cs.SlingshotSam.states;
  */
 
     import com.badlogic.gdx.Gdx;
+    import com.badlogic.gdx.graphics.Color;
     import com.badlogic.gdx.graphics.OrthographicCamera;
+    import com.badlogic.gdx.graphics.g2d.BitmapFont;
+    import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+    import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
     import com.badlogic.gdx.math.Vector2;
     import com.badlogic.gdx.physics.box2d.Body;
     import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -23,9 +27,25 @@ public class Play extends GameState {
     private World world = new World(new Vector2(0.0F, -2.81F), true);
     private Box2DDebugRenderer b2dr;
     private OrthographicCamera b2dCam;
+    private SpriteBatch sb;
+    private BitmapFont hello;
+
+    private BitmapFont createFont(FreeTypeFontGenerator generator, float dp)
+    {
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+
+        int fontSize = (int)(dp * Gdx.graphics.getDensity());
+        parameter.size = fontSize;
+        return generator.generateFont(parameter);
+    }
 
     public Play(GameStateManager gsm) {
         super(gsm);
+        this.sb = new SpriteBatch();
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Montserrat-Regular.ttf"));
+        this.hello = createFont(generator, 32);
+        generator.dispose();
+        this.hello.setColor(Color.GREEN);
         this.world.setContactListener(new MyContactListener());
         this.b2dr = new Box2DDebugRenderer();
         BodyDef bdef = new BodyDef();
@@ -70,6 +90,9 @@ public class Play extends GameState {
 
     public void render() {
         Gdx.gl20.glClear(16384);
+        this.sb.begin();
+        hello.draw(this.sb, "Hello World!", 200,400);
+        this.sb.end();
         this.b2dr.render(this.world, this.b2dCam.combined);
     }
 
