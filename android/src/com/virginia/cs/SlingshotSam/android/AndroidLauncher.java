@@ -15,7 +15,8 @@ public class AndroidLauncher extends AndroidApplication {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		//Use initialize Game for running the actual game, use initialize TileTest for the view of practice map
-		//initialize(new TileTest(), config);
+		initialize(new Game(), config);
+        //initialize(new TileTest(), config);
 
 
 	}
