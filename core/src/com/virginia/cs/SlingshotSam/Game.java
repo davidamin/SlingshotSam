@@ -9,11 +9,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Game extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
+    Texture img2;
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
+        img2 = new Texture("badlogic.jpg");
 	}
 
 	@Override
@@ -22,6 +24,10 @@ public class Game extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		batch.draw(img, 0, 0);
+        batch.draw(img2, 100, 100);
 		batch.end();
+	}
+	public void update(float delta) {
+
 	}
 }
