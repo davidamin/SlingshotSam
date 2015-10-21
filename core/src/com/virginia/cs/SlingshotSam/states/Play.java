@@ -6,11 +6,14 @@ package com.virginia.cs.SlingshotSam.states;
 
     import com.badlogic.gdx.Gdx;
     import com.badlogic.gdx.audio.Music;
+    import com.badlogic.gdx.InputMultiplexer;
     import com.badlogic.gdx.graphics.Color;
     import com.badlogic.gdx.graphics.OrthographicCamera;
     import com.badlogic.gdx.graphics.g2d.BitmapFont;
     import com.badlogic.gdx.graphics.g2d.SpriteBatch;
     import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+    import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+    import com.badlogic.gdx.input.GestureDetector;
     import com.badlogic.gdx.math.Vector2;
     import com.badlogic.gdx.physics.box2d.Body;
     import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -20,16 +23,23 @@ package com.virginia.cs.SlingshotSam.states;
     import com.badlogic.gdx.physics.box2d.PolygonShape;
     import com.badlogic.gdx.physics.box2d.World;
     import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+    import com.badlogic.gdx.utils.TimeUtils;
     import com.virginia.cs.SlingshotSam.handlers.GameStateManager;
     import com.virginia.cs.SlingshotSam.handlers.MyContactListener;
+    import com.virginia.cs.SlingshotSam.main.TouchController;
     import com.virginia.cs.SlingshotSam.states.GameState;
 
 public class Play extends GameState {
     private World world = new World(new Vector2(0.0F, -2.81F), true);
     private Box2DDebugRenderer b2dr;
     private OrthographicCamera b2dCam;
+    private OrthographicCamera camera;
     private SpriteBatch sb;
     private BitmapFont hello;
+
+    private ShapeRenderer shapeRenderer;
+    private Circle testCircle;
+    private TouchController touchController;
 
     private BitmapFont createFont(FreeTypeFontGenerator generator, float dp)
     {
@@ -42,9 +52,35 @@ public class Play extends GameState {
 
     public Play(GameStateManager gsm) {
         super(gsm);
+<<<<<<< HEAD
         Music m = Gdx.audio.newMusic(Gdx.files.internal("samSong1.ogg"));
         m.setLooping(true);
         m.play();
+=======
+
+        // Set up camera
+        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.update();
+
+        // Set up ShapeRenderer to display test circle
+        shapeRenderer = new ShapeRenderer();
+        shapeRenderer.setProjectionMatrix(camera.combined);
+
+        // Set Input Processor for app to use TouchController
+        // as a source of keyboard input (in case) and as a gesture
+        // detector
+        touchController = new TouchController();
+        InputMultiplexer inputMultiplexer = new InputMultiplexer();
+        inputMultiplexer.addProcessor(new GestureDetector(touchController));
+        inputMultiplexer.addProcessor(touchController);
+        Gdx.input.setInputProcessor(inputMultiplexer);
+
+        // Create test circle
+        testCircle = new Circle(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 50);
+        touchController.registerBoundedTouchListener(testCircle);
+
+>>>>>>> origin/master
         this.sb = new SpriteBatch();
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Montserrat-Regular.ttf"));
         this.hello = createFont(generator, 32);
@@ -94,12 +130,155 @@ public class Play extends GameState {
 
     public void render() {
         Gdx.gl20.glClear(16384);
+
         this.sb.begin();
         hello.draw(this.sb, "Hello World!", 200,400);
         this.sb.end();
+
         this.b2dr.render(this.world, this.b2dCam.combined);
+
+        testCircle.draw(shapeRenderer);
     }
 
     public void dispose() {
+    }
+
+    /**
+     * Test circle to show the use of the TouchController, specifically
+     * a BoundedTouchListener
+     */
+    public class Circle implements TouchController.BoundedTouchListener {
+        private float centerX, centerY;
+        private float currentX, currentY;
+        private float radius;
+
+        private float velocityX, velocityY;
+        private float flingVelocity;
+        private float accelX, accelY;
+        private float flingAccel;
+        private static final float K = 0.00003f;
+        private static final float FK = 0.001f;
+        private static final float ACCEL_DEC = 0.01f;
+        private long lastUpdate;
+        private boolean updating = false;
+
+        public Circle(int x, int y, float r) {
+            setCenter(x, y);
+            setCurrent(x, y);
+            setRadius(r);
+        }
+
+        public void draw(ShapeRenderer renderer) {
+            // update current
+            updateCurrent();
+
+            // line
+            renderer.setColor(new Color(0.8196f, 0.4121f, 0.5098f, 1.0f));
+            renderer.begin(ShapeRenderer.ShapeType.Line);
+            renderer.line(this.currentX, this.currentY, 0, this.centerX, this.centerY, 0);
+            renderer.end();
+
+            // circle
+            renderer.setColor(new Color(0.4549f, 0.8196f, 0.5098f, 1.0f));
+            renderer.begin(ShapeRenderer.ShapeType.Filled);
+            renderer.circle(this.currentX, this.currentY, this.radius);
+            renderer.end();
+        }
+
+        private void updateCurrent() {
+            if (!updating) {
+                return;
+            }
+
+            // Time difference
+            long currentTime = TimeUtils.millis();
+            long timeDiff = currentTime - lastUpdate;
+
+            // Update velocity
+            this.velocityX += this.accelX * timeDiff;
+            this.velocityX *= (1 - ACCEL_DEC);
+
+            this.velocityY += this.accelY * timeDiff;
+            this.velocityY *= (1 - ACCEL_DEC);
+
+            // Normal vector to center
+            float perpVectorX = -(centerY - currentY);
+            float perpVectorY = centerX - currentX;
+            float perpLength = (float) Math.sqrt(Math.pow(perpVectorX, 2) + Math.pow(perpVectorY, 2));
+            perpVectorX /= perpLength;
+            perpVectorY /= perpLength;
+
+            // Projection along normal vector
+            float flingNormalX = this.flingVelocity * perpVectorX * (1 - ACCEL_DEC);
+            float flingNormalY = this.flingVelocity * perpVectorY * (1 - ACCEL_DEC);
+
+            // Update current
+            setCurrent(this.currentX + this.velocityX * timeDiff + flingNormalX * timeDiff,
+                    this.currentY + this.velocityY * timeDiff + flingNormalY * timeDiff);
+
+            // Update acceleration
+            accelX = K * (centerX - currentX);
+            accelY = K * (centerY - currentY);
+
+            // Update time
+            lastUpdate = currentTime;
+        }
+
+        private void setCenter(float x, float y) {
+            this.centerX = x;
+            this.centerY = y;
+        }
+
+        private void setCurrent(float x, float y) {
+            this.currentX = x;
+            this.currentY = y;
+        }
+
+        private void setRadius(float r) {
+            this.radius = r;
+        }
+
+        public boolean isInBounds(int screenX, int screenY) {
+            double dist = Math.sqrt(Math.pow(Math.abs(screenX - currentX), 2) +
+                    Math.pow(Math.abs(screenX - currentX), 2));
+            return (dist <= this.radius);
+        }
+
+        public void handleTouchDown(int screenX, int screenY) {
+            Gdx.app.log("SlingshotSam", String.format("Bounded Touch Down!\t\t%d, %d", screenX, screenY));
+            updating = false;
+            flingVelocity = 0;
+        }
+
+        public void handleTouchDragged(int screenX, int screenY) {
+            Gdx.app.log("SlingshotSam", String.format("Bounded Touch Dragged!\t\t%d, %d", screenX, screenY));
+            setCurrent(screenX, screenY);
+        }
+
+        public void handleTouchUp(int screenX, int screenY) {
+            Gdx.app.log("SlingshotSam", "Bounded Touch Up!");
+            velocityX = 0;
+            velocityY = 0;
+            accelX = K * (centerX - currentX);
+            accelY = K * (centerY - currentY);
+            lastUpdate = TimeUtils.millis();
+            updating = true;
+        }
+
+        public void handleFling(float velocityX, float velocityY) {
+            Gdx.app.log("SlingshotSam", String.format("Bounded Fling!\t\t%.2f, %.2f", velocityX, velocityY));
+
+            // Normal vector to center
+            float perpVectorX = -(centerY - currentY);
+            float perpVectorY = centerX - currentX;
+            float perpLength = (float) Math.sqrt(Math.pow(perpVectorX, 2) + Math.pow(perpVectorY, 2));
+            perpVectorX /= perpLength;
+            perpVectorY /= perpLength;
+
+            // Scalar projection along normal
+            this.flingVelocity = (FK * velocityX) * perpVectorX + (FK * velocityY) * perpVectorY;
+
+            this.flingAccel = (float) Math.pow(this.flingVelocity, 2) / this.radius;
+        }
     }
 }
