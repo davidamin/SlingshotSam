@@ -5,6 +5,7 @@ package com.virginia.cs.SlingshotSam.states;
  */
 
     import com.badlogic.gdx.Gdx;
+    import com.badlogic.gdx.audio.Music;
     import com.badlogic.gdx.graphics.Color;
     import com.badlogic.gdx.graphics.OrthographicCamera;
     import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -41,6 +42,9 @@ public class Play extends GameState {
 
     public Play(GameStateManager gsm) {
         super(gsm);
+        Music m = Gdx.audio.newMusic(Gdx.files.internal("samSong1.ogg"));
+        m.setLooping(true);
+        m.play();
         this.sb = new SpriteBatch();
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Montserrat-Regular.ttf"));
         this.hello = createFont(generator, 32);
