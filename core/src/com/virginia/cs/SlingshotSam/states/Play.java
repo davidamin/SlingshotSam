@@ -52,11 +52,9 @@ public class Play extends GameState {
 
     public Play(GameStateManager gsm) {
         super(gsm);
-<<<<<<< HEAD
         Music m = Gdx.audio.newMusic(Gdx.files.internal("samSong1.ogg"));
         m.setLooping(true);
         m.play();
-=======
 
         // Set up camera
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -79,8 +77,6 @@ public class Play extends GameState {
         // Create test circle
         testCircle = new Circle(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 50);
         touchController.registerBoundedTouchListener(testCircle);
-
->>>>>>> origin/master
         this.sb = new SpriteBatch();
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Montserrat-Regular.ttf"));
         this.hello = createFont(generator, 32);
