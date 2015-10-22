@@ -15,6 +15,7 @@ package com.virginia.cs.SlingshotSam.states;
     import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
     import com.badlogic.gdx.input.GestureDetector;
     import com.badlogic.gdx.math.Vector2;
+    import com.badlogic.gdx.math.Vector3;
     import com.badlogic.gdx.physics.box2d.Body;
     import com.badlogic.gdx.physics.box2d.BodyDef;
     import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -26,13 +27,14 @@ package com.virginia.cs.SlingshotSam.states;
     import com.badlogic.gdx.utils.TimeUtils;
     import com.virginia.cs.SlingshotSam.handlers.GameStateManager;
     import com.virginia.cs.SlingshotSam.handlers.MyContactListener;
+    import com.virginia.cs.SlingshotSam.main.Game;
     import com.virginia.cs.SlingshotSam.main.TouchController;
     import com.virginia.cs.SlingshotSam.states.GameState;
 
 public class Play extends GameState {
     private World world = new World(new Vector2(0.0F, -2.81F), true);
     private Box2DDebugRenderer b2dr;
-    private OrthographicCamera b2dCam;
+    public OrthographicCamera b2dCam;
     private OrthographicCamera camera;
     private SpriteBatch sb;
     private BitmapFont hello;
@@ -174,6 +176,8 @@ public class Play extends GameState {
         private CircleShape cshape;
         private World w;
 
+        private Vector3 testPoint = new Vector3();
+
         public Circle(int x, int y, float r, World wrld) {
             w= wrld;
             cshape = new CircleShape();
@@ -269,7 +273,10 @@ public class Play extends GameState {
         }
 
         public void handleTouchDown(int screenX, int screenY) {
+            testPoint.set(screenX, screenY, 0);
+            b2dCam.unproject(testPoint);
             Gdx.app.log("SlingshotSam", String.format("Bounded Touch Down!\t\t%d, %d", screenX, screenY));
+            Gdx.app.log("SlingshotSam",testPoint.toString());
             updating = false;
             flingVelocity = 0;
             body.applyLinearImpulse(0f,1.3f,body.getWorldCenter().x,body.getWorldCenter().y,true);
