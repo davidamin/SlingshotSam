@@ -74,27 +74,30 @@ public class Play extends GameState {
         inputMultiplexer.addProcessor(touchController);
         Gdx.input.setInputProcessor(inputMultiplexer);
 
-        // Create test circle
-        testCircle = new Circle(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 50);
-        touchController.registerBoundedTouchListener(testCircle);
         this.sb = new SpriteBatch();
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Montserrat-Regular.ttf"));
         this.hello = createFont(generator, 32);
         generator.dispose();
+
         this.hello.setColor(Color.GREEN);
         this.world.setContactListener(new MyContactListener());
         this.b2dr = new Box2DDebugRenderer();
+
         BodyDef bdef = new BodyDef();
         bdef.position.set(1.6F, 1.2F);
         bdef.type = BodyType.StaticBody;
+
         Body body = this.world.createBody(bdef);
+
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(1.5F, 0.05F);
+
         FixtureDef fdef = new FixtureDef();
         fdef.shape = shape;
         fdef.filter.categoryBits = 2;
         fdef.filter.maskBits = 12;
         body.createFixture(fdef).setUserData("ground");
+
         bdef.position.set(1.6F, 2.0F);
         bdef.type = BodyType.DynamicBody;
         body = this.world.createBody(bdef);
@@ -103,15 +106,22 @@ public class Play extends GameState {
         fdef.filter.categoryBits = 4;
         fdef.filter.maskBits = 2;
         body.createFixture(fdef).setUserData("box");
-        bdef.position.set(1.53F, 2.2F);
-        body.applyForceToCenter(10,10,true);
+
+        /*bdef.position.set(1.53F, 2.2F);
+        body.applyForceToCenter(10, 10, true);
         body = this.world.createBody(bdef);
         CircleShape cshape = new CircleShape();
         cshape.setRadius(0.05F);
         fdef.shape = cshape;
         fdef.filter.categoryBits = 8;
         fdef.filter.maskBits = 2;
-        body.createFixture(fdef).setUserData("ball");
+        body.createFixture(fdef).setUserData("ball");*/
+
+        // Create test circle
+        //body = this.world.createBody(bdef);
+        testCircle = new Circle(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 50, this.world);
+        touchController.registerBoundedTouchListener(testCircle);
+
         this.b2dCam = new OrthographicCamera();
         this.b2dCam.setToOrtho(false, 3.2F, 2.4F);
 
@@ -158,7 +168,25 @@ public class Play extends GameState {
         private long lastUpdate;
         private boolean updating = false;
 
-        public Circle(int x, int y, float r) {
+        private Body body;
+        private BodyDef b;
+        private FixtureDef f;
+        private CircleShape cshape;
+        private World w;
+
+        public Circle(int x, int y, float r, World wrld) {
+            w= wrld;
+            cshape = new CircleShape();
+            b = new BodyDef();
+            f = new FixtureDef();
+            cshape.setRadius(.1F);
+            b.position.set(1.53F, 2.2F);
+            b.type = BodyType.DynamicBody;
+            body = w.createBody(b);
+            f.shape = cshape;
+            f.filter.categoryBits = 8;
+            f.filter.maskBits = 2;
+            body.createFixture(f).setUserData("touchCircle");
             setCenter(x, y);
             setCurrent(x, y);
             setRadius(r);
@@ -169,16 +197,16 @@ public class Play extends GameState {
             updateCurrent();
 
             // line
-            renderer.setColor(new Color(0.8196f, 0.4121f, 0.5098f, 1.0f));
-            renderer.begin(ShapeRenderer.ShapeType.Line);
-            renderer.line(this.currentX, this.currentY, 0, this.centerX, this.centerY, 0);
-            renderer.end();
+            //renderer.setColor(new Color(0.8196f, 0.4121f, 0.5098f, 1.0f));
+            //renderer.begin(ShapeRenderer.ShapeType.Line);
+            //renderer.line(this.currentX, this.currentY, 0, this.centerX, this.centerY, 0);
+            //renderer.end();
 
             // circle
-            renderer.setColor(new Color(0.4549f, 0.8196f, 0.5098f, 1.0f));
-            renderer.begin(ShapeRenderer.ShapeType.Filled);
-            renderer.circle(this.currentX, this.currentY, this.radius);
-            renderer.end();
+            //renderer.setColor(new Color(0.4549f, 0.8196f, 0.5098f, 1.0f));
+            //renderer.begin(ShapeRenderer.ShapeType.Filled);
+            //renderer.circle(this.currentX, this.currentY, this.radius);
+            //renderer.end();
         }
 
         private void updateCurrent() {
@@ -187,37 +215,37 @@ public class Play extends GameState {
             }
 
             // Time difference
-            long currentTime = TimeUtils.millis();
-            long timeDiff = currentTime - lastUpdate;
+            //long currentTime = TimeUtils.millis();
+            //long timeDiff = currentTime - lastUpdate;
 
             // Update velocity
-            this.velocityX += this.accelX * timeDiff;
+            /*this.velocityX += this.accelX * timeDiff;
             this.velocityX *= (1 - ACCEL_DEC);
 
             this.velocityY += this.accelY * timeDiff;
-            this.velocityY *= (1 - ACCEL_DEC);
+            this.velocityY *= (1 - ACCEL_DEC);*/
 
             // Normal vector to center
-            float perpVectorX = -(centerY - currentY);
+            /*float perpVectorX = -(centerY - currentY);
             float perpVectorY = centerX - currentX;
             float perpLength = (float) Math.sqrt(Math.pow(perpVectorX, 2) + Math.pow(perpVectorY, 2));
             perpVectorX /= perpLength;
-            perpVectorY /= perpLength;
+            perpVectorY /= perpLength;*/
 
             // Projection along normal vector
-            float flingNormalX = this.flingVelocity * perpVectorX * (1 - ACCEL_DEC);
-            float flingNormalY = this.flingVelocity * perpVectorY * (1 - ACCEL_DEC);
+            /*float flingNormalX = this.flingVelocity * perpVectorX * (1 - ACCEL_DEC);
+            float flingNormalY = this.flingVelocity * perpVectorY * (1 - ACCEL_DEC);*/
 
             // Update current
-            setCurrent(this.currentX + this.velocityX * timeDiff + flingNormalX * timeDiff,
-                    this.currentY + this.velocityY * timeDiff + flingNormalY * timeDiff);
+            /*setCurrent(this.currentX + this.velocityX * timeDiff + flingNormalX * timeDiff,
+                    this.currentY + this.velocityY * timeDiff + flingNormalY * timeDiff);*/
 
             // Update acceleration
-            accelX = K * (centerX - currentX);
-            accelY = K * (centerY - currentY);
+            /*accelX = K * (centerX - currentX);
+            accelY = K * (centerY - currentY);*/
 
             // Update time
-            lastUpdate = currentTime;
+            //lastUpdate = currentTime;
         }
 
         private void setCenter(float x, float y) {
@@ -244,6 +272,7 @@ public class Play extends GameState {
             Gdx.app.log("SlingshotSam", String.format("Bounded Touch Down!\t\t%d, %d", screenX, screenY));
             updating = false;
             flingVelocity = 0;
+            body.applyLinearImpulse(0f,1.3f,body.getWorldCenter().x,body.getWorldCenter().y,true);
         }
 
         public void handleTouchDragged(int screenX, int screenY) {
