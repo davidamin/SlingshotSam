@@ -29,7 +29,7 @@ public class GameStateManager {
     public void update(float dt) {
 
         ((GameState)this.gameStates.peek()).update(dt);
-        player.update(dt);
+        //player.update(dt);
     }
 
     public void render() {
