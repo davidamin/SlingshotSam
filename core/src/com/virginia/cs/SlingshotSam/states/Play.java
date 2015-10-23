@@ -89,10 +89,6 @@ public class Play extends GameState {
         camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.update();
 
-        // Set up ShapeRenderer to display test circle
-        shapeRenderer = new ShapeRenderer();
-        shapeRenderer.setProjectionMatrix(camera.combined);
-
         this.sb = new SpriteBatch();
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Montserrat-Regular.ttf"));
         this.hello = createFont(generator, 32);
@@ -104,7 +100,7 @@ public class Play extends GameState {
 
         BodyDef bdef = new BodyDef();
         //bdef.position.set(1.6F, 1.2F);
-        bdef.position.set(1.6f, 0.05f);
+        bdef.position.set(1.6f, 0.25f);
         bdef.type = BodyType.StaticBody;
 
         Body body = this.world.createBody(bdef);
@@ -152,6 +148,10 @@ public class Play extends GameState {
 
         // Register sam with touch controller
         touchController.registerBoundedTouchListener(sam);
+
+        // Set up ShapeRenderer to display test circle
+        shapeRenderer = new ShapeRenderer();
+        shapeRenderer.setProjectionMatrix(this.b2dCam.combined);
     }
 
     public void handleInput() {
@@ -181,6 +181,8 @@ public class Play extends GameState {
         this.sb.end();
 
         this.b2dr.render(this.world, this.b2dCam.combined);
+
+        this.sam.drawTouchIndicator(shapeRenderer);
     }
 
     public void dispose() {
