@@ -4,35 +4,37 @@ package com.virginia.cs.SlingshotSam.states;
  * Created by Mac on 9/27/2015.
  */
 
-    import com.badlogic.gdx.Gdx;
-    import com.badlogic.gdx.audio.Music;
-    import com.badlogic.gdx.InputMultiplexer;
-    import com.badlogic.gdx.graphics.Color;
-    import com.badlogic.gdx.graphics.OrthographicCamera;
-    import com.badlogic.gdx.graphics.g2d.BitmapFont;
-    import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-    import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-    import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-    import com.badlogic.gdx.input.GestureDetector;
-    import com.badlogic.gdx.math.Vector2;
-    import com.badlogic.gdx.math.Vector3;
-    import com.badlogic.gdx.physics.box2d.Body;
-    import com.badlogic.gdx.physics.box2d.BodyDef;
-    import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-    import com.badlogic.gdx.physics.box2d.CircleShape;
-    import com.badlogic.gdx.physics.box2d.FixtureDef;
-    import com.badlogic.gdx.physics.box2d.PolygonShape;
-    import com.badlogic.gdx.physics.box2d.World;
-    import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-    import com.badlogic.gdx.utils.TimeUtils;
-    import com.virginia.cs.SlingshotSam.handlers.GameStateManager;
-    import com.virginia.cs.SlingshotSam.handlers.MyContactListener;
-    import com.virginia.cs.SlingshotSam.main.Game;
-    import com.virginia.cs.SlingshotSam.main.TouchController;
-    import com.virginia.cs.SlingshotSam.states.GameState;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.utils.TimeUtils;
+import com.virginia.cs.SlingshotSam.entities.Sam;
+import com.virginia.cs.SlingshotSam.handlers.GameStateManager;
+import com.virginia.cs.SlingshotSam.handlers.MyContactListener;
+import com.virginia.cs.SlingshotSam.main.Game;
+import com.virginia.cs.SlingshotSam.main.TouchController;
+import com.virginia.cs.SlingshotSam.states.GameState;
 
 public class Play extends GameState {
     private World world = new World(new Vector2(0.0F, -2.81F), true);
+    private Sam sam;
     private Box2DDebugRenderer b2dr;
     public OrthographicCamera b2dCam;
     private OrthographicCamera camera;
@@ -40,7 +42,6 @@ public class Play extends GameState {
     private BitmapFont hello;
 
     private ShapeRenderer shapeRenderer;
-    private Circle testCircle;
     private TouchController touchController;
 
     private BitmapFont createFont(FreeTypeFontGenerator generator, float dp)
@@ -67,15 +68,6 @@ public class Play extends GameState {
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(camera.combined);
 
-        // Set Input Processor for app to use TouchController
-        // as a source of keyboard input (in case) and as a gesture
-        // detector
-        touchController = new TouchController();
-        InputMultiplexer inputMultiplexer = new InputMultiplexer();
-        inputMultiplexer.addProcessor(new GestureDetector(touchController));
-        inputMultiplexer.addProcessor(touchController);
-        Gdx.input.setInputProcessor(inputMultiplexer);
-
         this.sb = new SpriteBatch();
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Montserrat-Regular.ttf"));
         this.hello = createFont(generator, 32);
@@ -86,7 +78,8 @@ public class Play extends GameState {
         this.b2dr = new Box2DDebugRenderer();
 
         BodyDef bdef = new BodyDef();
-        bdef.position.set(1.6F, 1.2F);
+        //bdef.position.set(1.6F, 1.2F);
+        bdef.position.set(1.6f, 0f);
         bdef.type = BodyType.StaticBody;
 
         Body body = this.world.createBody(bdef);
@@ -96,18 +89,10 @@ public class Play extends GameState {
 
         FixtureDef fdef = new FixtureDef();
         fdef.shape = shape;
+        fdef.friction = 1.0f;
         fdef.filter.categoryBits = 2;
         fdef.filter.maskBits = 12;
         body.createFixture(fdef).setUserData("ground");
-
-        bdef.position.set(1.6F, 2.0F);
-        bdef.type = BodyType.DynamicBody;
-        body = this.world.createBody(bdef);
-        shape.setAsBox(0.05F, 0.05F);
-        fdef.shape = shape;
-        fdef.filter.categoryBits = 4;
-        fdef.filter.maskBits = 2;
-        body.createFixture(fdef).setUserData("box");
 
         /*bdef.position.set(1.53F, 2.2F);
         body.applyForceToCenter(10, 10, true);
@@ -121,12 +106,26 @@ public class Play extends GameState {
 
         // Create test circle
         //body = this.world.createBody(bdef);
-        testCircle = new Circle(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 50, this.world);
-        touchController.registerBoundedTouchListener(testCircle);
+        // testCircle = new Circle(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 50, this.world);
+        // touchController.registerBoundedTouchListener(testCircle);
+
+        // Create Sam
+        sam = new Sam(world);
 
         this.b2dCam = new OrthographicCamera();
         this.b2dCam.setToOrtho(false, 3.2F, 2.4F);
 
+        // Set Input Processor for app to use TouchController
+        // as a source of keyboard input (in case) and as a gesture
+        // detector
+        touchController = new TouchController(this.b2dCam);
+        InputMultiplexer inputMultiplexer = new InputMultiplexer();
+        inputMultiplexer.addProcessor(new GestureDetector(touchController));
+        inputMultiplexer.addProcessor(touchController);
+        Gdx.input.setInputProcessor(inputMultiplexer);
+
+        // Register sam with touch controller
+        touchController.registerBoundedTouchListener(sam);
     }
 
     public void handleInput() {
@@ -140,177 +139,15 @@ public class Play extends GameState {
         Gdx.gl20.glClear(16384);
 
         this.sb.begin();
-        hello.draw(this.sb, "Hello World!", 200,400);
+        hello.draw(this.sb, "Hello World!", 200, 400);
         this.sb.end();
 
         this.b2dr.render(this.world, this.b2dCam.combined);
 
-        testCircle.draw(shapeRenderer);
+        //testCircle.draw(shapeRenderer);
+
     }
 
     public void dispose() {
-    }
-
-    /**
-     * Test circle to show the use of the TouchController, specifically
-     * a BoundedTouchListener
-     */
-    public class Circle implements TouchController.BoundedTouchListener {
-        private float centerX, centerY;
-        private float currentX, currentY;
-        private float radius;
-
-        private float velocityX, velocityY;
-        private float flingVelocity;
-        private float accelX, accelY;
-        private float flingAccel;
-        private static final float K = 0.00003f;
-        private static final float FK = 0.001f;
-        private static final float ACCEL_DEC = 0.01f;
-        private long lastUpdate;
-        private boolean updating = false;
-
-        private Body body;
-        private BodyDef b;
-        private FixtureDef f;
-        private CircleShape cshape;
-        private World w;
-
-        private Vector3 testPoint = new Vector3();
-
-        public Circle(int x, int y, float r, World wrld) {
-            w= wrld;
-            cshape = new CircleShape();
-            b = new BodyDef();
-            f = new FixtureDef();
-            cshape.setRadius(.1F);
-            b.position.set(1.53F, 2.2F);
-            b.type = BodyType.DynamicBody;
-            body = w.createBody(b);
-            f.shape = cshape;
-            f.filter.categoryBits = 8;
-            f.filter.maskBits = 2;
-            body.createFixture(f).setUserData("touchCircle");
-            setCenter(x, y);
-            setCurrent(x, y);
-            setRadius(r);
-        }
-
-        public void draw(ShapeRenderer renderer) {
-            // update current
-            updateCurrent();
-
-            // line
-            //renderer.setColor(new Color(0.8196f, 0.4121f, 0.5098f, 1.0f));
-            //renderer.begin(ShapeRenderer.ShapeType.Line);
-            //renderer.line(this.currentX, this.currentY, 0, this.centerX, this.centerY, 0);
-            //renderer.end();
-
-            // circle
-            //renderer.setColor(new Color(0.4549f, 0.8196f, 0.5098f, 1.0f));
-            //renderer.begin(ShapeRenderer.ShapeType.Filled);
-            //renderer.circle(this.currentX, this.currentY, this.radius);
-            //renderer.end();
-        }
-
-        private void updateCurrent() {
-            if (!updating) {
-                return;
-            }
-
-            // Time difference
-            //long currentTime = TimeUtils.millis();
-            //long timeDiff = currentTime - lastUpdate;
-
-            // Update velocity
-            /*this.velocityX += this.accelX * timeDiff;
-            this.velocityX *= (1 - ACCEL_DEC);
-
-            this.velocityY += this.accelY * timeDiff;
-            this.velocityY *= (1 - ACCEL_DEC);*/
-
-            // Normal vector to center
-            /*float perpVectorX = -(centerY - currentY);
-            float perpVectorY = centerX - currentX;
-            float perpLength = (float) Math.sqrt(Math.pow(perpVectorX, 2) + Math.pow(perpVectorY, 2));
-            perpVectorX /= perpLength;
-            perpVectorY /= perpLength;*/
-
-            // Projection along normal vector
-            /*float flingNormalX = this.flingVelocity * perpVectorX * (1 - ACCEL_DEC);
-            float flingNormalY = this.flingVelocity * perpVectorY * (1 - ACCEL_DEC);*/
-
-            // Update current
-            /*setCurrent(this.currentX + this.velocityX * timeDiff + flingNormalX * timeDiff,
-                    this.currentY + this.velocityY * timeDiff + flingNormalY * timeDiff);*/
-
-            // Update acceleration
-            /*accelX = K * (centerX - currentX);
-            accelY = K * (centerY - currentY);*/
-
-            // Update time
-            //lastUpdate = currentTime;
-        }
-
-        private void setCenter(float x, float y) {
-            this.centerX = x;
-            this.centerY = y;
-        }
-
-        private void setCurrent(float x, float y) {
-            this.currentX = x;
-            this.currentY = y;
-        }
-
-        private void setRadius(float r) {
-            this.radius = r;
-        }
-
-        public boolean isInBounds(int screenX, int screenY) {
-            double dist = Math.sqrt(Math.pow(Math.abs(screenX - currentX), 2) +
-                    Math.pow(Math.abs(screenX - currentX), 2));
-            return (dist <= this.radius);
-        }
-
-        public void handleTouchDown(int screenX, int screenY) {
-            testPoint.set(screenX, screenY, 0);
-            b2dCam.unproject(testPoint);
-            Gdx.app.log("SlingshotSam", String.format("Bounded Touch Down!\t\t%d, %d", screenX, screenY));
-            Gdx.app.log("SlingshotSam",testPoint.toString());
-            updating = false;
-            flingVelocity = 0;
-            body.applyLinearImpulse(0f,1.3f,body.getWorldCenter().x,body.getWorldCenter().y,true);
-        }
-
-        public void handleTouchDragged(int screenX, int screenY) {
-            Gdx.app.log("SlingshotSam", String.format("Bounded Touch Dragged!\t\t%d, %d", screenX, screenY));
-            setCurrent(screenX, screenY);
-        }
-
-        public void handleTouchUp(int screenX, int screenY) {
-            Gdx.app.log("SlingshotSam", "Bounded Touch Up!");
-            velocityX = 0;
-            velocityY = 0;
-            accelX = K * (centerX - currentX);
-            accelY = K * (centerY - currentY);
-            lastUpdate = TimeUtils.millis();
-            updating = true;
-        }
-
-        public void handleFling(float velocityX, float velocityY) {
-            Gdx.app.log("SlingshotSam", String.format("Bounded Fling!\t\t%.2f, %.2f", velocityX, velocityY));
-
-            // Normal vector to center
-            float perpVectorX = -(centerY - currentY);
-            float perpVectorY = centerX - currentX;
-            float perpLength = (float) Math.sqrt(Math.pow(perpVectorX, 2) + Math.pow(perpVectorY, 2));
-            perpVectorX /= perpLength;
-            perpVectorY /= perpLength;
-
-            // Scalar projection along normal
-            this.flingVelocity = (FK * velocityX) * perpVectorX + (FK * velocityY) * perpVectorY;
-
-            this.flingAccel = (float) Math.pow(this.flingVelocity, 2) / this.radius;
-        }
     }
 }

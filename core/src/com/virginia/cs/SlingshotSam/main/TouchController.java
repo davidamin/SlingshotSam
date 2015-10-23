@@ -1,8 +1,10 @@
 package com.virginia.cs.SlingshotSam.main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,14 +23,16 @@ public class TouchController implements InputProcessor, GestureListener {
     private final List<BoundedTouchListener> boundedTouchListeners = new ArrayList<BoundedTouchListener>();
     private final List<BoundedTouchListener> touchDownBoundedListeners = new ArrayList<BoundedTouchListener>();
 
+    private OrthographicCamera camera;
 
     /**
      * Constructor to create an instance of the TouchController
      */
-    public TouchController() {
+    public TouchController(OrthographicCamera camera) {
         super();
         this.buttonTouchMap.clear();
         this.pointerTouchMap.clear();
+        this.camera = camera;
     }
 
     /**
@@ -60,31 +64,42 @@ public class TouchController implements InputProcessor, GestureListener {
         return this.boundedTouchListeners.remove(listener);
     }
 
+    public Vector3 convertScreenToWorld(float screenX, float screenY) {
+        Vector3 worldVector = camera.unproject(new Vector3(screenX, screenY, 0));
+        Gdx.app.log("SlingshotSam", String.format("ConvertScreenToWorld\t\t%.4f %.4f\t\t%.4f %.4f",
+                screenX, screenY, worldVector.x, worldVector.y));
+        return worldVector;
+    }
+
     private void touchDownForBoundedTouchListeners(int screenX, int screenY) {
+        Vector3 worldCoords = convertScreenToWorld(screenX, screenY);
         this.touchDownBoundedListeners.clear();
         for (BoundedTouchListener touchListener : boundedTouchListeners) {
-            if (touchListener.isInBounds(screenX, screenY)) {
+            if (touchListener.isInBounds(worldCoords.x, worldCoords.y)) {
                 this.touchDownBoundedListeners.add(touchListener);
-                touchListener.handleTouchDown(screenX, screenY);
+                touchListener.handleTouchDown(worldCoords.x, worldCoords.y);
             }
         }
     }
 
     private void touchDraggedForBoundedTouchListeners(int screenX, int screenY) {
+        Vector3 worldCoords = convertScreenToWorld(screenX, screenY);
         for (BoundedTouchListener touchListener : this.touchDownBoundedListeners) {
-            touchListener.handleTouchDragged(screenX, screenY);
+            touchListener.handleTouchDragged(worldCoords.x, worldCoords.y);
         }
     }
 
     private void touchUpForBoundedTouchListeners(int screenX, int screenY) {
+        Vector3 worldCoords = convertScreenToWorld(screenX, screenY);
         for (BoundedTouchListener touchListener : this.touchDownBoundedListeners) {
-            touchListener.handleTouchUp(screenX, screenY);
+            touchListener.handleTouchUp(worldCoords.x, worldCoords.y);
         }
     }
 
     private void flingForBoundedTouchListeners(float velocityX, float velocityY) {
+        Vector3 worldCoords = convertScreenToWorld(velocityX, velocityY);
         for (BoundedTouchListener touchListener : this.touchDownBoundedListeners) {
-            touchListener.handleFling(velocityX, velocityY);
+            touchListener.handleFling(worldCoords.x, worldCoords.y);
         }
     }
 
@@ -405,10 +420,10 @@ public class TouchController implements InputProcessor, GestureListener {
      * bounds.
      */
     public interface BoundedTouchListener {
-        boolean isInBounds(int screenX, int screenY);
-        void handleTouchDown(int screenX, int screenY);
-        void handleTouchDragged(int screenX, int screenY);
-        void handleTouchUp(int screenX, int screenY);
+        boolean isInBounds(float screenX, float screenY);
+        void handleTouchDown(float screenX, float screenY);
+        void handleTouchDragged(float screenX, float screenY);
+        void handleTouchUp(float screenX, float screenY);
         void handleFling(float velocitX, float velocityY);
     }
 }
