@@ -56,6 +56,9 @@ public class Play extends GameState {
     private Circle testCircle;
     private TouchController touchController;
 
+    int Lives = 3;
+    int Shots = 5;
+
     private BitmapFont createFont(FreeTypeFontGenerator generator, float dp)
     {
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -153,8 +156,9 @@ public class Play extends GameState {
     public void render() {
         Gdx.gl20.glClear(16384);
 
+        String screenText = "Lives: " + String.valueOf(Lives) + "   Shots: " + String.valueOf(Shots);
         this.sb.begin();
-        hello.draw(this.sb, "Hello World!", 200,400);
+        hello.draw(this.sb, screenText, 80, 1070);
         this.sb.end();
 
         this.b2dr.render(this.world, this.b2dCam.combined);
