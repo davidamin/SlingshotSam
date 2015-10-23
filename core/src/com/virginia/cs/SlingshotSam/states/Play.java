@@ -5,6 +5,18 @@ package com.virginia.cs.SlingshotSam.states;
  */
 
     import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
+import com.virginia.cs.SlingshotSam.handlers.GameStateManager;
+import com.virginia.cs.SlingshotSam.handlers.MyContactListener;
     import com.badlogic.gdx.audio.Music;
     import com.badlogic.gdx.InputMultiplexer;
     import com.badlogic.gdx.graphics.Color;
@@ -36,7 +48,8 @@ package com.virginia.cs.SlingshotSam.states;
     import com.virginia.cs.SlingshotSam.states.GameState;
 
 public class Play extends GameState {
-    private World world = new World(new Vector2(0.0F, -2.81F), true);
+    //private World world = new World(new Vector2(0.0F, -2.81F), true);
+    private World world = new World(new Vector2(0.0F, 0.0F), true);
     private Box2DDebugRenderer b2dr;
     public OrthographicCamera b2dCam;
     private OrthographicCamera camera;
@@ -52,6 +65,8 @@ public class Play extends GameState {
     private long maxTime;
     private Timer time;
     private Boolean timeOut = false;
+    int Lives = 3;
+    int Shots = 5;
 
     private BitmapFont createFont(FreeTypeFontGenerator generator, float dp)
     {
@@ -118,6 +133,7 @@ public class Play extends GameState {
         shape.setAsBox(1.5F, 0.05F);
 
         FixtureDef fdef = new FixtureDef();
+
         fdef.shape = shape;
         fdef.filter.categoryBits = 2;
         fdef.filter.maskBits = 12;
@@ -165,6 +181,7 @@ public class Play extends GameState {
         timeElapsed = TimeUtils.timeSinceMillis(levelTime);
         double printable = (maxTime - timeElapsed)/ 1000.0;
 
+        String screenText = "Lives: " + String.valueOf(Lives) + "   Shots: " + String.valueOf(Shots);
         this.sb.begin();
         hello.draw(this.sb, "Hello World!", 200,400);
         hello.draw(this.sb, String.format("Time Remaining: %.2f", printable) , 500,100);
@@ -173,6 +190,7 @@ public class Play extends GameState {
             hello.draw(this.sb, "Time Over", 500,400);
         }
 
+        hello.draw(this.sb, screenText, 80, 1070);
         this.sb.end();
 
         this.b2dr.render(this.world, this.b2dCam.combined);
