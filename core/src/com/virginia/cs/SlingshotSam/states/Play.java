@@ -223,6 +223,7 @@ public class Play extends GameState {
         shapeRenderer.setProjectionMatrix(this.b2dCam.combined);
     }
 
+
     public void registerPlatform(float x, float y){
         BodyDef bdef = new BodyDef();
         bdef.position.set(x, y);

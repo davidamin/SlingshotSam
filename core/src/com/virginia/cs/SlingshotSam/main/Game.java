@@ -7,8 +7,10 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.virginia.cs.SlingshotSam.handlers.Content;
 import com.virginia.cs.SlingshotSam.handlers.GameStateManager;
 
 public class Game implements ApplicationListener {
@@ -25,10 +27,15 @@ public class Game implements ApplicationListener {
     int Lives = 3;
     int Shots = 5;
 
+
     public Game() {
     }
 
+    public static Content res;
+
     public void create() {
+
+
         this.sb = new SpriteBatch();
         this.cam = new OrthographicCamera();
         this.cam.setToOrtho(false, 320.0F, 240.0F);
