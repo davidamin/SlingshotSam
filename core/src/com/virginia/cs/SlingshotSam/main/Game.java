@@ -22,6 +22,8 @@ public class Game implements ApplicationListener {
     private OrthographicCamera cam;
     private OrthographicCamera hudCam;
     private GameStateManager gsm;
+    int Lives = 3;
+    int Shots = 5;
 
     public Game() {
     }

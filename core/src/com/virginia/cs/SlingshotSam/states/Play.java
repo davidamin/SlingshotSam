@@ -5,44 +5,52 @@ package com.virginia.cs.SlingshotSam.states;
  */
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
+import com.virginia.cs.SlingshotSam.handlers.GameStateManager;
+import com.virginia.cs.SlingshotSam.handlers.MyContactListener;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.virginia.cs.SlingshotSam.entities.Sam;
-import com.virginia.cs.SlingshotSam.handlers.GameStateManager;
-import com.virginia.cs.SlingshotSam.handlers.MyContactListener;
-import com.virginia.cs.SlingshotSam.main.Game;
+import com.badlogic.gdx.utils.Timer;
 import com.virginia.cs.SlingshotSam.main.TouchController;
-import com.virginia.cs.SlingshotSam.states.GameState;
+import com.virginia.cs.SlingshotSam.entities.Sam;
 
 public class Play extends GameState {
     private World world = new World(new Vector2(0.0F, -2.81F), true);
-    private Sam sam;
     private Box2DDebugRenderer b2dr;
     public OrthographicCamera b2dCam;
     private OrthographicCamera camera;
     private SpriteBatch sb;
     private BitmapFont hello;
+    private Sam sam;
+
+    public int height = Gdx.graphics.getHeight();
+    public int width = Gdx.graphics.getWidth();
 
     private ShapeRenderer shapeRenderer;
     private TouchController touchController;
+
+    private long timeElapsed;
+    private long levelTime;
+    private long maxTime;
+    private Timer time;
+    private Boolean timeOut = false;
+    int Lives = 3;
+    int Shots = 5;
 
     private BitmapFont createFont(FreeTypeFontGenerator generator, float dp)
     {
@@ -55,9 +63,22 @@ public class Play extends GameState {
 
     public Play(GameStateManager gsm) {
         super(gsm);
+
+        time = new Timer();
+
+        maxTime = 30000;
+
+        time.schedule(new Timer.Task(){
+            public void run(){
+                timeOut = true;
+            }
+        }, maxTime / 1000);
+
         Music m = Gdx.audio.newMusic(Gdx.files.internal("samSong1.ogg"));
         m.setLooping(true);
         m.play();
+
+        levelTime  = TimeUtils.millis();
 
         // Set up camera
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -79,7 +100,7 @@ public class Play extends GameState {
 
         BodyDef bdef = new BodyDef();
         //bdef.position.set(1.6F, 1.2F);
-        bdef.position.set(1.6f, 0f);
+        bdef.position.set(1.6f, 0.05f);
         bdef.type = BodyType.StaticBody;
 
         Body body = this.world.createBody(bdef);
@@ -88,6 +109,7 @@ public class Play extends GameState {
         shape.setAsBox(1.5F, 0.05F);
 
         FixtureDef fdef = new FixtureDef();
+
         fdef.shape = shape;
         fdef.friction = 1.0f;
         fdef.filter.categoryBits = 2;
@@ -133,19 +155,28 @@ public class Play extends GameState {
 
     public void update(float dt) {
         this.world.step(dt, 6, 2);
+        //timeElapsed += Gdx.graphics.getDeltaTime();
     }
 
     public void render() {
         Gdx.gl20.glClear(16384);
+        timeElapsed = TimeUtils.timeSinceMillis(levelTime);
+        double printable = (maxTime - timeElapsed)/ 1000.0;
 
+        String screenText = "Lives: " + String.valueOf(Lives) + "   Shots: " + String.valueOf(Shots);
         this.sb.begin();
-        hello.draw(this.sb, "Hello World!", 200, 400);
+        //hello.draw(this.sb, "Hello World!", 200,400);
+        hello.draw(this.sb, String.format("Time Remaining: %.2f", printable) , 80,height - height/5);
+
+        if(timeOut){
+            hello.draw(this.sb, "Time Over", 500,400);
+        }
+
+        hello.draw(this.sb, screenText, 80, height - height/10);
+
         this.sb.end();
 
         this.b2dr.render(this.world, this.b2dCam.combined);
-
-        //testCircle.draw(shapeRenderer);
-
     }
 
     public void dispose() {
