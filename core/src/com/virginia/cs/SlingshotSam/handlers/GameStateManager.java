@@ -5,18 +5,17 @@ package com.virginia.cs.SlingshotSam.handlers;
  */
 
 
-import java.util.Stack;
-
 import com.virginia.cs.SlingshotSam.main.Game;
 import com.virginia.cs.SlingshotSam.states.GameState;
 import com.virginia.cs.SlingshotSam.states.Play;
+import com.virginia.cs.SlingshotSam.states.Player;
 import java.util.Stack;
 
 public class GameStateManager {
     private Game game;
     private Stack<GameState> gameStates;
     public static final int PLAY = 912837;
-
+    private Player player;
     public GameStateManager(Game game) {
         this.game = game;
         this.gameStates = new Stack();
@@ -28,7 +27,9 @@ public class GameStateManager {
     }
 
     public void update(float dt) {
+
         ((GameState)this.gameStates.peek()).update(dt);
+        player.update(dt);
     }
 
     public void render() {

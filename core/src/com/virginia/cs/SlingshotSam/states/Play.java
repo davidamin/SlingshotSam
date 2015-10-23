@@ -5,22 +5,21 @@ package com.virginia.cs.SlingshotSam.states;
  */
 
     import com.badlogic.gdx.Gdx;
-    import com.badlogic.gdx.graphics.OrthographicCamera;
-    import com.badlogic.gdx.math.Vector2;
-    import com.badlogic.gdx.physics.box2d.Body;
-    import com.badlogic.gdx.physics.box2d.BodyDef;
-    import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-    import com.badlogic.gdx.physics.box2d.CircleShape;
-    import com.badlogic.gdx.physics.box2d.FixtureDef;
-    import com.badlogic.gdx.physics.box2d.PolygonShape;
-    import com.badlogic.gdx.physics.box2d.World;
-    import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-    import com.virginia.cs.SlingshotSam.handlers.GameStateManager;
-    import com.virginia.cs.SlingshotSam.handlers.MyContactListener;
-    import com.virginia.cs.SlingshotSam.states.GameState;
-
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
+import com.virginia.cs.SlingshotSam.handlers.GameStateManager;
+import com.virginia.cs.SlingshotSam.handlers.MyContactListener;
 public class Play extends GameState {
-    private World world = new World(new Vector2(0.0F, -2.81F), true);
+    //private World world = new World(new Vector2(0.0F, -2.81F), true);
+    private World world = new World(new Vector2(0.0F, 0.0F), true);
     private Box2DDebugRenderer b2dr;
     private OrthographicCamera b2dCam;
 
@@ -35,10 +34,10 @@ public class Play extends GameState {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(1.5F, 0.05F);
         FixtureDef fdef = new FixtureDef();
-        fdef.shape = shape;
-        fdef.filter.categoryBits = 2;
-        fdef.filter.maskBits = 12;
-        body.createFixture(fdef).setUserData("ground");
+        //fdef.shape = shape;
+       // fdef.filter.categoryBits = 2;
+       // fdef.filter.maskBits = 12;
+       // body.createFixture(fdef).setUserData("ground");
         bdef.position.set(1.6F, 2.0F);
         bdef.type = BodyType.DynamicBody;
         body = this.world.createBody(bdef);
