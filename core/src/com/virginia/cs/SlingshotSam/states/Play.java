@@ -55,6 +55,8 @@ public class Play extends GameState {
     private Texture bg_texture2;
     private Texture sam_texture;
     private Sprite sam_sprite;
+    private Texture bomb_texture;
+    private Sprite bomb_sprite;
     public Sam sam;
 
     public int height = Gdx.graphics.getHeight();
@@ -83,7 +85,7 @@ public class Play extends GameState {
 
         time = new Timer();
 
-        maxTime = 60000;
+        maxTime = 30000;
 
         time.schedule(new Timer.Task() {
             public void run() {
@@ -104,6 +106,7 @@ public class Play extends GameState {
         sam_texture = new Texture(Gdx.files.internal("sam.png"));
         sam_sprite = new Sprite(sam_texture);
         sam_sprite.scale(2);
+
 
         // Set up camera
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -128,6 +131,11 @@ public class Play extends GameState {
                 Play.this.sam.respawn_y = (float) (Play.this.sam.getPosition().y + .1);
                 Play.this.sam.Lives += 1;
                 Play.this.sam.reset();
+            }
+            if(fb.getUserData().equals("foot") && fa.getUserData().equals("bomb")){
+                //Win the game
+                Play.this.sam.gameOver=true;
+                Play.this.sam.won=true;
             }
         }
 
@@ -154,6 +162,23 @@ public class Play extends GameState {
 
         //End platform code
 
+        BodyDef bdef = new BodyDef();
+        bdef.position.set(4.1f, .11f);
+        bdef.type = BodyType.StaticBody;
+
+        Body body = this.world.createBody(bdef);
+
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(.1F, 0.1F);
+
+        FixtureDef fdef = new FixtureDef();
+
+        fdef.shape = shape;
+        fdef.friction = 1.0f;
+        fdef.filter.categoryBits = 2;
+        fdef.filter.maskBits = 12;
+        body.createFixture(fdef).setUserData("bomb");
+
         /*bdef.position.set(1.53F, 2.2F);
         body.applyForceToCenter(10, 10, true);
         body = this.world.createBody(bdef);
@@ -174,6 +199,12 @@ public class Play extends GameState {
 
         this.b2dCam = new OrthographicCamera();
         this.b2dCam.setToOrtho(false, 4.2F, 2.4F);
+
+        bomb_texture = new Texture(Gdx.files.internal("bomb.png"));
+        bomb_sprite = new Sprite(bomb_texture);
+        bomb_sprite.scale(2);
+        bomb_sprite.setPosition(this.b2dCam.project(new Vector3(4.0f, .21f, 0)).x, this.b2dCam.project(new Vector3(4.0f, .21f, 0)).y);
+
 
         // Set Input Processor for app to use TouchController
         // as a source of keyboard input (in case) and as a gesture
@@ -238,9 +269,10 @@ public class Play extends GameState {
             String screenText = "Lives: " + String.valueOf(sam.Lives) + "   Shots: " + String.valueOf(sam.Shots);
             this.sb.begin();
             background2.scale(3);
-            background2.setPosition(0, 400);
+            background2.setPosition(this.b2dCam.project(new Vector3(0.0f, 0f, 0)).x, this.b2dCam.project(new Vector3(0f, 0f, 0)).y);
             background2.draw(this.sb);
             background.draw(this.sb);
+            bomb_sprite.draw(this.sb);
             //hello.draw(this.sb, "Hello World!", 200,400);
 
             if (timeOut) {
@@ -259,7 +291,11 @@ public class Play extends GameState {
             this.sam.drawTouchIndicator(shapeRenderer);
         }else{
             this.sb.begin();
-            hello.draw(this.sb, "Game Over", 80, height/2);
+            if(this.sam.won){
+                hello.draw(this.sb, "You win!", 80, height / 2);
+            }else {
+                hello.draw(this.sb, "Game Over", 80, height / 2);
+            }
             this.sb.end();
         }
     }
