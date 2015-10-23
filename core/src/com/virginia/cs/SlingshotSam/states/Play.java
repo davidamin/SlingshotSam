@@ -103,7 +103,7 @@ public class Play extends GameState {
         background2 = new Sprite(bg_texture2);
         sam_texture = new Texture(Gdx.files.internal("sam.png"));
         sam_sprite = new Sprite(sam_texture);
-        sam_sprite.scale(4);
+        sam_sprite.scale(2);
 
         // Set up camera
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -123,9 +123,12 @@ public class Play extends GameState {
             //System.out.println(fa.getUserData() + ", " + fb.getUserData());
             //Gdx.app.log("SlingshotSam", fa.getUserData().getClass().getName());
             //Gdx.app.log("SlingshotSam", fb.getUserData().getClass().getName());
-            /*if(fb.getUserData().equals("foot") && fa.getUserData().equals("ground")){
+            if(fb.getUserData().equals("foot") && fa.getUserData().equals("ground")){
+                Play.this.sam.respawn_x = (float) (Play.this.sam.getPosition().x);
+                Play.this.sam.respawn_y = (float) (Play.this.sam.getPosition().y + .1);
+                Play.this.sam.Lives += 1;
                 Play.this.sam.reset();
-            }*/
+            }
         }
 
         public void endContact(Contact c) {
