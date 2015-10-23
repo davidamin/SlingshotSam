@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="64" height="32" tilewidth="32" tileheight="32" nextobjectid="1">
+ <tileset firstgid="1" name="LostGarden" tilewidth="32" tileheight="32" tilecount="256">
+  <image source="LostGarden.png" width="512" height="512"/>
+ </tileset>
+ <layer name="Ground" width="64" height="32">
+  <data encoding="base64" compression="zlib">
+   eJzl0DERAEAIBLFzCA7+/asAFykodtJvJemtjvq2f1j9X6v/a/V/rf6v1f+1+r9W/9fq/1r9X6v/a/V/rf6v1f+1+r9W/9fq/1r9X6v/a/V/rf6v1f+1+r9W/9fq/1r9X6v/a/V/rf6v1f+1+r92AB7YvB8=
+  </data>
+ </layer>
+ <layer name="Raised Terrain" width="64" height="32">
+  <data encoding="base64" compression="zlib">
+   eJztkcsJAjEARNOENrBqA35QUE/+UU/+UU/+y1kL0Q60Ay3JCezCEjbuHkziYR48QoZAGMYTQuSg5+jMwKxwRxGWYB02LNmM/JuHBeMt9YQ7DOHIkuPIv677hzvY7s/9uT/3d9+f+3N/ucMabiy5Ff+3v6uzDCvGW+rx4RVWYS24+1/yX2Yt2IYd4y31TGAX9mAfDoJMl8vsBu9KFvcuTTaFM+Mt9ezgHC7gEq6CTJfL7AGfShb3Lk22hwfTJRM4whM8w0tCLrMXfCtZ3Ls0GSGEEEIIIYQQQggxywcviI75
+  </data>
+ </layer>
+ <layer name="Even Higher Ground" width="64" height="32">
+  <data encoding="base64" compression="zlib">
+   eJztyycSQgEQwNBP9VQPH/BUT/VUT73/EYjhBsyuSWaeTFHYrwqqqKGOBpqBf3YttNFBFz30A//sBhiixAhjTAL/7KaYYY4FllgF/tmtscEWO+xxCPyzO+KEMy644hb4Z3fHA0+88MYn8DczMzMzMzMzMzMzM/tHX83oEOc=
+  </data>
+ </layer>
+ <layer name="Doodads" width="64" height="32">
+  <data encoding="base64" compression="zlib">
+   eJzNWVlOxDAMLYcGcQGWEwAngJkDACcAJPhmF5/sw/LDjgZc1IqH5a1pM/RJT+04TibPTpxWLYp+Ype4l9G/7zghngp2Tafmb/WZJIYVo7gh3gp2Tafmb/VJwQPcPzboN2RXD+/ED8GOOjGvmj/v0wZn1XWaOMNsFlD7KnGWuARcrtoj6xR1RvNqxaYJ7qrrHHGe2Sxw/ZxrVXvTdZqa1zb14At/TMX6DIGWfk2PNl8vrym1MhdQ/yJxAe43Kx9NT2S+ktaUWpkTeAasEzeKX+0IriUyX0mr1q+repALXEtkvpJW7NeHZ4AoIvk+Ih7Dby9G3h4qz3XpPJfsXds4Ivm+Il47Pggvpj91Xajnkr1rmwee6xKvxLfqfou4Tdwxxuj7nreAuZa07hMPiIeGj4ZRA/t90JY6vmbHXHOtJc6JF8RLw0fDZ9Be6hwXf/VKttTxuV3LIdda4on4THwxfNqi1jl2bF1ByyHXKkHywXhqsdXWZP2Ow3WOBBv6c3jjI5rm0NvzGE8tttqa1N5xcvpH8jyAe2/PYzxz7I9c0PJaal8pfmMgacK+GE+876I+R+04H82fwzrbMP/SeomcA6n1OcWO89H8OdqcbdKaGCi+k4C376S13uZs430HFbU91UXdtvxxPpHnOG+MQhnHg/Y/ueu8thdq8NxGtPFx6hzXkMboQ/2PPMdJMeL6+Di8XRrjv+o/InK+a/XLq/veGIhJ1v+miMSIg6/3lDFywdvPVjtvq79B4LeIEk3OR46u6rzm783NqmW8rf4Ggd8iSrQ583M//3t70Zp7tGb3ab1zeHOz2nPp+ganxMir
+  </data>
+ </layer>
+ <layer name="Doodads Lvl 2" width="64" height="32">
+  <data encoding="base64" compression="zlib">
+   eJzt0TEOgkAYBeH10HIDuJl4ArGiVCuDDVLis+MAmEnW+ZLZ7k9esqVI2prSC7ynrd/nwN1LkiRJkup0Sn0600MglzSkKz0Eckv39KCHQOb0Tgs9RD810gNgT3qAVJFjaugRoDZ19AiQ///f/7+HDz9eFd0=
+  </data>
+ </layer>
+</map>
