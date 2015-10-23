@@ -1,6 +1,7 @@
 package com.virginia.cs.SlingshotSam.entities;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -25,8 +26,8 @@ public class Sam extends B2DSprite implements TouchController.BoundedTouchListen
     public boolean respawn = false;
     public float respawn_x = 1.6f;
     public float respawn_y = 2.0f;
-
     public boolean gameOver = false;
+    protected TouchIndicator touchIndicator;
 
     public Sam(World world) {
         super();
@@ -50,10 +51,12 @@ public class Sam extends B2DSprite implements TouchController.BoundedTouchListen
         fixtureDef.filter.categoryBits = 4;
         fixtureDef.filter.maskBits = 2;
         this.body.createFixture(fixtureDef).setUserData("foot");
+
+        touchIndicator = new TouchIndicator(this);
     }
 
-    public void draw() {
-
+    public void drawTouchIndicator(ShapeRenderer shapeRenderer) {
+        touchIndicator.draw(shapeRenderer);
     }
     public void reset(){
         respawn = true;
@@ -74,11 +77,14 @@ public class Sam extends B2DSprite implements TouchController.BoundedTouchListen
     @Override
     public void handleTouchDown(float screenX, float screenY) {
         Gdx.app.log("SlingshotSam", String.format("Bounded Touch Down!\t\t%.4f, %.4f", screenX, screenY));
+        touchIndicator.setVisible(true);
+        touchIndicator.setPosition(screenX, screenY);
     }
 
     @Override
     public void handleTouchDragged(float screenX, float screenY) {
         Gdx.app.log("SlingshotSam", String.format("Bounded Touch Dragged!\t\t%.4f, %.4f", screenX, screenY));
+        touchIndicator.setPosition(screenX, screenY);
     }
 
     @Override
@@ -88,7 +94,8 @@ public class Sam extends B2DSprite implements TouchController.BoundedTouchListen
         respawn_y = body.getPosition().y;
         if(Shots > 0) {
             body.setAwake(true);
-            body.applyForceToCenter(4 * (body.getPosition().x - screenX), 8 * (body.getPosition().y - screenY), true);
+            body.applyForceToCenter(4 * (body.getPosition().x - screenX), 8*(body.getPosition().y - screenY), true);
+            touchIndicator.setVisible(false);
             Shots -= 1;
         }
     }
