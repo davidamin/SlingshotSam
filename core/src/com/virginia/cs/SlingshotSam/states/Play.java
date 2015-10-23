@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -52,6 +53,8 @@ public class Play extends GameState {
     private Sprite background2;
     private Texture bg_texture;
     private Texture bg_texture2;
+    private Texture sam_texture;
+    private Sprite sam_sprite;
     public Sam sam;
 
     public int height = Gdx.graphics.getHeight();
@@ -98,6 +101,9 @@ public class Play extends GameState {
         background = new Sprite(bg_texture);
         bg_texture2 = new Texture(Gdx.files.internal("sky.png"));
         background2 = new Sprite(bg_texture2);
+        sam_texture = new Texture(Gdx.files.internal("sam.png"));
+        sam_sprite = new Sprite(sam_texture);
+        sam_sprite.scale(4);
 
         // Set up camera
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -194,6 +200,7 @@ public class Play extends GameState {
 
     public void update(float dt) {
         this.world.step(dt, 6, 2);
+        sam_sprite.setPosition(this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y,0)).x,this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y,0)).y);
         if(sam.body.getPosition().y < 0){
             sam.reset();
         }
@@ -228,6 +235,7 @@ public class Play extends GameState {
 
             hello.draw(this.sb, screenText, 80, height - height / 10);
 
+            sam_sprite.draw(this.sb);
             this.sb.end();
 
             this.b2dr.render(this.world, this.b2dCam.combined);
