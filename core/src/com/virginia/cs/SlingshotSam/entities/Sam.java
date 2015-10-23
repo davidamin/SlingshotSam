@@ -15,19 +15,30 @@ import sun.rmi.runtime.Log;
  */
 public class Sam extends B2DSprite implements TouchController.BoundedTouchListener {
 
-    protected BodyDef bodyDef;
-    protected FixtureDef fixtureDef;
+    public BodyDef bodyDef;
+    public FixtureDef fixtureDef;
     protected float radius = 0.05F;
+    public Body body;
+    private World w;
+    public int Lives = 3;
+    public int Shots = 5;
+    public boolean respawn = false;
+    public float respawn_x = 1.6f;
+    public float respawn_y = 2.0f;
+
+    public boolean gameOver = false;
 
     public Sam(World world) {
         super();
+        w = world;
 
         bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(1.6F, 2.0F);
+        bodyDef.position.set(1.6F, .7F);
         bodyDef.fixedRotation = false;
         // bodyDef.linearVelocity.set(1f, 0f);
         this.body = world.createBody(bodyDef);
+        this.body.setAwake(false);
 
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(2 * radius, 2 * radius);
@@ -43,6 +54,13 @@ public class Sam extends B2DSprite implements TouchController.BoundedTouchListen
 
     public void draw() {
 
+    }
+    public void reset(){
+        respawn = true;
+        Lives -= 1;
+        if(Lives < 0){
+            gameOver = true;
+        }
     }
 
     @Override
@@ -66,7 +84,13 @@ public class Sam extends B2DSprite implements TouchController.BoundedTouchListen
     @Override
     public void handleTouchUp(float screenX, float screenY) {
         Gdx.app.log("SlingshotSam", String.format("Bounded Touch Up!\t\t%.4f, %.4f", screenX, screenY));
-        body.applyForceToCenter(4*(body.getPosition().x - screenX), 8*(body.getPosition().y - screenY), true);
+        respawn_x = body.getPosition().x;
+        respawn_y = body.getPosition().y;
+        if(Shots > 0) {
+            body.setAwake(true);
+            body.applyForceToCenter(4 * (body.getPosition().x - screenX), 8 * (body.getPosition().y - screenY), true);
+            Shots -= 1;
+        }
     }
 
     @Override
