@@ -9,7 +9,9 @@ package com.virginia.cs.SlingshotSam.states;
     import com.badlogic.gdx.InputMultiplexer;
     import com.badlogic.gdx.graphics.Color;
     import com.badlogic.gdx.graphics.OrthographicCamera;
+    import com.badlogic.gdx.graphics.Texture;
     import com.badlogic.gdx.graphics.g2d.BitmapFont;
+    import com.badlogic.gdx.graphics.g2d.Sprite;
     import com.badlogic.gdx.graphics.g2d.SpriteBatch;
     import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
     import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -25,6 +27,8 @@ package com.virginia.cs.SlingshotSam.states;
     import com.badlogic.gdx.physics.box2d.World;
     import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
     import com.badlogic.gdx.utils.TimeUtils;
+    import com.badlogic.gdx.utils.Timer;
+    import com.sun.org.apache.xpath.internal.operations.Bool;
     import com.virginia.cs.SlingshotSam.handlers.GameStateManager;
     import com.virginia.cs.SlingshotSam.handlers.MyContactListener;
     import com.virginia.cs.SlingshotSam.main.Game;
@@ -43,6 +47,12 @@ public class Play extends GameState {
     private Circle testCircle;
     private TouchController touchController;
 
+    private long timeElapsed;
+    private long levelTime;
+    private long maxTime;
+    private Timer time;
+    private Boolean timeOut = false;
+
     private BitmapFont createFont(FreeTypeFontGenerator generator, float dp)
     {
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -54,9 +64,22 @@ public class Play extends GameState {
 
     public Play(GameStateManager gsm) {
         super(gsm);
+
+        time = new Timer();
+
+        maxTime = 30000;
+
+        time.schedule(new Timer.Task(){
+            public void run(){
+                timeOut = true;
+            }
+        }, maxTime / 1000);
+
         Music m = Gdx.audio.newMusic(Gdx.files.internal("samSong1.ogg"));
         m.setLooping(true);
         m.play();
+
+        levelTime  = TimeUtils.millis();
 
         // Set up camera
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -134,13 +157,22 @@ public class Play extends GameState {
 
     public void update(float dt) {
         this.world.step(dt, 6, 2);
+        //timeElapsed += Gdx.graphics.getDeltaTime();
     }
 
     public void render() {
         Gdx.gl20.glClear(16384);
+        timeElapsed = TimeUtils.timeSinceMillis(levelTime);
+        double printable = (maxTime - timeElapsed)/ 1000.0;
 
         this.sb.begin();
         hello.draw(this.sb, "Hello World!", 200,400);
+        hello.draw(this.sb, String.format("Time Remaining: %.2f", printable) , 500,100);
+
+        if(timeOut){
+            hello.draw(this.sb, "Time Over", 500,400);
+        }
+
         this.sb.end();
 
         this.b2dr.render(this.world, this.b2dCam.combined);
@@ -170,6 +202,9 @@ public class Play extends GameState {
         private long lastUpdate;
         private boolean updating = false;
 
+        private Texture text;
+        private Sprite sprite;
+
         private Body body;
         private BodyDef b;
         private FixtureDef f;
@@ -179,6 +214,8 @@ public class Play extends GameState {
         private Vector3 testPoint = new Vector3();
 
         public Circle(int x, int y, float r, World wrld) {
+            text = new Texture(Gdx.files.internal("badlogic.jpg"));
+            sprite = new Sprite(text);
             w= wrld;
             cshape = new CircleShape();
             b = new BodyDef();
@@ -191,6 +228,7 @@ public class Play extends GameState {
             f.filter.categoryBits = 8;
             f.filter.maskBits = 2;
             body.createFixture(f).setUserData("touchCircle");
+            body.setUserData(sprite);
             setCenter(x, y);
             setCurrent(x, y);
             setRadius(r);
@@ -217,6 +255,10 @@ public class Play extends GameState {
             if (!updating) {
                 return;
             }
+            testPoint.set(body.getPosition().x, body.getPosition().y, 0);
+            b2dCam.unproject(testPoint);
+
+            setCurrent(testPoint.x,testPoint.y);
 
             // Time difference
             //long currentTime = TimeUtils.millis();
@@ -273,10 +315,8 @@ public class Play extends GameState {
         }
 
         public void handleTouchDown(int screenX, int screenY) {
-            testPoint.set(screenX, screenY, 0);
-            b2dCam.unproject(testPoint);
             Gdx.app.log("SlingshotSam", String.format("Bounded Touch Down!\t\t%d, %d", screenX, screenY));
-            Gdx.app.log("SlingshotSam",testPoint.toString());
+            //Gdx.app.log("SlingshotSam",testPoint.toString());
             updating = false;
             flingVelocity = 0;
             body.applyLinearImpulse(0f,1.3f,body.getWorldCenter().x,body.getWorldCenter().y,true);
