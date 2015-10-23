@@ -85,7 +85,7 @@ public class Play extends GameState {
 
         time = new Timer();
 
-        maxTime = 30000;
+        maxTime = 20000;
 
         time.schedule(new Timer.Task() {
             public void run() {
@@ -261,8 +261,8 @@ public class Play extends GameState {
     }
 
     public void render() {
+        Gdx.gl20.glClear(16384);
         if(!sam.gameOver) {
-            Gdx.gl20.glClear(16384);
             timeElapsed = TimeUtils.timeSinceMillis(levelTime);
             double printable = (maxTime - timeElapsed) / 1000.0;
 
@@ -294,7 +294,7 @@ public class Play extends GameState {
             if(this.sam.won){
                 hello.draw(this.sb, "You win!", 80, height / 2);
             }else {
-                hello.draw(this.sb, "Game Over", 80, height / 2);
+                hello.draw(this.sb, "Boom", 80, height / 2);
             }
             this.sb.end();
         }
