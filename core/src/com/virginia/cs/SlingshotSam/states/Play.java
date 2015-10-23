@@ -48,13 +48,16 @@ import com.virginia.cs.SlingshotSam.handlers.MyContactListener;
     import com.virginia.cs.SlingshotSam.states.GameState;
 
 public class Play extends GameState {
-    //private World world = new World(new Vector2(0.0F, -2.81F), true);
-    private World world = new World(new Vector2(0.0F, 0.0F), true);
+    private World world = new World(new Vector2(0.0F, -2.81F), true);
+    //private World world = new World(new Vector2(0.0F, 0.0F), true);
     private Box2DDebugRenderer b2dr;
     public OrthographicCamera b2dCam;
     private OrthographicCamera camera;
     private SpriteBatch sb;
     private BitmapFont hello;
+
+    public int height = Gdx.graphics.getHeight();
+    public int width = Gdx.graphics.getWidth();
 
     private ShapeRenderer shapeRenderer;
     private Circle testCircle;
@@ -183,14 +186,14 @@ public class Play extends GameState {
 
         String screenText = "Lives: " + String.valueOf(Lives) + "   Shots: " + String.valueOf(Shots);
         this.sb.begin();
-        hello.draw(this.sb, "Hello World!", 200,400);
-        hello.draw(this.sb, String.format("Time Remaining: %.2f", printable) , 500,100);
+        //hello.draw(this.sb, "Hello World!", 200,400);
+        hello.draw(this.sb, String.format("Time Remaining: %.2f", printable) , 80,height - height/5);
 
         if(timeOut){
             hello.draw(this.sb, "Time Over", 500,400);
         }
 
-        hello.draw(this.sb, screenText, 80, 1070);
+        hello.draw(this.sb, screenText, 80, height - height/10);
         this.sb.end();
 
         this.b2dr.render(this.world, this.b2dCam.combined);
