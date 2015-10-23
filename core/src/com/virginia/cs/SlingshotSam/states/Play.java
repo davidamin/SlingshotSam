@@ -14,7 +14,10 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.virginia.cs.SlingshotSam.handlers.GameStateManager;
+    import com.badlogic.gdx.utils.viewport.FitViewport;
+    import com.badlogic.gdx.utils.viewport.ScreenViewport;
+    import com.badlogic.gdx.utils.viewport.Viewport;
+    import com.virginia.cs.SlingshotSam.handlers.GameStateManager;
 import com.virginia.cs.SlingshotSam.handlers.MyContactListener;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.InputMultiplexer;
@@ -33,6 +36,7 @@ public class Play extends GameState {
     private World world = new World(new Vector2(0.0F, -2.81F), true);
     private Box2DDebugRenderer b2dr;
     public OrthographicCamera b2dCam;
+    private Viewport viewport;
     private OrthographicCamera camera;
     private SpriteBatch sb;
     private BitmapFont hello;
@@ -135,7 +139,7 @@ public class Play extends GameState {
         sam = new Sam(world);
 
         this.b2dCam = new OrthographicCamera();
-        this.b2dCam.setToOrtho(false, 3.2F, 2.4F);
+        this.b2dCam.setToOrtho(false, 4.2F, 2.4F);
 
         // Set Input Processor for app to use TouchController
         // as a source of keyboard input (in case) and as a gesture
