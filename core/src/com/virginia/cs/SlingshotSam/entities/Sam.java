@@ -25,8 +25,8 @@ public class Sam extends B2DSprite implements TouchController.BoundedTouchListen
     public int Lives = 3;
     public int Shots = 5;
     public boolean respawn = false;
-    public float respawn_x = 1.6f;
-    public float respawn_y = 2.0f;
+    public float respawn_x = .3f;
+    public float respawn_y = .87f;
     public boolean gameOver = false;
     protected TouchIndicator touchIndicator;
 
@@ -36,7 +36,7 @@ public class Sam extends B2DSprite implements TouchController.BoundedTouchListen
 
         bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(1.6F, .7F);
+        bodyDef.position.set(.3F, .87F);
         bodyDef.fixedRotation = false;
         // bodyDef.linearVelocity.set(1f, 0f);
         this.body = world.createBody(bodyDef);
