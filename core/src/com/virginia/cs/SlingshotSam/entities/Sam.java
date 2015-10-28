@@ -73,8 +73,8 @@ public class Sam extends B2DSprite implements TouchController.BoundedTouchListen
     public boolean isInBounds(float screenX, float screenY) {
         Gdx.app.log("SlingshotSam", String.format("IsInBounds\t\t%.4f %.4f %.4f %.4f", screenX, screenY,
                 body.getWorldCenter().x, body.getWorldCenter().y));
-        return (Math.abs(screenX - body.getWorldCenter().x) <= radius &&
-                Math.abs(screenY - body.getWorldCenter().y) <= radius);
+        return (Math.abs(screenX - body.getWorldCenter().x) <= radius*5 &&
+                Math.abs(screenY - body.getWorldCenter().y) <= radius*5);
     }
 
     @Override
