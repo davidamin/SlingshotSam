@@ -29,6 +29,8 @@ public class Sam extends B2DSprite implements TouchController.BoundedTouchListen
     public float respawn_y = .87f;
     public boolean gameOver = false;
     public boolean won = false;
+
+    public boolean isFlying = false;
     protected TouchIndicator touchIndicator;
 
     public Sam(World world) {
@@ -92,14 +94,17 @@ public class Sam extends B2DSprite implements TouchController.BoundedTouchListen
 
     @Override
     public void handleTouchUp(float screenX, float screenY) {
-        Gdx.app.log("SlingshotSam", String.format("Bounded Touch Up!\t\t%.4f, %.4f", screenX, screenY));
-        respawn_x = body.getPosition().x;
-        respawn_y = body.getPosition().y;
-        if(Shots > 0) {
-            body.setAwake(true);
-            body.applyForceToCenter(4 * (body.getPosition().x - screenX), 8*(body.getPosition().y - screenY), true);
-            touchIndicator.setVisible(false);
-            Shots -= 1;
+        if(!isFlying) {
+            Gdx.app.log("SlingshotSam", String.format("Bounded Touch Up!\t\t%.4f, %.4f", screenX, screenY));
+            respawn_x = body.getPosition().x;
+            respawn_y = body.getPosition().y;
+            isFlying = true;
+            if (Shots > 0) {
+                body.setAwake(true);
+                body.applyForceToCenter(4 * (body.getPosition().x - screenX), 8 * (body.getPosition().y - screenY), true);
+                touchIndicator.setVisible(false);
+                Shots -= 1;
+            }
         }
     }
 
