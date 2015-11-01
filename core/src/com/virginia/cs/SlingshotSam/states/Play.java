@@ -123,14 +123,11 @@ public class Play extends GameState {
         public void beginContact(Contact c) {
             Fixture fa = c.getFixtureA();
             Fixture fb = c.getFixtureB();
-            //System.out.println(fa.getUserData() + ", " + fb.getUserData());
-            //Gdx.app.log("SlingshotSam", fa.getUserData().getClass().getName());
-            //Gdx.app.log("SlingshotSam", fb.getUserData().getClass().getName());
+
             if(fb.getUserData().equals("foot") && fa.getUserData().equals("ground")){
                 Play.this.sam.respawn_x = (float) (Play.this.sam.getPosition().x);
                 Play.this.sam.respawn_y = (float) (Play.this.sam.getPosition().y + .1);
-                Play.this.sam.Lives += 1;
-                Play.this.sam.reset();
+                Play.this.sam.respawn = true;
             }
             if(fb.getUserData().equals("foot") && fa.getUserData().equals("bomb")){
                 //Win the game
@@ -254,6 +251,7 @@ public class Play extends GameState {
         }
 
         if(sam.respawn){
+            sam.isFlying = false;
             sam.body.setTransform(sam.respawn_x, sam.respawn_y, 0);
             sam.body.setAwake(false);
             sam.respawn = false;
