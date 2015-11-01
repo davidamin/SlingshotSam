@@ -199,7 +199,6 @@ public class Play extends GameState {
 
         this.b2dCam = new OrthographicCamera();
         this.b2dCam.setToOrtho(false, 4.2F, 2.4F);
-
         bomb_texture = new Texture(Gdx.files.internal("bomb.png"));
         bomb_sprite = new Sprite(bomb_texture);
         bomb_sprite.scale(2);
@@ -263,6 +262,8 @@ public class Play extends GameState {
 
     public void render() {
         Gdx.gl20.glClear(16384);
+        this.b2dCam.position.set(sam.getPosition().x+1,sam.getPosition().y+.3F,0);
+        this.b2dCam.update();
         if(!sam.gameOver) {
             timeElapsed = TimeUtils.timeSinceMillis(levelTime);
             double printable = (maxTime - timeElapsed) / 1000.0;
@@ -286,9 +287,7 @@ public class Play extends GameState {
 
             sam_sprite.draw(this.sb);
             this.sb.end();
-
             this.b2dr.render(this.world, this.b2dCam.combined);
-
             this.sam.drawTouchIndicator(shapeRenderer);
         }else{
             this.sb.begin();
