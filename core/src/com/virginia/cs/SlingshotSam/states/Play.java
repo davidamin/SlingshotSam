@@ -22,10 +22,10 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-    import com.badlogic.gdx.utils.viewport.FitViewport;
-    import com.badlogic.gdx.utils.viewport.ScreenViewport;
-    import com.badlogic.gdx.utils.viewport.Viewport;
-    import com.virginia.cs.SlingshotSam.handlers.GameStateManager;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.virginia.cs.SlingshotSam.handlers.GameStateManager;
 import com.virginia.cs.SlingshotSam.handlers.MyContactListener;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.InputMultiplexer;
@@ -61,6 +61,7 @@ public class Play extends GameState {
 
     public int height = Gdx.graphics.getHeight();
     public int width = Gdx.graphics.getWidth();
+    public float samCamPosX;
 
     private ShapeRenderer shapeRenderer;
     private TouchController touchController;
@@ -244,7 +245,7 @@ public class Play extends GameState {
 
     public void update(float dt) {
         this.world.step(dt, 6, 2);
-        sam_sprite.setPosition(this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y,0)).x,this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y,0)).y);
+        sam_sprite.setPosition(this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).x, this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).y);
         if(sam.body.getPosition().y < 0){
             sam.reset();
         }
@@ -260,7 +261,11 @@ public class Play extends GameState {
 
     public void render() {
         Gdx.gl20.glClear(16384);
-        this.b2dCam.position.set(sam.getPosition().x+1,sam.getPosition().y+.3F,0);
+        samCamPosX = sam.getPosition().x;
+        if(samCamPosX > 2.3) {
+            samCamPosX = 2.3F;
+        }
+        this.b2dCam.position.set(samCamPosX, 1.27F, 0);
         this.b2dCam.update();
         if(!sam.gameOver) {
             timeElapsed = TimeUtils.timeSinceMillis(levelTime);
