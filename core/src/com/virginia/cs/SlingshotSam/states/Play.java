@@ -58,6 +58,7 @@ public class Play extends GameState {
     private Texture bomb_texture;
     private Sprite bomb_sprite;
     public Sam sam;
+    public Boolean ended = false;
 
     public int height = Gdx.graphics.getHeight();
     public int width = Gdx.graphics.getWidth();
@@ -70,6 +71,7 @@ public class Play extends GameState {
     private long levelTime;
     private long maxTime;
     private Timer time;
+    private Timer resetTimer;
     private Boolean timeOut = false;
 
     private BitmapFont createFont(FreeTypeFontGenerator generator, float dp)
@@ -220,7 +222,6 @@ public class Play extends GameState {
         shapeRenderer.setProjectionMatrix(this.b2dCam.combined);
     }
 
-
     public void registerPlatform(float x, float y){
         BodyDef bdef = new BodyDef();
         bdef.position.set(x, y);
@@ -260,6 +261,14 @@ public class Play extends GameState {
     }
 
     public void render() {
+        if(ended){
+            try {
+                Thread.sleep(1000);
+            }catch(Exception e){
+
+            }
+            gsm.reset();
+        }
         Gdx.gl20.glClear(16384);
         samCamPosX = sam.getPosition().x;
         if(samCamPosX > 2.3) {
@@ -296,8 +305,10 @@ public class Play extends GameState {
             this.sb.begin();
             if(this.sam.won){
                 hello.draw(this.sb, "You win!", 80, height / 2);
+                ended = true;
             }else {
                 hello.draw(this.sb, "Boom", 80, height / 2);
+                ended = true;
             }
             this.sb.end();
         }

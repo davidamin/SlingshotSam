@@ -31,6 +31,10 @@ public class GameStateManager {
         ((GameState)this.gameStates.peek()).update(dt);
         //player.update(dt);
     }
+    public void reset(){
+        this.popState();
+        this.pushState(912837);
+    }
 
     public void render() {
         ((GameState)this.gameStates.peek()).render();
