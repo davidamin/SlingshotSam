@@ -102,10 +102,10 @@ public class Play extends GameState {
 
         levelTime  = TimeUtils.millis();
 
-        bg_texture = new Texture(Gdx.files.internal("demo_level.png"));
+        bg_texture = new Texture(Gdx.files.internal("demo_level_scale.png"));
         background = new Sprite(bg_texture);
-        bg_texture2 = new Texture(Gdx.files.internal("sky.png"));
-        background2 = new Sprite(bg_texture2);
+       // bg_texture2 = new Texture(Gdx.files.internal("sky.png"));
+        //background2 = new Sprite(bg_texture2);
         sam_texture = new Texture(Gdx.files.internal("sam.png"));
         sam_sprite = new Sprite(sam_texture);
         sam_sprite.scale(2);
@@ -261,15 +261,16 @@ public class Play extends GameState {
     }
 
     public void render() {
-        if(ended){
+        if(ended) {
             try {
                 Thread.sleep(1000);
-            }catch(Exception e){
+            } catch (Exception e) {
 
             }
             gsm.reset();
         }
-        Gdx.gl20.glClear(16384);
+        Gdx.gl.glClearColor(135/255f, 206/255f, 235/255f, 1);
+        //Gdx.gl20.glClear(16384);
         samCamPosX = sam.getPosition().x;
         if(samCamPosX > 2.3) {
             samCamPosX = 2.3F;
@@ -282,9 +283,10 @@ public class Play extends GameState {
 
             String screenText = "Lives: " + String.valueOf(sam.Lives) + "   Shots: " + String.valueOf(sam.Shots);
             this.sb.begin();
-            background2.scale(3);
-            background2.setPosition(this.b2dCam.project(new Vector3(0.0f, 0f, 0)).x, this.b2dCam.project(new Vector3(0f, 0f, 0)).y);
-            background2.draw(this.sb);
+            //background2.scale(3);
+            //background2.setPosition(this.b2dCam.project(new Vector3(0.0f, 0f, 0)).x, this.b2dCam.project(new Vector3(0f, 0f, 0)).y);
+            //background2.draw(this.sb);
+            background.scale(3);
             background.draw(this.sb);
             bomb_sprite.draw(this.sb);
             //hello.draw(this.sb, "Hello World!", 200,400);
@@ -302,6 +304,7 @@ public class Play extends GameState {
             this.b2dr.render(this.world, this.b2dCam.combined);
             this.sam.drawTouchIndicator(shapeRenderer);
         }else{
+            Gdx.gl.glClear(16384);
             this.sb.begin();
             if(this.sam.won){
                 hello.draw(this.sb, "You win!", 80, height / 2);
