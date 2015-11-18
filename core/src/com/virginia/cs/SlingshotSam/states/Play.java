@@ -25,6 +25,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.virginia.cs.SlingshotSam.entities.MovingPlatform;
 import com.virginia.cs.SlingshotSam.handlers.GameStateManager;
 import com.virginia.cs.SlingshotSam.handlers.MyContactListener;
 import com.badlogic.gdx.audio.Music;
@@ -63,6 +64,7 @@ public class Play extends GameState {
     public int height = Gdx.graphics.getHeight();
     public int width = Gdx.graphics.getWidth();
     public float samCamPosX;
+    public MovingPlatform mplat;
 
     private ShapeRenderer shapeRenderer;
     private TouchController touchController;
@@ -160,6 +162,9 @@ public class Play extends GameState {
         registerPlatform(3.53f, 0.34f);
         registerPlatform(4.1f, 0.07f);
 
+        //posx posy width height dx dy maxdist world
+        mplat = new MovingPlatform(2, 0, .1f, .1f, 0f, .5f, 2f, this.world);
+        mplat.pos.set(1F,1F);
         //End platform code
 
         BodyDef bdef = new BodyDef();
@@ -241,11 +246,13 @@ public class Play extends GameState {
         body.createFixture(fdef).setUserData("ground");
     }
 
+
     public void handleInput() {
     }
 
     public void update(float dt) {
         this.world.step(dt, 6, 2);
+        mplat.update(dt);
         sam_sprite.setPosition(this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).x, this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).y);
         if(sam.body.getPosition().y < 0){
             sam.reset();
@@ -269,9 +276,13 @@ public class Play extends GameState {
             }
             gsm.reset();
         }
-        Gdx.gl.glClearColor(135/255f, 206/255f, 235/255f, 1);
+        Gdx.gl.glClear(16384);
+        Gdx.gl.glClearColor(135 / 255f, 206 / 255f, 235 / 255f, 1);
         //Gdx.gl20.glClear(16384);
         samCamPosX = sam.getPosition().x;
+        if(samCamPosX < 1.9F) {
+            samCamPosX = 1.9F;
+        }
         if(samCamPosX > 2.3) {
             samCamPosX = 2.3F;
         }
