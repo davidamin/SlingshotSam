@@ -201,6 +201,8 @@ public class Play extends GameState {
         // Create Sam
         sam = new Sam(world);
 
+        objects.add(new GameObject("bomb.png",1.0f,1.0f,.1f,.1f,1.0f,BodyType.StaticBody, "test", this.world, 1.0f));
+
         this.b2dCam = new OrthographicCamera();
         this.b2dCam.setToOrtho(false, 4.2F, 2.4F);
         bomb_texture = new Texture(Gdx.files.internal("bomb.png"));

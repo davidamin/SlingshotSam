@@ -22,7 +22,7 @@ public class GameObject {
     private Body b;
     private FixtureDef fDef;
 
-    public void GameObject(String textureFile, float x, float y, float length, float height, float fric, BodyDef.BodyType type, String userdata, World w, float scale){
+    public GameObject(String textureFile, float x, float y, float length, float height, float fric, BodyDef.BodyType type, String userdata, World w, float scale){
         bDef = new BodyDef();
         bDef.position.set(x, y);
         bDef.type = type;
@@ -45,9 +45,9 @@ public class GameObject {
     }
 
     public void update(float timeElapsed, OrthographicCamera cam){
-        Vector3 pos = new Vector3(b.getPosition().x,b.getPosition().y,0);
-        s.setPosition(cam.project(pos).x,cam.project(pos).y);
-    }
+        Vector3 pos = cam.project(new Vector3(b.getPosition().x, b.getPosition().y, 0));
+        s.setPosition(pos.x,pos.y);
+     }
     public void render(SpriteBatch sb){
         s.draw(sb);
     }
