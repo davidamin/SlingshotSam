@@ -25,6 +25,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.virginia.cs.SlingshotSam.entities.GameObject;
 import com.virginia.cs.SlingshotSam.handlers.GameStateManager;
 import com.virginia.cs.SlingshotSam.handlers.MyContactListener;
 import com.badlogic.gdx.audio.Music;
@@ -40,6 +41,8 @@ import com.badlogic.gdx.utils.Timer;
 import com.virginia.cs.SlingshotSam.main.Game;
 import com.virginia.cs.SlingshotSam.main.TouchController;
 import com.virginia.cs.SlingshotSam.entities.Sam;
+
+import java.util.ArrayList;
 
 public class Play extends GameState {
     private World world = new World(new Vector2(0.0F, -2.81F), true);
@@ -59,6 +62,7 @@ public class Play extends GameState {
     private Sprite bomb_sprite;
     public Sam sam;
     public Boolean ended = false;
+    public ArrayList<GameObject> objects = new ArrayList<GameObject>();
 
     public int height = Gdx.graphics.getHeight();
     public int width = Gdx.graphics.getWidth();
@@ -257,6 +261,10 @@ public class Play extends GameState {
             sam.body.setAwake(false);
             sam.respawn = false;
         }
+
+        for(GameObject obj: objects){
+            obj.update(dt,this.b2dCam);
+        }
         //timeElapsed += Gdx.graphics.getDeltaTime();
     }
 
@@ -269,7 +277,8 @@ public class Play extends GameState {
             }
             gsm.reset();
         }
-        Gdx.gl.glClearColor(135/255f, 206/255f, 235/255f, 1);
+        Gdx.gl.glClear(16384);
+        Gdx.gl.glClearColor(135 / 255f, 206 / 255f, 235 / 255f, 1);
         //Gdx.gl20.glClear(16384);
         samCamPosX = sam.getPosition().x;
         if(samCamPosX > 2.3) {
@@ -286,6 +295,7 @@ public class Play extends GameState {
             //background2.scale(3);
             //background2.setPosition(this.b2dCam.project(new Vector3(0.0f, 0f, 0)).x, this.b2dCam.project(new Vector3(0f, 0f, 0)).y);
             //background2.draw(this.sb);
+            background.setPosition(this.b2dCam.project(new Vector3(0.0f, 0f, 0)).x, this.b2dCam.project(new Vector3(0f, 0f, 0)).y);
             background.scale(3);
             background.draw(this.sb);
             bomb_sprite.draw(this.sb);
@@ -300,6 +310,9 @@ public class Play extends GameState {
             hello.draw(this.sb, screenText, 80, height - height / 10);
 
             sam_sprite.draw(this.sb);
+            for(GameObject obj: objects){
+                obj.render(this.sb);
+            }
             this.sb.end();
             this.b2dr.render(this.world, this.b2dCam.combined);
             this.sam.drawTouchIndicator(shapeRenderer);
