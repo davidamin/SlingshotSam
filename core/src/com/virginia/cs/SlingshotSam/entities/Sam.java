@@ -10,8 +10,6 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.virginia.cs.SlingshotSam.main.TouchController;
 
-import sun.rmi.runtime.Log;
-
 /**
  * Created by Michael Snider on 10/22/2015.
  */
@@ -23,6 +21,11 @@ public class Sam extends B2DSprite implements TouchController.BoundedTouchListen
     public Body body;
     private World w;
     public int Lives = 2;
+
+    public void setShots(int shots) {
+        Shots = shots;
+    }
+
     public int Shots = 4;
     public boolean respawn = false;
     public float respawn_x = .3f;

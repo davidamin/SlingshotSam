@@ -5,15 +5,24 @@ package com.virginia.cs.SlingshotSam.states;
  */
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -22,24 +31,12 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
-import com.virginia.cs.SlingshotSam.handlers.GameStateManager;
-import com.virginia.cs.SlingshotSam.handlers.MyContactListener;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
-import com.virginia.cs.SlingshotSam.main.Game;
-import com.virginia.cs.SlingshotSam.main.TouchController;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.virginia.cs.SlingshotSam.entities.Sam;
+import com.virginia.cs.SlingshotSam.handlers.GameStateManager;
+import com.virginia.cs.SlingshotSam.main.TouchController;
 
 public class Play extends GameState {
     private World world = new World(new Vector2(0.0F, -2.81F), true);
@@ -121,44 +118,60 @@ public class Play extends GameState {
         this.hello = createFont(generator, 32);
         generator.dispose();
 
-        this.hello.setColor(Color.GREEN);
+        this.hello.setColor(Color.RED);
+
         this.world.setContactListener(new ContactListener(){
-        public void beginContact(Contact c) {
-            Fixture fa = c.getFixtureA();
-            Fixture fb = c.getFixtureB();
+            public void beginContact(Contact c) {
+                Fixture fa = c.getFixtureA();
+                Fixture fb = c.getFixtureB();
 
-            if(fb.getUserData().equals("foot") && fa.getUserData().equals("ground")){
-                Play.this.sam.respawn_x = (float) (Play.this.sam.getPosition().x);
-                Play.this.sam.respawn_y = (float) (Play.this.sam.getPosition().y + .1);
-                Play.this.sam.respawn = true;
+                if(fb.getUserData().equals("foot") && fa.getUserData().equals("ground1")){
+                    Play.this.sam.respawn_x = (float) (Play.this.sam.getPosition().x);
+                    Play.this.sam.respawn_y = (float) (Play.this.sam.getPosition().y + .1);
+                    Play.this.sam.respawn = true;
+                }
+                if(fb.getUserData().equals("foot") && fa.getUserData().equals("ground2")){
+                    Play.this.sam.respawn_x = (float) (Play.this.sam.getPosition().x);
+                    Play.this.sam.respawn_y = (float) (Play.this.sam.getPosition().y + .1);
+                    Play.this.sam.respawn = true;
+                    sam.setShots(sam.Shots+2);
+                }
+                if(fb.getUserData().equals("foot") && fa.getUserData().equals("ground3")){
+                    Play.this.sam.respawn_x = (float) (Play.this.sam.getPosition().x);
+                    Play.this.sam.respawn_y = (float) (Play.this.sam.getPosition().y + .1);
+                    Play.this.sam.respawn = true;
+                    sam.setShots(0);
+                }
+                if(fb.getUserData().equals("foot") && fa.getUserData().equals("object1")){
+                    sam.setShots(sam.Shots+1);
+                }
+                if(fb.getUserData().equals("foot") && fa.getUserData().equals("bomb")){
+                 //Win the game
+                    Play.this.sam.gameOver=true;
+                    Play.this.sam.won=true;
+                }
             }
-            if(fb.getUserData().equals("foot") && fa.getUserData().equals("bomb")){
-                //Win the game
-                Play.this.sam.gameOver=true;
-                Play.this.sam.won=true;
+
+            public void endContact(Contact c) {
             }
-        }
 
-        public void endContact(Contact c) {
-        }
+            public void preSolve(Contact c, Manifold m) {
+            }
 
-        public void preSolve(Contact c, Manifold m) {
-        }
-
-        public void postSolve(Contact c, ContactImpulse ci) {
-        }
+            public void postSolve(Contact c, ContactImpulse ci) {
+            }
         });
-        this.b2dr = new Box2DDebugRenderer();
 
+        this.b2dr = new Box2DDebugRenderer();
         //platform code
         registerPlatform(.3f, 0.77f);
         registerPlatform(1.04f, 0.57f);
         registerPlatform(1.67f, 0.3f);
         registerPlatform(2.35f, 0.46f);
-        registerPlatform(2.55f, 0.31f);
-        registerPlatform(2.97f, 0.57f);
-        registerPlatform(3.53f, 0.34f);
-        registerPlatform(4.1f, 0.07f);
+        registeraddonPlatform(2.55f, 0.31f);
+        registeraddonPlatform(2.97f, 0.57f);
+        registeraddonPlatform(3.53f, 0.34f);
+        registeraddonPlatform(4.1f, 0.07f);
 
         //End platform code
 
@@ -233,12 +246,73 @@ public class Play extends GameState {
         shape.setAsBox(.1F, 0.05F);
 
         FixtureDef fdef = new FixtureDef();
-
         fdef.shape = shape;
         fdef.friction = 1.0f;
         fdef.filter.categoryBits = 2;
         fdef.filter.maskBits = 12;
-        body.createFixture(fdef).setUserData("ground");
+        body.createFixture(fdef).setUserData("ground1");
+
+    }
+
+    public void registeraddonPlatform(float x, float y){
+        BodyDef bdef = new BodyDef();
+        bdef.position.set(x, y);
+        bdef.type = BodyType.StaticBody;
+
+        Body body = this.world.createBody(bdef);
+
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(.1F, 0.05F);
+
+        FixtureDef fdef = new FixtureDef();
+        fdef.shape = shape;
+        fdef.friction = 1.0f;
+        fdef.filter.categoryBits = 2;
+        fdef.filter.maskBits = 12;
+        body.createFixture(fdef).setUserData("ground2");
+
+        ShapeRenderer shaper = new ShapeRenderer();
+        shaper.setColor(Color.RED);
+    }
+
+    public void registerzeroPlatform(float x, float y){
+        BodyDef bdef = new BodyDef();
+        bdef.position.set(x, y);
+        bdef.type = BodyType.StaticBody;
+
+        Body body = this.world.createBody(bdef);
+
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(.1F, 0.05F);
+
+        FixtureDef fdef = new FixtureDef();
+        fdef.shape = shape;
+        fdef.friction = 1.0f;
+        fdef.filter.categoryBits = 2;
+        fdef.filter.maskBits = 12;
+        body.createFixture(fdef).setUserData("ground3");
+
+        ShapeRenderer shaper = new ShapeRenderer();
+        shaper.setColor(Color.RED);
+    }
+
+    public void registeradd1object(float x, float y){
+        BodyDef bdef = new BodyDef();
+        bdef.position.set(x,y);
+        bdef.type = BodyType.KinematicBody;
+
+        Body body = this.world.createBody(bdef);
+
+        CircleShape shape = new CircleShape();
+        shape.setRadius(0.1F);
+
+        FixtureDef fdef = new FixtureDef();
+        fdef.shape = shape;
+        fdef.friction = 0.0f;
+        fdef.filter.categoryBits = 3;
+        fdef.filter.maskBits = 13;
+        body.createFixture(fdef).setUserData("object1");
+
     }
 
     public void handleInput() {
@@ -269,8 +343,8 @@ public class Play extends GameState {
             }
             gsm.reset();
         }
-        Gdx.gl.glClearColor(135/255f, 206/255f, 235/255f, 1);
-        //Gdx.gl20.glClear(16384);
+        Gdx.gl.glClearColor(0/255f, 0/255f, 0/255f, 1);
+        Gdx.gl.glClear(16384);
         samCamPosX = sam.getPosition().x;
         if(samCamPosX > 2.3) {
             samCamPosX = 2.3F;
