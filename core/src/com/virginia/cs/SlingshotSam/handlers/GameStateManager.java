@@ -7,6 +7,7 @@ package com.virginia.cs.SlingshotSam.handlers;
 
 import com.virginia.cs.SlingshotSam.main.Game;
 import com.virginia.cs.SlingshotSam.states.GameState;
+import com.virginia.cs.SlingshotSam.states.Menu;
 import com.virginia.cs.SlingshotSam.states.Play;
 import com.virginia.cs.SlingshotSam.states.Player;
 import java.util.Stack;
@@ -15,11 +16,13 @@ public class GameStateManager {
     private Game game;
     private Stack<GameState> gameStates;
     public static final int PLAY = 912837;
+    public static final int MENU = 8675309;
     private Player player;
     public GameStateManager(Game game) {
         this.game = game;
         this.gameStates = new Stack();
-        this.pushState(912837);
+        this.pushState(MENU);
+        //this.pushState(912837);
     }
 
     public Game game() {
@@ -36,12 +39,24 @@ public class GameStateManager {
         this.pushState(912837);
     }
 
+    public void start1(){
+        this.popState();
+        this.pushState(912837);
+    }
+
     public void render() {
         ((GameState)this.gameStates.peek()).render();
     }
 
     private GameState getState(int state) {
-        return state == 912837?new Play(this):null;
+
+        if(state == 912837) {
+            return  new Play(this);
+        }
+        if(state == 8675309) {
+            return  new Menu(this);
+        }
+        return null;
     }
 
     public void setState(int state) {
