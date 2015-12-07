@@ -63,6 +63,7 @@ public class Play extends GameState {
     public Sam sam;
     public Boolean ended = false;
     public ArrayList<GameObject> objects = new ArrayList<GameObject>();
+    public Music m;
 
     public int height = Gdx.graphics.getHeight();
     public int width = Gdx.graphics.getWidth();
@@ -101,7 +102,7 @@ public class Play extends GameState {
             }
         }, maxTime / 1000);
 
-        Music m = Gdx.audio.newMusic(Gdx.files.internal("samSong1.ogg"));
+        m = Gdx.audio.newMusic(Gdx.files.internal("samSong1.ogg"));
         m.setLooping(true);
         m.play();
 
@@ -280,6 +281,7 @@ public class Play extends GameState {
             } catch (Exception e) {
 
             }
+            m.stop();
             gsm.reset();
         }
         Gdx.gl.glClear(16384);

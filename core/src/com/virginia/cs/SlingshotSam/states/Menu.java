@@ -63,6 +63,7 @@ public class Menu extends GameState {
     private Texture texture;
     private Stage stage;
     private TextButton button;
+    private TextButton button2;
     private TextButton.TextButtonStyle textButtonStyle;
     private Skin skin;
     private TextureAtlas buttonAtlas;
@@ -98,9 +99,12 @@ public class Menu extends GameState {
         //textButtonStyle.checked  = new Image(texture).getDrawable();
 
 
-        button = new TextButton("Start Game!", textButtonStyle);
-        //button.setPosition(500.0f,500.0f);
+        button = new TextButton("Level 1!", textButtonStyle);
+        button2 = new TextButton("Level 2!", textButtonStyle);
+        button.setPosition(0.0f,500.0f);
+
         stage.addActor(button);
+        stage.addActor(button2);
 
         button.addListener(new ChangeListener() {
             @Override
@@ -108,10 +112,16 @@ public class Menu extends GameState {
                 Menu.this.gsm.start1();
             }
         });
+        button2.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+                Menu.this.gsm.start2();
+            }
+        });
 
-        Music m = Gdx.audio.newMusic(Gdx.files.internal("samSong2.ogg"));
+        /*Music m = Gdx.audio.newMusic(Gdx.files.internal("samSong2.ogg"));
         m.setLooping(true);
-        m.play();
+        m.play();*/
 
 
         // Set up camera

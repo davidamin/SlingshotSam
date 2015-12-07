@@ -17,6 +17,7 @@ public class GameStateManager {
     private Stack<GameState> gameStates;
     public static final int PLAY = 912837;
     public static final int MENU = 8675309;
+    public static final int PLAY2 = 123456789;
     private Player player;
     public GameStateManager(Game game) {
         this.game = game;
@@ -44,6 +45,11 @@ public class GameStateManager {
         this.pushState(912837);
     }
 
+    public void start2(){
+        this.popState();
+        this.pushState(PLAY2);
+    }
+
     public void render() {
         ((GameState)this.gameStates.peek()).render();
     }
@@ -55,6 +61,10 @@ public class GameStateManager {
         }
         if(state == MENU) {
             return  new Menu(this);
+        }
+        if(state == PLAY2) {
+            //Make this a play2 when we have that
+            return  new Play(this);
         }
         return null;
     }
