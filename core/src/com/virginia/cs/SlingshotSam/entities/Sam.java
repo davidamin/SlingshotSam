@@ -22,8 +22,8 @@ public class Sam extends B2DSprite implements TouchController.BoundedTouchListen
     protected float radius = 0.05F;
     public Body body;
     private World w;
-    public int Lives = 2;
-    public int Shots = 4;
+    public int Lives = 20;
+    public int Shots = 40;
     public boolean respawn = false;
     public float respawn_x = .3f;
     public float respawn_y = .87f;

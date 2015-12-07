@@ -50,6 +50,7 @@ public class MovingPlatform extends B2DSprite{
 		dist += dir.len() * deltaTime;
 		if (dist > maxDist) {
                 dir.y *= -1;
+				dir.x *=-1;
                 dist = 0;
 		}
 
