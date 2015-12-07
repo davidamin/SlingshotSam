@@ -46,7 +46,7 @@ public class Sam extends B2DSprite implements TouchController.BoundedTouchListen
         this.body.setAwake(false);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(2 * radius, 2 * radius);
+        shape.setAsBox(radius, 2 * radius);
 
         fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;

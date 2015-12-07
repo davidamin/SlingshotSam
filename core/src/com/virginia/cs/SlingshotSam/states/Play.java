@@ -170,7 +170,7 @@ public class Play extends GameState {
         mplat.pos.set(1F,1F);
         //End platform code
 
-        BodyDef bdef = new BodyDef();
+        /*BodyDef bdef = new BodyDef();
         bdef.position.set(4.1f, .11f);
         bdef.type = BodyType.StaticBody;
 
@@ -185,7 +185,8 @@ public class Play extends GameState {
         fdef.friction = 1.0f;
         fdef.filter.categoryBits = 2;
         fdef.filter.maskBits = 12;
-        body.createFixture(fdef).setUserData("bomb");
+        body.createFixture(fdef).setUserData("bomb");*/
+        objects.add(new GameObject("bomb.png",4.1f,.27f,.1f,.1f,1.0f,BodyType.StaticBody, "bomb", this.world, 1.5f,-30f,-15f));
 
         /*bdef.position.set(1.53F, 2.2F);
         body.applyForceToCenter(10, 10, true);
@@ -207,10 +208,10 @@ public class Play extends GameState {
 
         this.b2dCam = new OrthographicCamera();
         this.b2dCam.setToOrtho(false, 4.2F, 2.4F);
-        bomb_texture = new Texture(Gdx.files.internal("bomb.png"));
+        /*bomb_texture = new Texture(Gdx.files.internal("bomb.png"));
         bomb_sprite = new Sprite(bomb_texture);
         bomb_sprite.scale(2);
-        bomb_sprite.setPosition(this.b2dCam.project(new Vector3(4.0f, .21f, 0)).x, this.b2dCam.project(new Vector3(4.0f, .21f, 0)).y);
+        bomb_sprite.setPosition(this.b2dCam.project(new Vector3(4.0f, .21f, 0)).x, this.b2dCam.project(new Vector3(4.0f, .21f, 0)).y);*/
 
 
         // Set Input Processor for app to use TouchController
@@ -256,7 +257,7 @@ public class Play extends GameState {
     public void update(float dt) {
         this.world.step(dt, 6, 2);
         mplat.update(dt);
-        sam_sprite.setPosition(this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).x, this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).y);
+        sam_sprite.setPosition(this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).x - 25f, this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).y -25f);
         if(sam.body.getPosition().y < 0){
             sam.reset();
         }
@@ -308,7 +309,7 @@ public class Play extends GameState {
             background.setPosition(this.b2dCam.project(new Vector3(0.0f, 0f, 0)).x, this.b2dCam.project(new Vector3(0f, 0f, 0)).y);
             background.scale(3);
             background.draw(this.sb);
-            bomb_sprite.draw(this.sb);
+            //bomb_sprite.draw(this.sb);
             //hello.draw(this.sb, "Hello World!", 200,400);
 
             if (timeOut) {
