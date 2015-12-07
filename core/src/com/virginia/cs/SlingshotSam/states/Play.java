@@ -153,14 +153,14 @@ public class Play extends GameState {
         this.b2dr = new Box2DDebugRenderer();
 
         //platform code
-        registerPlatform(.3f, 0.77f);
+        /*registerPlatform(.3f, 0.77f);
         registerPlatform(1.04f, 0.57f);
         registerPlatform(1.67f, 0.3f);
         registerPlatform(2.35f, 0.46f);
         registerPlatform(2.55f, 0.31f);
         registerPlatform(2.97f, 0.57f);
         registerPlatform(3.53f, 0.34f);
-        registerPlatform(4.1f, 0.07f);
+        registerPlatform(4.1f, 0.07f);*/
 
         //posx posy width height dx dy maxdist world
         mplat = new MovingPlatform(2, 0, .1f, .1f, 0f, .5f, 2f, this.world);
@@ -227,7 +227,7 @@ public class Play extends GameState {
         shapeRenderer.setProjectionMatrix(this.b2dCam.combined);
     }
 
-    public void registerPlatform(float x, float y){
+    /*public void registerPlatform(float x, float y){
         BodyDef bdef = new BodyDef();
         bdef.position.set(x, y);
         bdef.type = BodyType.StaticBody;
@@ -244,7 +244,7 @@ public class Play extends GameState {
         fdef.filter.categoryBits = 2;
         fdef.filter.maskBits = 12;
         body.createFixture(fdef).setUserData("ground");
-    }
+    }*/
 
 
     public void handleInput() {

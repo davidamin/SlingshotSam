@@ -36,7 +36,7 @@ public class GameStateManager {
     }
     public void reset(){
         this.popState();
-        this.pushState(912837);
+        this.pushState(MENU);
     }
 
     public void start1(){
@@ -53,7 +53,7 @@ public class GameStateManager {
         if(state == 912837) {
             return  new Play(this);
         }
-        if(state == 8675309) {
+        if(state == MENU) {
             return  new Menu(this);
         }
         return null;
