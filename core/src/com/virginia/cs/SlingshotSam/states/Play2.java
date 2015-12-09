@@ -171,7 +171,7 @@ public class Play2 extends GameState {
 
         //platform code
 
-        objects.add(new GameObject("dino_plat2.png",.3f,.77f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-0f,0f));
+        objects.add(new GameObject("dino_plat2.png",.3f,.77f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .01f,-100f,-10f));
         objects.add(new GameObject("building1.png",1.75f,.77f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
         objects.add(new GameObject("building1.png",3f,1.5f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
         objects.add(new GameObject("building1.png",5f,1f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
