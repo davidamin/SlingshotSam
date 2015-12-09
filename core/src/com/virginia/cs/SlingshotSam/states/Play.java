@@ -144,27 +144,27 @@ public class Play extends GameState {
                 Fixture fa = c.getFixtureA();
                 Fixture fb = c.getFixtureB();
 
-                if(fb.getUserData().equals("foot") && fa.getUserData().equals("ground1")){
+                if (fb.getUserData().equals("foot") && fa.getUserData().equals("ground1")) {
                     Play.this.sam.respawn_x = (float) (Play.this.sam.getPosition().x);
                     Play.this.sam.respawn_y = (float) (Play.this.sam.getPosition().y + .1);
                     Play.this.sam.respawn = true;
                 }
-                if(fb.getUserData().equals("foot") && fa.getUserData().equals("ground2")){
+                if (fb.getUserData().equals("foot") && fa.getUserData().equals("ground2")) {
                     Play.this.sam.respawn_x = (float) (Play.this.sam.getPosition().x);
                     Play.this.sam.respawn_y = (float) (Play.this.sam.getPosition().y + .1);
                     Play.this.sam.respawn = true;
-                    sam.setShots(sam.Shots+2);
+                    sam.setShots(sam.Shots + 2);
                 }
-                if(fb.getUserData().equals("foot") && fa.getUserData().equals("ground3")){
+                if (fb.getUserData().equals("foot") && fa.getUserData().equals("ground3")) {
                     Play.this.sam.respawn_x = (float) (Play.this.sam.getPosition().x);
                     Play.this.sam.respawn_y = (float) (Play.this.sam.getPosition().y + .1);
                     Play.this.sam.respawn = true;
                     sam.setShots(0);
                 }
-                if(fb.getUserData().equals("foot") && fa.getUserData().equals("object1")){
-                    sam.setShots(sam.Shots+1);
+                if (fb.getUserData().equals("foot") && fa.getUserData().equals("object1")) {
+                    sam.setShots(sam.Shots + 1);
                 }
-                if(fb.getUserData().equals("foot") && fa.getUserData().equals("bomb")) {
+                if (fb.getUserData().equals("foot") && fa.getUserData().equals("bomb")) {
                     //Win the game
                     Play.this.sam.gameOver = true;
                     Play.this.sam.won = true;
@@ -364,6 +364,7 @@ public class Play extends GameState {
 
     public void update(float dt) {
         this.world.step(dt, 6, 2);
+        shapeRenderer.setProjectionMatrix(this.b2dCam.combined);
         mplat.update(dt);
         sam_sprite.setPosition(this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).x - 25f, this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).y -25f);
         if(sam.body.getPosition().y < 0){
