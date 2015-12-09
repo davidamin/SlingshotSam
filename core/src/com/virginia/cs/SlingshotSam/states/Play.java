@@ -19,19 +19,22 @@ import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
-import com.virginia.cs.SlingshotSam.entities.GameObject;
-import com.virginia.cs.SlingshotSam.entities.MovingPlatform;
-import com.virginia.cs.SlingshotSam.handlers.GameStateManager;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
+import com.virginia.cs.SlingshotSam.entities.GameObject;
+import com.virginia.cs.SlingshotSam.entities.MovingPlatform;
 import com.virginia.cs.SlingshotSam.entities.Sam;
+import com.virginia.cs.SlingshotSam.entities.TextScreen;
+import com.virginia.cs.SlingshotSam.handlers.GameStateManager;
 import com.virginia.cs.SlingshotSam.main.TouchController;
+
 import java.util.ArrayList;
 
 public class Play extends GameState {
@@ -132,7 +135,7 @@ public class Play extends GameState {
                     Play.this.sam.respawn_y = (float) (Play.this.sam.getPosition().y + .1);
                     Play.this.sam.respawn = true;
                     sam.setShots(0);
-                    Trolled=true;
+                    Trolled = true;
                 }
                 if (fb.getUserData().equals("foot") && fa.getUserData().equals("object1")) {
                     sam.setShots(sam.Shots + 1);
@@ -170,13 +173,13 @@ public class Play extends GameState {
         objects.add(new GameObject("building1.png",3.53f,.34f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
         objects.add(new GameObject("building1.png",4.1f,.07f,.1f,.05f,1.0f,BodyType.StaticBody, "ground2", this.world, .05f,-60.0f,-490.0f));
         objects.add(new GameObject("94-the-golden-snitch.png", 1.67f, 1.0f, .1f, .05f, 1.0f, BodyType.StaticBody, "ground3", this.world, .05f,-.0f,-.0f));
+        //objects.add(new TextScreen("Text Screen.png", ))
 
         //posx posy width height dx dy maxdist world
         mplat = new MovingPlatform(2, 0, .1f, .1f, 0f, .5f, 2f, "ground", this.world);
         mplat.pos.set(1F,1F);
 
         objects.add(new GameObject("bomb.png",4.1f,.27f,.1f,.1f,1.0f,BodyType.StaticBody, "bomb", this.world, 1.5f,-30f,-15f));
-
 
         sam = new Sam(world);
 
