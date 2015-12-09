@@ -257,6 +257,7 @@ public class Play2 extends GameState {
 
     public void update(float dt) {
         this.world.step(dt, 6, 2);
+        shapeRenderer.setProjectionMatrix(this.b2dCam.combined);
         mplat.update(dt);
         mplat2.update(dt);
         mplat3.update(dt);
