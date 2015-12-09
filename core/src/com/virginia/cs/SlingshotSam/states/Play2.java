@@ -124,7 +124,7 @@ public class Play2 extends GameState {
         this.hello = createFont(generator, 32);
         generator.dispose();
 
-        this.hello.setColor(Color.GREEN);
+        this.hello.setColor(Color.PURPLE);
         this.world.setContactListener(new ContactListener() {
             public void beginContact(Contact c) {
                 Fixture fa = c.getFixtureA();
