@@ -190,14 +190,6 @@ public class Play2 extends GameState {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(.1F, 0.1F);
 
-        FixtureDef fdef = new FixtureDef();
-
-        fdef.shape = shape;
-        fdef.friction = 1.0f;
-        fdef.filter.categoryBits = 2;
-        fdef.filter.maskBits = 12;
-        body.createFixture(fdef).setUserData("bomb");
-
         /*bdef.position.set(1.53F, 2.2F);
         body.applyForceToCenter(10, 10, true);
         body = this.world.createBody(bdef);
@@ -219,7 +211,7 @@ public class Play2 extends GameState {
         this.b2dCam = new OrthographicCamera();
         this.b2dCam.setToOrtho(false, 4.2F, 2.4F);
 
-        objects.add(new GameObject("bomb.png", 4.1f, .27f, .1f, .1f, 1.0f, BodyType.StaticBody, "bomb", this.world, 1.5f, -30f, -15f));
+        objects.add(new GameObject("goal.png", 4.1f, .27f, .1f, .1f, 1.0f, BodyType.StaticBody, "bomb", this.world, 1.5f, -30f, -15f));
 
 
 
@@ -300,7 +292,11 @@ public class Play2 extends GameState {
 
             }
             m.stop();
-            gsm.reset();
+            if(sam.won){
+                gsm.start3();
+            }else {
+                gsm.reset();
+            }
         }
         Gdx.gl.glClear(16384);
         Gdx.gl.glClearColor(135 / 255f, 206 / 255f, 235 / 255f, 1);
@@ -326,7 +322,6 @@ public class Play2 extends GameState {
             background.setPosition(this.b2dCam.project(new Vector3(0.0f, 0f, 0)).x, this.b2dCam.project(new Vector3(0f, 0f, 0)).y);
             background.scale(3);
             background.draw(this.sb);
-            bomb_sprite.draw(this.sb);
             //hello.draw(this.sb, "Hello World!", 200,400);
 
             if (timeOut) {
