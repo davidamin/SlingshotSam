@@ -40,6 +40,7 @@ public class MovingPlatform extends GameObject{
 
 
 	public MovingPlatform(float x, float y, float width, float height, float dx, float dy, float maxDist, World world){
+			super();
 			w = world;
 			ypos = y;
 			xpos = x;
@@ -61,7 +62,6 @@ public class MovingPlatform extends GameObject{
 			s.scale(.45f);
 			y_off = -30;
 			x_off = -30;
-
 
 		}
 

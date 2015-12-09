@@ -5,9 +5,17 @@ package com.virginia.cs.SlingshotSam.states;
  */
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -22,26 +30,15 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.virginia.cs.SlingshotSam.entities.GameObject;
 import com.virginia.cs.SlingshotSam.entities.MovingPlatform;
-import com.virginia.cs.SlingshotSam.handlers.GameStateManager;
-import com.virginia.cs.SlingshotSam.handlers.MyContactListener;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.utils.TimeUtils;
-import com.badlogic.gdx.utils.Timer;
-import com.virginia.cs.SlingshotSam.main.Game;
-import com.virginia.cs.SlingshotSam.main.TouchController;
 import com.virginia.cs.SlingshotSam.entities.Sam;
+import com.virginia.cs.SlingshotSam.handlers.GameStateManager;
+import com.virginia.cs.SlingshotSam.main.TouchController;
+
 import java.util.ArrayList;
 
 public class Play2 extends GameState {
@@ -143,6 +140,12 @@ public class Play2 extends GameState {
                     Play2.this.sam.gameOver = true;
                     Play2.this.sam.won = true;
                 }
+                if (fb.getUserData().equals("foot") && fa.getUserData().equals("teleport")) {
+                    Play2.this.sam.respawn_x = (float) (Play2.this.sam.getPosition().x + 1f);
+                    Play2.this.sam.respawn_y = (float) (Play2.this.sam.getPosition().y + 1f);
+                    Play2.this.sam.respawn = true;
+                }
+
             }
 
             public void endContact(Contact c) {
@@ -170,6 +173,12 @@ public class Play2 extends GameState {
         objects.add(mplat2);
         mplat3= new MovingPlatform(4.2f, 1f, .1f, .1f, 1f, 1f, 1.5f, this.world);
         objects.add(mplat3);
+//        mplat = new MovingPlatform(1, 1f, .2f, .1f, .5f, 0f, 2f, "teleport", this.world);
+//
+//        mplat2= new MovingPlatform(2.75f, 1f, .1f, .1f, 0f, .75f, 1.5f, "ground", this.world);
+//
+//        mplat3= new MovingPlatform(4.2f, 1f, .2f, .1f, 1f, 1f, 1f, "teleport", this.world);
+//
         //End platform code
 
         BodyDef bdef = new BodyDef();
@@ -261,6 +270,7 @@ public class Play2 extends GameState {
         mplat2.update(dt, cam);
         mplat3.update(dt, cam);
 
+        shapeRenderer.setProjectionMatrix(this.b2dCam.combined);
 
         sam_sprite.setPosition(this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).x, this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).y);
         if(sam.body.getPosition().y < 0){
@@ -268,6 +278,9 @@ public class Play2 extends GameState {
         }
 
         if(sam.respawn){
+            if(sam.Shots < 1){
+                sam.gameOver= true;
+            }
             sam.isFlying = false;
             sam.body.setTransform(sam.respawn_x, sam.respawn_y, 0);
             sam.body.setAwake(false);
