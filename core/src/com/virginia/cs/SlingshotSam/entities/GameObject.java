@@ -24,6 +24,8 @@ public class GameObject {
     private float x_off;
     private float y_off;
 
+    public GameObject(){}
+
     public GameObject(String textureFile, float x, float y, float length, float height, float fric, BodyDef.BodyType type, String userdata, World w, float scale, float x_offset, float y_offset){
         bDef = new BodyDef();
         bDef.position.set(x, y);
@@ -55,4 +57,6 @@ public class GameObject {
     public void render(SpriteBatch sb){
         s.draw(sb);
     }
+
 }
+

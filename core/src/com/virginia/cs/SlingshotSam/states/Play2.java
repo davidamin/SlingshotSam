@@ -165,11 +165,11 @@ public class Play2 extends GameState {
 
         //~~~~~~~~~~~~~~~~~~~~~    x  y   w     h   dx   dy max  world
         mplat = new MovingPlatform(1, 1f, .1f, .1f, .5f, 0f, 2f, this.world);
-
+        objects.add(mplat);
         mplat2= new MovingPlatform(2.75f, 1f, .1f, .1f, 0f, .75f, 1.5f, this.world);
-
-        mplat3= new MovingPlatform(4.2f, 1f, .1f, .1f, 1f, 1f, 1f, this.world);
-
+        objects.add(mplat2);
+        mplat3= new MovingPlatform(4.2f, 1f, .1f, .1f, 1f, 1f, 1.5f, this.world);
+        objects.add(mplat3);
         //End platform code
 
         BodyDef bdef = new BodyDef();
@@ -257,9 +257,10 @@ public class Play2 extends GameState {
 
     public void update(float dt) {
         this.world.step(dt, 6, 2);
-        mplat.update(dt);
-        mplat2.update(dt);
-        mplat3.update(dt);
+        mplat.update(dt, cam);
+        mplat2.update(dt, cam);
+        mplat3.update(dt, cam);
+
 
         sam_sprite.setPosition(this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).x, this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).y);
         if(sam.body.getPosition().y < 0){
@@ -324,6 +325,9 @@ public class Play2 extends GameState {
 
             hello.draw(this.sb, screenText, 80, height - height / 10);
 
+            mplat2.render(sb);
+            mplat3.render(sb);
+
             sam_sprite.draw(this.sb);
             for(GameObject obj: objects){
                 obj.render(this.sb);
@@ -331,7 +335,7 @@ public class Play2 extends GameState {
             this.sb.end();
             this.b2dr.render(this.world, this.b2dCam.combined);
             this.sam.drawTouchIndicator(shapeRenderer);
-        }else{
+        }else {
             Gdx.gl.glClear(16384);
             this.sb.begin();
             if(this.sam.won){
