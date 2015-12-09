@@ -135,7 +135,17 @@ public class Play2 extends GameState {
                     Play2.this.sam.respawn_y = (float) (Play2.this.sam.getPosition().y + .1);
                     Play2.this.sam.respawn = true;
                 }
+                if (fa.getUserData().equals("foot") && fb.getUserData().equals("ground")) {
+                    Play2.this.sam.respawn_x = (float) (Play2.this.sam.getPosition().x);
+                    Play2.this.sam.respawn_y = (float) (Play2.this.sam.getPosition().y + .1);
+                    Play2.this.sam.respawn = true;
+                }
                 if (fb.getUserData().equals("foot") && fa.getUserData().equals("bomb")) {
+                    //Win the game
+                    Play2.this.sam.gameOver = true;
+                    Play2.this.sam.won = true;
+                }
+                if (fb.getUserData().equals("bomb") && fa.getUserData().equals("foot")) {
                     //Win the game
                     Play2.this.sam.gameOver = true;
                     Play2.this.sam.won = true;
@@ -206,12 +216,12 @@ public class Play2 extends GameState {
         // touchController.registerBoundedTouchListener(testCircle);
 
         // Create Sam
-        sam = new Sam(world);
+        sam = new Sam(this.world);
 
         this.b2dCam = new OrthographicCamera();
         this.b2dCam.setToOrtho(false, 4.2F, 2.4F);
 
-        objects.add(new GameObject("goal.png", 4.1f, .27f, .1f, .1f, 1.0f, BodyType.StaticBody, "bomb", this.world, 1.5f, -30f, -15f));
+        objects.add(new GameObject("goal.png",4.1f,.27f,.1f,.1f,1.0f,BodyType.StaticBody, "bomb", this.world, .2f,-30f,-15f));
 
 
 

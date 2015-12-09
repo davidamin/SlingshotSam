@@ -195,6 +195,11 @@ public class Play3 extends GameState {
         objects.add(new GameObject("building1.png",1.5f,1.5f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
         objects.add(new GameObject("building1.png",1.8f,.3f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
         objects.add(new GameObject("building1.png",5.0f,.3f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
+        objects.add(new GameObject("building1.png",5.8f,.7f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
+
+
+        objects.add(new GameObject("goal.png",4.1f,.27f,.1f,.1f,1.0f,BodyType.StaticBody, "bomb", this.world, 1.5f,-30f,-15f));
+
 
         //~~~~~~~~~~~~~~~~~~~~~    x      y    w    h    dx  dy  max  world
         mplat = new MovingPlatform(1.7f, 1f, .1f, .1f, .5f,  0f,  .4f, this.world);
@@ -216,11 +221,6 @@ public class Play3 extends GameState {
 
         FixtureDef fdef = new FixtureDef();
 
-        fdef.shape = shape;
-        fdef.friction = 1.0f;
-        fdef.filter.categoryBits = 2;
-        fdef.filter.maskBits = 12;
-        body.createFixture(fdef).setUserData("bomb");
 
         /*bdef.position.set(1.53F, 2.2F);
         body.applyForceToCenter(10, 10, true);
@@ -232,6 +232,7 @@ public class Play3 extends GameState {
         fdef.filter.maskBits = 2;
         body.createFixture(fdef).setUserData("ball");*/
 
+
         // Create test circle
         //body = this.world.createBody(bdef);
         // testCircle = new Circle(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 50, this.world);
@@ -242,11 +243,6 @@ public class Play3 extends GameState {
 
         this.b2dCam = new OrthographicCamera();
         this.b2dCam.setToOrtho(false, 4.2F, 2.4F);
-
-        bomb_texture = new Texture(Gdx.files.internal("bomb.png"));
-        bomb_sprite = new Sprite(bomb_texture);
-        bomb_sprite.scale(2);
-        bomb_sprite.setPosition(this.b2dCam.project(new Vector3(4.0f, .21f, 0)).x, this.b2dCam.project(new Vector3(4.0f, .21f, 0)).y);
 
 
         // Set Input Processor for app to use TouchController
@@ -339,7 +335,6 @@ public class Play3 extends GameState {
             background.setPosition(this.b2dCam.project(new Vector3(0.0f, 0f, 0)).x, this.b2dCam.project(new Vector3(0f, 0f, 0)).y);
             background.scale(3);
             background.draw(this.sb);
-            bomb_sprite.draw(this.sb);
             //hello.draw(this.sb, "Hello World!", 200,400);
 
             if (timeOut) {

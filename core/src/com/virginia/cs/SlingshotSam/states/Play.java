@@ -197,7 +197,6 @@ public class Play extends GameState {
         objects.add(new GameObject("building1.png", 2.97f, .57f, .1f, .05f, 1.0f, BodyType.StaticBody, "ground2", this.world, .05f, -60.0f,-490.0f));
         objects.add(new GameObject("building1.png",3.53f,.34f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
         objects.add(new GameObject("building1.png",4.1f,.07f,.1f,.05f,1.0f,BodyType.StaticBody, "ground2", this.world, .05f,-60.0f,-490.0f));
-        objects.add(new GameObject("94-the-golden-snitch.png", 1.67f, 1.0f, .1f, .05f, 1.0f, BodyType.StaticBody, "ground3", this.world, .05f,-.0f,-.0f));
         //objects.add(new TextScreen("Text Screen.png", ))
 
         //posx posy width height dx dy maxdist world
@@ -205,7 +204,7 @@ public class Play extends GameState {
 //        mplat.pos.set(1F,1F);
 
 
-        objects.add(new GameObject("bomb.png",4.1f,.27f,.1f,.1f,1.0f,BodyType.StaticBody, "bomb", this.world, 1.5f,-30f,-15f));
+        objects.add(new GameObject("goal.png",4.1f,.27f,.1f,.1f,1.0f,BodyType.StaticBody, "bomb", this.world, .2f,-30f,-15f));
 
         sam = new Sam(world);
 
