@@ -211,7 +211,7 @@ public class Play2 extends GameState {
         this.b2dCam = new OrthographicCamera();
         this.b2dCam.setToOrtho(false, 4.2F, 2.4F);
 
-        objects.add(new GameObject("goal.png", 4.1f, .27f, .1f, .1f, 1.0f, BodyType.StaticBody, "bomb", this.world, 1.5f, -30f, -15f));
+        objects.add(new GameObject("goal.png",4.1f,.27f,.1f,.1f,1.0f,BodyType.StaticBody, "bomb", this.world, 1.5f,-30f,-15f));
 
 
 
