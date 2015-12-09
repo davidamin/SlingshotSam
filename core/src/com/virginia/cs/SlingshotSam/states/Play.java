@@ -204,7 +204,7 @@ public class Play extends GameState {
 //        mplat.pos.set(1F,1F);
 
 
-        objects.add(new GameObject("goal.png",4.1f,.27f,.1f,.1f,1.0f,BodyType.StaticBody, "bomb", this.world, 1.5f,-30f,-15f));
+        objects.add(new GameObject("goal.png",4.1f,.27f,.1f,.1f,1.0f,BodyType.StaticBody, "bomb", this.world, .2f,-30f,-15f));
 
         sam = new Sam(world);
 
