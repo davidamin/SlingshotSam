@@ -212,10 +212,6 @@ public class Play extends GameState {
         this.b2dCam = new OrthographicCamera();
         this.b2dCam.setToOrtho(false, 4.2F, 2.4F);
 
-
-        slingshotSprite.setPosition(this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).x + 2000, this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).y - 295);
-
-
         // Set Input Processor for app to use TouchController
         // as a source of keyboard input (in case) and as a gesture
         // detector
@@ -231,6 +227,7 @@ public class Play extends GameState {
         // Set up ShapeRenderer to display test circle
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(this.b2dCam.combined);
+
     }
 
     /*normal platform = ground
@@ -373,9 +370,9 @@ public class Play extends GameState {
             background.setPosition(this.b2dCam.project(new Vector3(0.0f, 0f, 0)).x, this.b2dCam.project(new Vector3(0f, 0f, 0)).y);
             background.scale(3);
             background.draw(this.sb);
-//            if (sam.firstShot) {
-//                slingshotSprite.setPosition(this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).x, this.b2dCam.project(new Vector3(sam.body.getPosition().x - 400, sam.body.getPosition().y, 0)).y - 295);
-//            }
+          if (sam.firstShot) {
+               slingshotSprite.setPosition(this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).x-75, this.b2dCam.project(new Vector3(sam.body.getPosition().x - 400, sam.body.getPosition().y, 0)).y - 295);
+            }
             slingshotSprite.draw(this.sb);
             //bomb_sprite.draw(this.sb);
             //hello.draw(this.sb, "Hello World!", 200,400);
