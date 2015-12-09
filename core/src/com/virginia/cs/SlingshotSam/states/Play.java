@@ -206,7 +206,7 @@ public class Play extends GameState {
         this.b2dCam.setToOrtho(false, 4.2F, 2.4F);
 
 
-        slingshotSprite.setPosition(this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).x - 500, this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).y - 295);
+        slingshotSprite.setPosition(this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).x + 2000, this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).y - 295);
 
 
         // Set Input Processor for app to use TouchController
