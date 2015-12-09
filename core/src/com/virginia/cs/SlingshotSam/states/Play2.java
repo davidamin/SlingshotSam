@@ -301,7 +301,11 @@ public class Play2 extends GameState {
 
             }
             m.stop();
-            gsm.reset();
+            if(sam.won){
+                gsm.start3();
+            }else {
+                gsm.reset();
+            }
         }
         Gdx.gl.glClear(16384);
         Gdx.gl.glClearColor(135 / 255f, 206 / 255f, 235 / 255f, 1);
