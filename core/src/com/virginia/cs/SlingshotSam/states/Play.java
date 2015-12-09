@@ -172,6 +172,9 @@ public class Play extends GameState {
         registeraddonPlatform(2.97f, 0.57f);
         registeraddonPlatform(3.53f, 0.34f);
         registeraddonPlatform(4.1f, 0.07f);
+        registerObstacle(.4f, 1.5f);
+        registerObstacle(.5f, 1.8f);
+
 
         //End platform code
 
@@ -254,6 +257,23 @@ public class Play extends GameState {
 
     }
 
+    public void registerObstacle(float x, float y){
+        BodyDef bdef=new BodyDef();
+        bdef.position.set(x,y);
+        bdef.type=BodyType.StaticBody;
+
+        Body body = this.world.createBody(bdef);
+
+        CircleShape shape=new CircleShape();
+        shape.setRadius(.1F);
+
+        FixtureDef fdef=new FixtureDef();
+        fdef.shape=shape;
+        fdef.friction=0.5f;
+        fdef.filter.categoryBits = 2;
+        fdef.filter.maskBits = 12;
+        body.createFixture(fdef).setUserData("obstacle");
+    }
     public void registeraddonPlatform(float x, float y){
         BodyDef bdef = new BodyDef();
         bdef.position.set(x, y);
@@ -312,7 +332,6 @@ public class Play extends GameState {
         fdef.filter.categoryBits = 3;
         fdef.filter.maskBits = 13;
         body.createFixture(fdef).setUserData("object1");
-
     }
 
     public void handleInput() {
