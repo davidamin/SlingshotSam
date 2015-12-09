@@ -187,7 +187,7 @@ public class Play extends GameState {
         //objects.add(new TextScreen("Text Screen.png", ))
 
         //posx posy width height dx dy maxdist world
-        mplat.pos.set(1F,1F);
+        //mplat.pos.set(1F,1F);
 
         objects.add(new GameObject("bomb.png",4.1f,.27f,.1f,.1f,1.0f,BodyType.StaticBody, "bomb", this.world, 1.5f,-30f,-15f));
 
@@ -296,7 +296,7 @@ public class Play extends GameState {
 
     public void update(float dt) {
         this.world.step(dt, 6, 2);
-        mplat.update(dt, cam);
+        //mplat.update(dt, cam);
         shapeRenderer.setProjectionMatrix(this.b2dCam.combined);
         sam_sprite.setPosition(this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).x - 25f, this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).y -25f);
         if(sam.body.getPosition().y < 0){

@@ -53,6 +53,11 @@ public class GameStateManager {
         this.pushState(PLAY2);
     }
 
+    public void start3(){
+        this.popState();
+        this.pushState(PLAY3);
+    }
+
     public void render() {
         ((GameState)this.gameStates.peek()).render();
     }

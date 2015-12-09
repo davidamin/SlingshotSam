@@ -64,6 +64,7 @@ public class Menu extends GameState {
     private Stage stage;
     private TextButton button;
     private TextButton button2;
+    private TextButton button3;
     private TextButton.TextButtonStyle textButtonStyle;
     private Skin skin;
     private TextureAtlas buttonAtlas;
@@ -101,10 +102,13 @@ public class Menu extends GameState {
 
         button = new TextButton("Level 1!", textButtonStyle);
         button2 = new TextButton("Level 2!", textButtonStyle);
-        button.setPosition(0.0f,500.0f);
+        button3 = new TextButton("Level 3!", textButtonStyle);
+        button.setPosition(0.0f,1000.0f);
+        button2.setPosition(0.0f,500.0f);
 
         stage.addActor(button);
         stage.addActor(button2);
+        stage.addActor(button3);
 
         button.addListener(new ChangeListener() {
             @Override
@@ -116,6 +120,12 @@ public class Menu extends GameState {
             @Override
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                 Menu.this.gsm.start2();
+            }
+        });
+        button3.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeListener.ChangeEvent event, Actor actor) {
+                Menu.this.gsm.start3();
             }
         });
 
