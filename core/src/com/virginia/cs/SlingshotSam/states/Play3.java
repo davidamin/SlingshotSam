@@ -265,6 +265,8 @@ public class Play3 extends GameState {
         // Set up ShapeRenderer to display test circle
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(this.b2dCam.combined);
+        sam.setShots(30);
+        sam.setLives(10);
     }
 
 
@@ -286,7 +288,9 @@ public class Play3 extends GameState {
         }
 
         if(sam.respawn){
-
+            if(sam.Shots < 1){
+                sam.gameOver= true;
+            }
 
             sam.isFlying = false;
             sam.body.setTransform(sam.respawn_x, sam.respawn_y, 0);
@@ -362,6 +366,7 @@ public class Play3 extends GameState {
             this.sam.drawTouchIndicator(shapeRenderer);
         }else{
             Gdx.gl.glClear(16384);
+            Gdx.gl.glClearColor(0 / 255f, 0 / 255f, 0 / 255f, 1);
             this.sb.begin();
             if(this.sam.won){
                 hello.draw(this.sb, "You win!", 80, height / 2);

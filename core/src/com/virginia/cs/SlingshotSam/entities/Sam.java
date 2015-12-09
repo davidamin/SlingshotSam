@@ -26,6 +26,9 @@ public class Sam extends B2DSprite implements TouchController.BoundedTouchListen
     public void setShots(int shots) {
         Shots = shots;
     }
+    public void setLives(int lives){
+        Lives = lives;
+    }
 
 
     public int Lives = 20;

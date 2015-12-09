@@ -240,6 +240,9 @@ public class Play2 extends GameState {
         // Set up ShapeRenderer to display test circle
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(this.b2dCam.combined);
+
+        sam.setShots(20);
+        sam.setLives(7);
     }
 
     /*public void registerPlatform(float x, float y){
@@ -309,7 +312,7 @@ public class Play2 extends GameState {
             }
         }
         Gdx.gl.glClear(16384);
-        Gdx.gl.glClearColor(135 / 255f, 206 / 255f, 235 / 255f, 1);
+        Gdx.gl.glClearColor(255 / 255f, 204 / 255f, 255 / 255f, 1);
         //Gdx.gl20.glClear(16384);
         samCamPosX = sam.getPosition().x+1;
         if(samCamPosX < 1.9F) {
@@ -354,6 +357,7 @@ public class Play2 extends GameState {
             this.sam.drawTouchIndicator(shapeRenderer);
         }else {
             Gdx.gl.glClear(16384);
+            Gdx.gl.glClearColor(0 / 255f, 0 / 255f, 0 / 255f, 1);
             this.sb.begin();
             if(this.sam.won){
                 hello.draw(this.sb, "You win!", 80, height / 2);

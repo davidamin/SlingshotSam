@@ -68,6 +68,8 @@ public class Menu extends GameState {
     private TextButton.TextButtonStyle textButtonStyle;
     private Skin skin;
     private TextureAtlas buttonAtlas;
+    private Texture menu_texture;
+    private Sprite menu_sprite;
 
     private ShapeRenderer shapeRenderer;
     private TouchController touchController;
@@ -132,6 +134,9 @@ public class Menu extends GameState {
         /*Music m = Gdx.audio.newMusic(Gdx.files.internal("samSong2.ogg"));
         m.setLooping(true);
         m.play();*/
+        menu_texture = new Texture(Gdx.files.internal("logo.png"));
+        menu_sprite = new Sprite(menu_texture);
+        menu_sprite.scale((float) 0.0001);
 
 
         // Set up camera
@@ -159,6 +164,7 @@ public class Menu extends GameState {
             }
         });
         this.b2dr = new Box2DDebugRenderer();
+        this.menu_sprite.scale(2.0f);
 
         this.b2dCam = new OrthographicCamera();
         this.b2dCam.setToOrtho(false, 4.2F, 2.4F);
@@ -194,6 +200,10 @@ public class Menu extends GameState {
         //Gdx.gl20.glClear(16384);
         stage.draw();
         this.b2dCam.update();
+        this.menu_sprite.setPosition(1000f,500f);
+        this.sb.begin();
+            this.menu_sprite.draw(this.sb);
+        this.sb.end();
     }
 
     public void dispose() {
