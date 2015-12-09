@@ -47,6 +47,12 @@ public class Play extends GameState {
     private Texture bg_texture;
     private Texture sam_texture;
     private Sprite sam_sprite;
+
+    private Texture bomb_texture;
+    private Sprite bomb_sprite;
+    private Texture slingshotTexture;
+    private Sprite slingshotSprite;
+
     public Sam sam;
     public Boolean ended = false;
     public ArrayList<GameObject> objects = new ArrayList<GameObject>();
@@ -100,7 +106,9 @@ public class Play extends GameState {
         sam_texture = new Texture(Gdx.files.internal("sam.png"));
         sam_sprite = new Sprite(sam_texture);
         sam_sprite.scale(2);
-
+        slingshotTexture = new Texture(Gdx.files.internal("Slingshot.png"));
+        slingshotSprite = new Sprite(slingshotTexture);
+        slingshotSprite.scale((float) 0.0001);
 
         // Set up camera
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -298,6 +306,7 @@ public class Play extends GameState {
             sam.body.setTransform(sam.respawn_x, sam.respawn_y, 0);
             sam.body.setAwake(false);
             sam.respawn = false;
+            slingshotSprite.setPosition(this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).x - 200, this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).y);
         }
 
         for(GameObject obj: objects){
@@ -337,6 +346,10 @@ public class Play extends GameState {
             background.setPosition(this.b2dCam.project(new Vector3(0.0f, 0f, 0)).x, this.b2dCam.project(new Vector3(0f, 0f, 0)).y);
             background.scale(3);
             background.draw(this.sb);
+
+            slingshotSprite.draw(this.sb);
+            //bomb_sprite.draw(this.sb);
+            //hello.draw(this.sb, "Hello World!", 200,400);
 
             if (timeOut) {
                 sam.gameOver = true;
