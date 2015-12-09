@@ -18,60 +18,41 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
-import com.virginia.cs.SlingshotSam.entities.GameObject;
-import com.virginia.cs.SlingshotSam.entities.MovingPlatform;
-import com.virginia.cs.SlingshotSam.handlers.GameStateManager;
-import com.virginia.cs.SlingshotSam.handlers.MyContactListener;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import com.virginia.cs.SlingshotSam.entities.GameObject;
+import com.virginia.cs.SlingshotSam.entities.MovingPlatform;
 import com.virginia.cs.SlingshotSam.entities.Sam;
+import com.virginia.cs.SlingshotSam.entities.TextScreen;
 import com.virginia.cs.SlingshotSam.handlers.GameStateManager;
 import com.virginia.cs.SlingshotSam.main.TouchController;
+
 import java.util.ArrayList;
 
 public class Play extends GameState {
     private World world = new World(new Vector2(0.0F, -2.81F), true);
-    private Box2DDebugRenderer b2dr;
     public OrthographicCamera b2dCam;
-    private Viewport viewport;
     private OrthographicCamera camera;
     private SpriteBatch sb;
     private BitmapFont hello;
     private Sprite background;
-    private Sprite background2;
     private Texture bg_texture;
-    private Texture bg_texture2;
     private Texture sam_texture;
     private Sprite sam_sprite;
+
     private Texture bomb_texture;
     private Sprite bomb_sprite;
     private Texture slingshotTexture;
     private Sprite slingshotSprite;
+
     public Sam sam;
     public Boolean ended = false;
     public ArrayList<GameObject> objects = new ArrayList<GameObject>();
@@ -89,8 +70,8 @@ public class Play extends GameState {
     private long levelTime;
     private long maxTime;
     private Timer time;
-    private Timer resetTimer;
     private Boolean timeOut = false;
+    private Boolean Trolled = false;
 
     private BitmapFont createFont(FreeTypeFontGenerator generator, float dp)
     {
@@ -101,7 +82,7 @@ public class Play extends GameState {
         return generator.generateFont(parameter);
     }
 
-    public Play(GameStateManager gsm) {
+    public Play (GameStateManager gsm) {
         super(gsm);
 
         time = new Timer();
@@ -122,8 +103,6 @@ public class Play extends GameState {
 
         bg_texture = new Texture(Gdx.files.internal("demo_level_scale.png"));
         background = new Sprite(bg_texture);
-       // bg_texture2 = new Texture(Gdx.files.internal("sky.png"));
-        //background2 = new Sprite(bg_texture2);
         sam_texture = new Texture(Gdx.files.internal("sam.png"));
         sam_sprite = new Sprite(sam_texture);
         sam_sprite.scale(2);
@@ -164,6 +143,7 @@ public class Play extends GameState {
                     Play.this.sam.respawn_y = (float) (Play.this.sam.getPosition().y + .1);
                     Play.this.sam.respawn = true;
                     sam.setShots(0);
+                    Trolled = true;
                 }
                 if (fb.getUserData().equals("foot") && fa.getUserData().equals("object1")) {
                     sam.setShots(sam.Shots + 1);
@@ -193,62 +173,26 @@ public class Play extends GameState {
         this.b2dr = new Box2DDebugRenderer();
 
         objects.add(new GameObject("building1.png",.3f,.77f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
-        objects.add(new GameObject("building1.png",1.04f,.57f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
+        objects.add(new GameObject("building1.png",1.04f,.57f,.1f,.05f,1.0f,BodyType.StaticBody, "ground2", this.world, .05f,-60.0f,-490.0f));
         objects.add(new GameObject("building1.png",1.67f,.3f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
-        objects.add(new GameObject("building1.png",2.35f,.46f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
+        objects.add(new GameObject("building1.png",2.35f,.46f,.1f,.05f,1.0f,BodyType.StaticBody, "ground2", this.world, .05f,-60.0f,-490.0f));
         objects.add(new GameObject("building1.png",2.55f,.31f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
-        objects.add(new GameObject("building1.png",2.97f,.57f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
+        objects.add(new GameObject("building1.png",2.97f,.57f,.1f,.05f,1.0f,BodyType.StaticBody, "ground2", this.world, .05f,-60.0f,-490.0f));
         objects.add(new GameObject("building1.png",3.53f,.34f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
-        objects.add(new GameObject("building1.png",4.1f,.07f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
+        objects.add(new GameObject("building1.png",4.1f,.07f,.1f,.05f,1.0f,BodyType.StaticBody, "ground2", this.world, .05f,-60.0f,-490.0f));
+        objects.add(new GameObject("94-the-golden-snitch.png", 1.67f, 1.0f, .1f, .05f, 1.0f, BodyType.StaticBody, "ground3", this.world, .05f,-.0f,-.0f));
+        //objects.add(new TextScreen("Text Screen.png", ))
 
         //posx posy width height dx dy maxdist world
-        mplat = new MovingPlatform(2, 0, .1f, .1f, 0f, .5f, 2f, this.world);
+        mplat = new MovingPlatform(2, 0, .1f, .1f, 0f, .5f, 2f, "ground", this.world);
         mplat.pos.set(1F,1F);
-        //End platform code
 
-        /*BodyDef bdef = new BodyDef();
-        bdef.position.set(4.1f, .11f);
-        bdef.type = BodyType.StaticBody;
-
-        Body body = this.world.createBody(bdef);
-
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(.1F, 0.1F);
-
-        FixtureDef fdef = new FixtureDef();
-
-        fdef.shape = shape;
-        fdef.friction = 1.0f;
-        fdef.filter.categoryBits = 2;
-        fdef.filter.maskBits = 12;
-        body.createFixture(fdef).setUserData("bomb");*/
         objects.add(new GameObject("bomb.png",4.1f,.27f,.1f,.1f,1.0f,BodyType.StaticBody, "bomb", this.world, 1.5f,-30f,-15f));
 
-        /*bdef.position.set(1.53F, 2.2F);
-        body.applyForceToCenter(10, 10, true);
-        body = this.world.createBody(bdef);
-        CircleShape cshape = new CircleShape();
-        cshape.setRadius(0.05F);
-        fdef.shape = cshape;
-        fdef.filter.categoryBits = 8;
-        fdef.filter.maskBits = 2;
-        body.createFixture(fdef).setUserData("ball");*/
-
-        // Create test circle
-        //body = this.world.createBody(bdef);
-        // testCircle = new Circle(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 50, this.world);
-        // touchController.registerBoundedTouchListener(testCircle);
-
-        // Create Sam
         sam = new Sam(world);
 
         this.b2dCam = new OrthographicCamera();
         this.b2dCam.setToOrtho(false, 4.2F, 2.4F);
-        /*bomb_texture = new Texture(Gdx.files.internal("bomb.png"));
-        bomb_sprite = new Sprite(bomb_texture);
-        bomb_sprite.scale(2);
-        bomb_sprite.setPosition(this.b2dCam.project(new Vector3(4.0f, .21f, 0)).x, this.b2dCam.project(new Vector3(4.0f, .21f, 0)).y);*/
-
 
         // Set Input Processor for app to use TouchController
         // as a source of keyboard input (in case) and as a gesture
@@ -267,25 +211,7 @@ public class Play extends GameState {
         shapeRenderer.setProjectionMatrix(this.b2dCam.combined);
     }
 
-    /*public void registerPlatform(float x, float y){
-        BodyDef bdef = new BodyDef();
-        bdef.position.set(x, y);
-        bdef.type = BodyType.StaticBody;
-
-        Body body = this.world.createBody(bdef);
-
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(.1F, 0.05F);
-
-        FixtureDef fdef = new FixtureDef();
-        fdef.shape = shape;
-        fdef.friction = 1.0f;
-        fdef.filter.categoryBits = 2;
-        fdef.filter.maskBits = 12;
-        body.createFixture(fdef).setUserData("ground1");
-
-    }
-
+    /*normal platform = ground
     public void registerObstacle(float x, float y){
         BodyDef bdef=new BodyDef();
         bdef.position.set(x,y);
@@ -420,12 +346,10 @@ public class Play extends GameState {
 
             String screenText = "Lives: " + String.valueOf(sam.Lives) + "   Shots: " + String.valueOf(sam.Shots);
             this.sb.begin();
-            //background2.scale(3);
-            //background2.setPosition(this.b2dCam.project(new Vector3(0.0f, 0f, 0)).x, this.b2dCam.project(new Vector3(0f, 0f, 0)).y);
-            //background2.draw(this.sb);
             background.setPosition(this.b2dCam.project(new Vector3(0.0f, 0f, 0)).x, this.b2dCam.project(new Vector3(0f, 0f, 0)).y);
             background.scale(3);
             background.draw(this.sb);
+
             slingshotSprite.draw(this.sb);
             //bomb_sprite.draw(this.sb);
             //hello.draw(this.sb, "Hello World!", 200,400);
@@ -436,6 +360,11 @@ public class Play extends GameState {
                 hello.draw(this.sb, String.format("Time Remaining: %.2f", printable), 80, height - height / 5);
             }
 
+            if(Trolled){
+                this.hello.setColor(Color.RED);
+                hello.draw(this.sb, String.format("HAHAHAHAHAHAHA", printable), 150, height - height / 5);
+                this.hello.setColor(Color.GREEN);
+            }
             hello.draw(this.sb, screenText, 80, height - height / 10);
 
             sam_sprite.draw(this.sb);
@@ -443,7 +372,7 @@ public class Play extends GameState {
                 obj.render(this.sb);
             }
             this.sb.end();
-            this.b2dr.render(this.world, this.b2dCam.combined);
+            //this.b2dr.render(this.world, this.b2dCam.combined);
             this.sam.drawTouchIndicator(shapeRenderer);
         }else{
             Gdx.gl.glClear(16384);

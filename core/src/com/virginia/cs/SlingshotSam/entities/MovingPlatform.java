@@ -1,6 +1,5 @@
 package com.virginia.cs.SlingshotSam.entities;
 
-import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -25,7 +24,7 @@ public class MovingPlatform extends B2DSprite{
 	public World w;
 	public FixtureDef fixtureDef;
 
-		public MovingPlatform(float x, float y, float width, float height, float dx, float dy, float maxDist, World world) {
+		public MovingPlatform(float x, float y, float width, float height, float dx, float dy, float maxDist, String userdata, World world) {
 			super();
 			w = world;
 			ypos = y;
@@ -42,7 +41,7 @@ public class MovingPlatform extends B2DSprite{
 			PolygonShape poly = new PolygonShape();
 			poly.setAsBox(width, height);
 			fixtureDef.shape = poly;
-			platform.createFixture(fixtureDef).setUserData("mplat");
+			platform.createFixture(fixtureDef).setUserData(userdata);
 
 		}
 

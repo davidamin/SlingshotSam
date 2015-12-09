@@ -9,9 +9,8 @@ import com.virginia.cs.SlingshotSam.main.Game;
 import com.virginia.cs.SlingshotSam.states.GameState;
 import com.virginia.cs.SlingshotSam.states.Menu;
 import com.virginia.cs.SlingshotSam.states.Play;
-
-
 import com.virginia.cs.SlingshotSam.states.Play2;
+
 
 import java.util.Stack;
 
