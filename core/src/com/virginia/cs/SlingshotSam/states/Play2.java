@@ -171,20 +171,20 @@ public class Play2 extends GameState {
 
         //platform code
 
-        objects.add(new GameObject("dino_plat2.png",.3f,.77f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .01f,-100f,-10f));
-        objects.add(new GameObject("building1.png",1.75f,.77f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
-        objects.add(new GameObject("building1.png",3f,1.5f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
-        objects.add(new GameObject("building1.png",5f,1f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
+        objects.add(new GameObject("dino_plat2.png",.3f,.77f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .01f,-70f,-10f));
+        objects.add(new GameObject("dino_plat2.png",1.75f,.77f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .01f,-70f,-10f));
+        objects.add(new GameObject("dino_plat2.png",3f,1.5f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .01f,-70f,-10f));
+        objects.add(new GameObject("dino_plat2.png",5f,1f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .01f,-70f,-10f));
 
         objects.add(new GameObject("goal.png",8f, 1f,.1f,.1f,1.0f,BodyType.StaticBody, "bomb", this.world, .05f,-50f,-50f));
 
 
-        //~~~~~~~~~~~~~~~~~~~~~    x  y   w     h   dx   dy max  world
-        mplat = new MovingPlatform(1, 1f, .1f, .1f, .5f, 0f, 2f, this.world);
+        //~~~~~~~~~~~~~~~~~~~~~       asset         x    y   w     h   dx   dy max xoff yoff   world
+        mplat = new MovingPlatform("pterosaur.png", 1,   1f, .2f, .1f, .5f, 0f, 2f, -100,-30,this.world);
         objects.add(mplat);
-        mplat2= new MovingPlatform(2.75f, 1f, .1f, .1f, 0f, .75f, 1.5f, this.world);
+        mplat2= new MovingPlatform("pterosaur.png",2.65f,1f, .2f, .1f, 0f, .75f, 1.5f,-100,-30, this.world);
         objects.add(mplat2);
-        mplat3= new MovingPlatform(4.2f, 1f, .1f, .1f, 1f, 1f, 1.5f, this.world);
+        mplat3= new MovingPlatform("pterosaur.png", 4.2f, 1f, .2f, .1f, 1f, 1f, 1.5f, -100,-30,this.world);
         objects.add(mplat3);
 //        mplat = new MovingPlatform(1, 1f, .2f, .1f, .5f, 0f, 2f, "teleport", this.world);
 //

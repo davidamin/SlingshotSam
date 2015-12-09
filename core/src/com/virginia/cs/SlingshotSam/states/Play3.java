@@ -203,14 +203,14 @@ public class Play3 extends GameState {
         objects.add(new GameObject("goal.png",5.8f,2.2f,.1f,.1f,1.0f,BodyType.StaticBody, "bomb", this.world, .05f,-50f,-50f));
 
 
-        //~~~~~~~~~~~~~~~~~~~~~    x      y    w    h    dx  dy  max  world
-        mplat = new MovingPlatform(1.7f, 1f, .1f, .1f, .5f,  0f,  .4f, this.world);
+        //~~~~~~~~~~~~~~~~~~~~~    asset        x      y    w    h    dx  dy  max xoff yoff  world
+        mplat = new MovingPlatform("box.png", 1.7f, 1f, .1f, .1f, .5f,  0f,  .4f, -30,-30,this.world);
         objects.add(mplat);
-        mplat2= new MovingPlatform(2.75f, .4f, .1f, .1f, 0f, .75f, .6f, this.world);
+        mplat2= new MovingPlatform("box.png", 2.75f, .4f, .1f, .1f, 0f, .75f, .6f, -30,-30,this.world);
         objects.add(mplat2);
-        mplat3= new MovingPlatform(5.6f,  1.8f, .1f, .02f, 2f, 0f,  1.2f, this.world);
+        mplat3= new MovingPlatform("box.png", 5.6f,  1.8f, .1f, .02f, 2f, 0f,  1.2f,-30,-30, this.world);
         objects.add(mplat3);
-        mplat4= new MovingPlatform(5.7f,  2f,   .1f, .02f, 1.5f, 0f,  1f, this.world);
+        mplat4= new MovingPlatform("box.png",5.7f,  2f,   .1f, .02f, 1.5f, 0f,  1f, -30,-30,this.world);
         objects.add(mplat4);
 
         //End platform code

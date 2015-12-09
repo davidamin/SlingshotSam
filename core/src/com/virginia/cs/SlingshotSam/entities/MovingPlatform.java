@@ -39,7 +39,7 @@ public class MovingPlatform extends GameObject{
 	private float y_off;
 
 
-	public MovingPlatform(float x, float y, float width, float height, float dx, float dy, float maxDist, World world){
+	public MovingPlatform(String asset, float x, float y, float width, float height, float dx, float dy, float maxDist, float xoff, float yoff, World world){
 			super();
 			w = world;
 			ypos = y;
@@ -57,11 +57,13 @@ public class MovingPlatform extends GameObject{
 			poly.setAsBox(width, height);
 			fixtureDef.shape = poly;
 			platform.createFixture(fixtureDef).setUserData("mplat");
-			t = new Texture(Gdx.files.internal("box.png"));
+			t = new Texture(Gdx.files.internal(asset));
 			s = new Sprite(t);
 			s.scale(.45f);
-			y_off = -30;
-			x_off = -30;
+			x_off = xoff;
+			y_off = yoff;
+//			y_off = -30;
+//			x_off = -30;
 
 		}
 
