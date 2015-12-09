@@ -57,6 +57,8 @@ public class Play extends GameState {
     public Boolean ended = false;
     public ArrayList<GameObject> objects = new ArrayList<GameObject>();
     public Music m;
+    public Music dieSound;
+    public Music bombSound;
 
     public int height = Gdx.graphics.getHeight();
     public int width = Gdx.graphics.getWidth();
@@ -100,6 +102,9 @@ public class Play extends GameState {
         m = Gdx.audio.newMusic(Gdx.files.internal("samSong1.ogg"));
         m.setLooping(true);
         m.play();
+
+        dieSound = Gdx.audio.newMusic(Gdx.files.internal("death.wav"));
+        bombSound = Gdx.audio.newMusic(Gdx.files.internal("bomb.wav"));
 
         levelTime  = TimeUtils.millis();
 
