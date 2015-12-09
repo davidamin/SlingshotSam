@@ -161,7 +161,7 @@ public class Play2 extends GameState {
 
         //platform code
 
-        objects.add(new GameObject("building1.png",.3f,.77f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
+        objects.add(new GameObject("dino_plat1.png",.3f,.77f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
         objects.add(new GameObject("building1.png",1.75f,.77f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
         objects.add(new GameObject("building1.png",3f,1.5f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
         objects.add(new GameObject("building1.png",5f,1f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
@@ -218,10 +218,9 @@ public class Play2 extends GameState {
 
         this.b2dCam = new OrthographicCamera();
         this.b2dCam.setToOrtho(false, 4.2F, 2.4F);
-        bomb_texture = new Texture(Gdx.files.internal("bomb.png"));
-        bomb_sprite = new Sprite(bomb_texture);
-        bomb_sprite.scale(2);
-        bomb_sprite.setPosition(this.b2dCam.project(new Vector3(4.0f, .21f, 0)).x, this.b2dCam.project(new Vector3(4.0f, .21f, 0)).y);
+
+        objects.add(new GameObject("bomb.png", 4.1f, .27f, .1f, .1f, 1.0f, BodyType.StaticBody, "bomb", this.world, 1.5f, -30f, -15f));
+
 
 
         // Set Input Processor for app to use TouchController
