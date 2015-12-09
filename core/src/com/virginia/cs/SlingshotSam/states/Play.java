@@ -31,12 +31,28 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.virginia.cs.SlingshotSam.entities.GameObject;
+import com.virginia.cs.SlingshotSam.entities.MovingPlatform;
+import com.virginia.cs.SlingshotSam.handlers.GameStateManager;
+import com.virginia.cs.SlingshotSam.handlers.MyContactListener;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.virginia.cs.SlingshotSam.entities.Sam;
 import com.virginia.cs.SlingshotSam.handlers.GameStateManager;
 import com.virginia.cs.SlingshotSam.main.TouchController;
+import java.util.ArrayList;
 
 public class Play extends GameState {
     private World world = new World(new Vector2(0.0F, -2.81F), true);
@@ -56,10 +72,13 @@ public class Play extends GameState {
     private Sprite bomb_sprite;
     public Sam sam;
     public Boolean ended = false;
+    public ArrayList<GameObject> objects = new ArrayList<GameObject>();
+    public Music m;
 
     public int height = Gdx.graphics.getHeight();
     public int width = Gdx.graphics.getWidth();
     public float samCamPosX;
+    public MovingPlatform mplat;
 
     private ShapeRenderer shapeRenderer;
     private TouchController touchController;
@@ -93,7 +112,7 @@ public class Play extends GameState {
             }
         }, maxTime / 1000);
 
-        Music m = Gdx.audio.newMusic(Gdx.files.internal("samSong1.ogg"));
+        m = Gdx.audio.newMusic(Gdx.files.internal("samSong1.ogg"));
         m.setLooping(true);
         m.play();
 
@@ -118,9 +137,9 @@ public class Play extends GameState {
         this.hello = createFont(generator, 32);
         generator.dispose();
 
-        this.hello.setColor(Color.RED);
 
-        this.world.setContactListener(new ContactListener(){
+        this.hello.setColor(Color.GREEN);
+        this.world.setContactListener(new ContactListener() {
             public void beginContact(Contact c) {
                 Fixture fa = c.getFixtureA();
                 Fixture fb = c.getFixtureB();
@@ -145,11 +164,17 @@ public class Play extends GameState {
                 if(fb.getUserData().equals("foot") && fa.getUserData().equals("object1")){
                     sam.setShots(sam.Shots+1);
                 }
-                if(fb.getUserData().equals("foot") && fa.getUserData().equals("bomb")){
-                 //Win the game
-                    Play.this.sam.gameOver=true;
-                    Play.this.sam.won=true;
+                if(fb.getUserData().equals("foot") && fa.getUserData().equals("bomb")) {
+                    //Win the game
+                    Play.this.sam.gameOver = true;
+                    Play.this.sam.won = true;
                 }
+                if (fb.getUserData().equals("foot") && fa.getUserData().equals("ground")) {
+                    Play.this.sam.respawn_x = (float) (Play.this.sam.getPosition().x);
+                    Play.this.sam.respawn_y = (float) (Play.this.sam.getPosition().y + .1);
+                    Play.this.sam.respawn = true;
+                }
+
             }
 
             public void endContact(Contact c) {
@@ -162,23 +187,21 @@ public class Play extends GameState {
             }
         });
 
-        this.b2dr = new Box2DDebugRenderer();
-        //platform code
-        registerPlatform(.3f, 0.77f);
-        registerPlatform(1.04f, 0.57f);
-        registerPlatform(1.67f, 0.3f);
-        registerPlatform(2.35f, 0.46f);
-        registeraddonPlatform(2.55f, 0.31f);
-        registeraddonPlatform(2.97f, 0.57f);
-        registeraddonPlatform(3.53f, 0.34f);
-        registeraddonPlatform(4.1f, 0.07f);
-        registerObstacle(.4f, 1.5f);
-        registerObstacle(.5f, 1.8f);
+        objects.add(new GameObject("building1.png",.3f,.77f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
+        objects.add(new GameObject("building1.png",1.04f,.57f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
+        objects.add(new GameObject("building1.png",1.67f,.3f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
+        objects.add(new GameObject("building1.png",2.35f,.46f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
+        objects.add(new GameObject("building1.png",2.55f,.31f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
+        objects.add(new GameObject("building1.png",2.97f,.57f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
+        objects.add(new GameObject("building1.png",3.53f,.34f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
+        objects.add(new GameObject("building1.png",4.1f,.07f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
 
-
+        //posx posy width height dx dy maxdist world
+        mplat = new MovingPlatform(2, 0, .1f, .1f, 0f, .5f, 2f, this.world);
+        mplat.pos.set(1F,1F);
         //End platform code
 
-        BodyDef bdef = new BodyDef();
+        /*BodyDef bdef = new BodyDef();
         bdef.position.set(4.1f, .11f);
         bdef.type = BodyType.StaticBody;
 
@@ -193,7 +216,8 @@ public class Play extends GameState {
         fdef.friction = 1.0f;
         fdef.filter.categoryBits = 2;
         fdef.filter.maskBits = 12;
-        body.createFixture(fdef).setUserData("bomb");
+        body.createFixture(fdef).setUserData("bomb");*/
+        objects.add(new GameObject("bomb.png",4.1f,.27f,.1f,.1f,1.0f,BodyType.StaticBody, "bomb", this.world, 1.5f,-30f,-15f));
 
         /*bdef.position.set(1.53F, 2.2F);
         body.applyForceToCenter(10, 10, true);
@@ -215,10 +239,10 @@ public class Play extends GameState {
 
         this.b2dCam = new OrthographicCamera();
         this.b2dCam.setToOrtho(false, 4.2F, 2.4F);
-        bomb_texture = new Texture(Gdx.files.internal("bomb.png"));
+        /*bomb_texture = new Texture(Gdx.files.internal("bomb.png"));
         bomb_sprite = new Sprite(bomb_texture);
         bomb_sprite.scale(2);
-        bomb_sprite.setPosition(this.b2dCam.project(new Vector3(4.0f, .21f, 0)).x, this.b2dCam.project(new Vector3(4.0f, .21f, 0)).y);
+        bomb_sprite.setPosition(this.b2dCam.project(new Vector3(4.0f, .21f, 0)).x, this.b2dCam.project(new Vector3(4.0f, .21f, 0)).y);*/
 
 
         // Set Input Processor for app to use TouchController
@@ -238,7 +262,7 @@ public class Play extends GameState {
         shapeRenderer.setProjectionMatrix(this.b2dCam.combined);
     }
 
-    public void registerPlatform(float x, float y){
+    /*public void registerPlatform(float x, float y){
         BodyDef bdef = new BodyDef();
         bdef.position.set(x, y);
         bdef.type = BodyType.StaticBody;
@@ -336,10 +360,11 @@ public class Play extends GameState {
 
     public void handleInput() {
     }
-
+*/
     public void update(float dt) {
         this.world.step(dt, 6, 2);
-        sam_sprite.setPosition(this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).x, this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).y);
+        mplat.update(dt);
+        sam_sprite.setPosition(this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).x - 25f, this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).y -25f);
         if(sam.body.getPosition().y < 0){
             sam.reset();
         }
@@ -349,6 +374,10 @@ public class Play extends GameState {
             sam.body.setTransform(sam.respawn_x, sam.respawn_y, 0);
             sam.body.setAwake(false);
             sam.respawn = false;
+        }
+
+        for(GameObject obj: objects){
+            obj.update(dt,this.b2dCam);
         }
         //timeElapsed += Gdx.graphics.getDeltaTime();
     }
@@ -360,11 +389,16 @@ public class Play extends GameState {
             } catch (Exception e) {
 
             }
+            m.stop();
             gsm.reset();
         }
-        Gdx.gl.glClearColor(0/255f, 0/255f, 0/255f, 1);
         Gdx.gl.glClear(16384);
+        Gdx.gl.glClearColor(135 / 255f, 206 / 255f, 235 / 255f, 1);
+        //Gdx.gl20.glClear(16384);
         samCamPosX = sam.getPosition().x;
+        if(samCamPosX < 1.9F) {
+            samCamPosX = 1.9F;
+        }
         if(samCamPosX > 2.3) {
             samCamPosX = 2.3F;
         }
@@ -379,9 +413,10 @@ public class Play extends GameState {
             //background2.scale(3);
             //background2.setPosition(this.b2dCam.project(new Vector3(0.0f, 0f, 0)).x, this.b2dCam.project(new Vector3(0f, 0f, 0)).y);
             //background2.draw(this.sb);
+            background.setPosition(this.b2dCam.project(new Vector3(0.0f, 0f, 0)).x, this.b2dCam.project(new Vector3(0f, 0f, 0)).y);
             background.scale(3);
             background.draw(this.sb);
-            bomb_sprite.draw(this.sb);
+            //bomb_sprite.draw(this.sb);
             //hello.draw(this.sb, "Hello World!", 200,400);
 
             if (timeOut) {
@@ -393,6 +428,9 @@ public class Play extends GameState {
             hello.draw(this.sb, screenText, 80, height - height / 10);
 
             sam_sprite.draw(this.sb);
+            for(GameObject obj: objects){
+                obj.render(this.sb);
+            }
             this.sb.end();
             this.b2dr.render(this.world, this.b2dCam.combined);
             this.sam.drawTouchIndicator(shapeRenderer);

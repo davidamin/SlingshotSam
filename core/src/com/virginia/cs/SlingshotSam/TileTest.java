@@ -1,5 +1,7 @@
 package com.virginia.cs.SlingshotSam;
 
+//import android.util.Log;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -10,16 +12,13 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
-//import android.util.Log;
+import com.badlogic.gdx.math.Vector3;
 
+import java.util.ArrayList;
 
 
 public class TileTest extends ApplicationAdapter implements InputProcessor {
@@ -27,6 +26,9 @@ public class TileTest extends ApplicationAdapter implements InputProcessor {
     TiledMap tiledMap;
     OrthographicCamera camera;
     TiledMapRenderer tiledMapRenderer;
+    SpriteBatch sb;
+    Texture texture;
+    Sprite sprite;
 
     @Override
     public void create () {
@@ -39,6 +41,9 @@ public class TileTest extends ApplicationAdapter implements InputProcessor {
         tiledMap = new TmxMapLoader().load("WesternKeep.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         Gdx.input.setInputProcessor(this);
+        sb = new SpriteBatch();
+        texture = new Texture(Gdx.files.internal("sam.png"));
+        sprite = new Sprite(texture);
     }
 
     @Override
@@ -49,6 +54,10 @@ public class TileTest extends ApplicationAdapter implements InputProcessor {
         camera.update();
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
+        sb.setProjectionMatrix(camera.combined);
+        sb.begin();
+        sprite.draw(sb);
+        sb.end();
     }
 
     @Override
@@ -71,7 +80,46 @@ public class TileTest extends ApplicationAdapter implements InputProcessor {
 
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         lastTouch.set(screenX, screenY);
+        Vector3 clickCoordinates = new Vector3(screenX,screenY,0);
+        Vector3 position = camera.unproject(clickCoordinates);
+        if(!hasProperty("Unpassable",position))
+            sprite.setPosition(position.x, position.y);
+        if(hasProperty("Fire",position))
+        {
+            texture = new Texture(Gdx.files.internal("bomb.png"));
+            sprite.setTexture(texture);
+        }
         return false;
+    }
+    public boolean hasProperty(String propertyName, Vector3 position){
+        boolean result=false;
+        for(int height=tiledMap.getLayers().getCount()-1;height>=0;height--){
+            TiledMapTileLayer.Cell cell = ((TiledMapTileLayer)tiledMap.getLayers().get(height)).getCell((int) Math.floor(position.x / 32), (int) Math.floor(position.y / 32));
+            if(cell!=null) {
+                Object property = cell.getTile().getProperties().get(propertyName);
+                if (property != null && Boolean.parseBoolean((String) property))
+                    result = true;
+            }
+        }
+        return result;
+    }
+
+    public ArrayList<TiledMapTileLayer.Cell> getCells(String propertyName) {
+        ArrayList<TiledMapTileLayer.Cell> result = new ArrayList<TiledMapTileLayer.Cell>();
+        for (int height = tiledMap.getLayers().getCount() - 1; height >= 0; height--) {
+            TiledMapTileLayer layer = (TiledMapTileLayer) tiledMap.getLayers().get(height);
+            for (int x = 0; x < layer.getWidth(); x++) {
+                for (int y = 0; y < layer.getHeight(); y++) {
+                    TiledMapTileLayer.Cell cell = layer.getCell(x, y);
+                    if (cell != null) {
+                        Object property = cell.getTile().getProperties().get(propertyName);
+                        if (property != null && Boolean.parseBoolean((String) property))
+                            result.add(cell);
+                    }
+                }
+            }
+        }
+        return result;
     }
 
     public boolean touchDragged(int screenX, int screenY, int pointer) {
@@ -98,6 +146,6 @@ public class TileTest extends ApplicationAdapter implements InputProcessor {
     }
 
     public void log(String str){
-        //Log.i("TouchTest", str);
+//        Log.i("TouchTest", str);
     }
 }

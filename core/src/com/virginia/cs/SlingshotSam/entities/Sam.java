@@ -20,13 +20,16 @@ public class Sam extends B2DSprite implements TouchController.BoundedTouchListen
     protected float radius = 0.05F;
     public Body body;
     private World w;
-    public int Lives = 2;
+
 
     public void setShots(int shots) {
         Shots = shots;
     }
 
-    public int Shots = 4;
+
+    public int Lives = 20;
+    public int Shots = 40;
+
     public boolean respawn = false;
     public float respawn_x = .3f;
     public float respawn_y = .87f;
@@ -49,7 +52,7 @@ public class Sam extends B2DSprite implements TouchController.BoundedTouchListen
         this.body.setAwake(false);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(2 * radius, 2 * radius);
+        shape.setAsBox(radius, 2 * radius);
 
         fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
