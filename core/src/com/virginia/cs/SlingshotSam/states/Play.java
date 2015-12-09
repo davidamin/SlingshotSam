@@ -226,6 +226,8 @@ public class Play extends GameState {
         // Set up ShapeRenderer to display test circle
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(this.b2dCam.combined);
+        sam.setShots(10);
+        sam.setLives(5);
 
     }
 
@@ -378,7 +380,9 @@ public class Play extends GameState {
           if (sam.firstShot) {
                slingshotSprite.setPosition(this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).x-75, this.b2dCam.project(new Vector3(sam.body.getPosition().x - 400, sam.body.getPosition().y, 0)).y - 295);
             }
-            slingshotSprite.draw(this.sb);
+            if(!sam.isFlying){
+                slingshotSprite.draw(this.sb);
+            }
             //bomb_sprite.draw(this.sb);
             //hello.draw(this.sb, "Hello World!", 200,400);
 
@@ -404,6 +408,7 @@ public class Play extends GameState {
             this.sam.drawTouchIndicator(shapeRenderer);
         }else{
             Gdx.gl.glClear(16384);
+            Gdx.gl.glClearColor(0 / 255f, 0 / 255f, 0 / 255f, 1);
             this.sb.begin();
             if(this.sam.won){
                 hello.draw(this.sb, "You win!", 80, height / 2);
