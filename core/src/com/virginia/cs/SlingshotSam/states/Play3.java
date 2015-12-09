@@ -272,7 +272,6 @@ public class Play3 extends GameState {
 
     public void update(float dt) {
         this.world.step(dt, 6, 2);
-
         shapeRenderer.setProjectionMatrix(this.b2dCam.combined);
 
         mplat.update(dt, cam);
@@ -309,7 +308,11 @@ public class Play3 extends GameState {
 
             }
             m.stop();
-            gsm.reset();
+            if(sam.won){
+                gsm.reset();
+            }else {
+                gsm.reset();
+            }
         }
         Gdx.gl.glClear(16384);
         Gdx.gl.glClearColor(135 / 255f, 206 / 255f, 235 / 255f, 1);

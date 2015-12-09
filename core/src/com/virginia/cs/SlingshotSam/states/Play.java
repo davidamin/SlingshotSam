@@ -319,6 +319,7 @@ public class Play extends GameState {
         shapeRenderer.setProjectionMatrix(this.b2dCam.combined);
         sam_sprite.setPosition(this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).x - 25f, this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).y -25f);
         if(sam.body.getPosition().y < 0){
+            dieSound.play();
             sam.reset();
         }
 
@@ -347,7 +348,12 @@ public class Play extends GameState {
 
             }
             m.stop();
-            gsm.reset();
+            if(sam.won){
+                gsm.start2();
+            }else {
+                gsm.reset();
+            }
+
         }
         Gdx.gl.glClear(16384);
         Gdx.gl.glClearColor(135 / 255f, 206 / 255f, 235 / 255f, 1);
@@ -404,6 +410,7 @@ public class Play extends GameState {
                 hello.draw(this.sb, "You win!", 80, height / 2);
                 ended = true;
             }else {
+                bombSound.play();
                 hello.draw(this.sb, "Boom", 80, height / 2);
                 ended = true;
             }
