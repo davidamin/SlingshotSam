@@ -11,7 +11,6 @@ import com.virginia.cs.SlingshotSam.states.Menu;
 import com.virginia.cs.SlingshotSam.states.Play;
 import com.virginia.cs.SlingshotSam.states.Play2;
 
-
 import java.util.Stack;
 
 public class GameStateManager {

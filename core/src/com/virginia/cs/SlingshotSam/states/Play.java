@@ -172,6 +172,7 @@ public class Play extends GameState {
             public void postSolve(Contact c, ContactImpulse ci) {
             }
         });
+
         //this.b2dr = new Box2DDebugRenderer();
 
         objects.add(new GameObject("building1.png",.3f,.77f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
@@ -186,7 +187,6 @@ public class Play extends GameState {
         //objects.add(new TextScreen("Text Screen.png", ))
 
         //posx posy width height dx dy maxdist world
-        mplat = new MovingPlatform(2, 0, .1f, .1f, 0f, .5f, 2f, "ground", this.world);
         mplat.pos.set(1F,1F);
 
         objects.add(new GameObject("bomb.png",4.1f,.27f,.1f,.1f,1.0f,BodyType.StaticBody, "bomb", this.world, 1.5f,-30f,-15f));
@@ -296,8 +296,8 @@ public class Play extends GameState {
 
     public void update(float dt) {
         this.world.step(dt, 6, 2);
+        mplat.update(dt, cam);
         shapeRenderer.setProjectionMatrix(this.b2dCam.combined);
-        mplat.update(dt);
         sam_sprite.setPosition(this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).x - 25f, this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).y -25f);
         if(sam.body.getPosition().y < 0){
             sam.reset();
