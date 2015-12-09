@@ -18,39 +18,21 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.virginia.cs.SlingshotSam.entities.GameObject;
 import com.virginia.cs.SlingshotSam.entities.MovingPlatform;
 import com.virginia.cs.SlingshotSam.handlers.GameStateManager;
-import com.virginia.cs.SlingshotSam.handlers.MyContactListener;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.virginia.cs.SlingshotSam.entities.Sam;
-import com.virginia.cs.SlingshotSam.handlers.GameStateManager;
 import com.virginia.cs.SlingshotSam.main.TouchController;
 import java.util.ArrayList;
 
@@ -99,7 +81,7 @@ public class Play extends GameState {
         return generator.generateFont(parameter);
     }
 
-    public Play(GameStateManager gsm) {
+    public Play (GameStateManager gsm) {
         super(gsm);
 
         time = new Timer();
@@ -357,10 +339,10 @@ public class Play extends GameState {
         fdef.filter.maskBits = 13;
         body.createFixture(fdef).setUserData("object1");
     }
-
+*/
     public void handleInput() {
     }
-*/
+
     public void update(float dt) {
         this.world.step(dt, 6, 2);
         mplat.update(dt);
