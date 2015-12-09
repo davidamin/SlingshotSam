@@ -171,10 +171,13 @@ public class Play2 extends GameState {
 
         //platform code
 
-        objects.add(new GameObject("dino_plat1.png",.3f,.77f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
+        objects.add(new GameObject("dino_plat2.png",.3f,.77f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-0f,0f));
         objects.add(new GameObject("building1.png",1.75f,.77f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
         objects.add(new GameObject("building1.png",3f,1.5f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
         objects.add(new GameObject("building1.png",5f,1f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
+
+        objects.add(new GameObject("goal.png",8f, 1f,.1f,.1f,1.0f,BodyType.StaticBody, "bomb", this.world, .05f,-50f,-50f));
+
 
         //~~~~~~~~~~~~~~~~~~~~~    x  y   w     h   dx   dy max  world
         mplat = new MovingPlatform(1, 1f, .1f, .1f, .5f, 0f, 2f, this.world);
@@ -221,7 +224,6 @@ public class Play2 extends GameState {
         this.b2dCam = new OrthographicCamera();
         this.b2dCam.setToOrtho(false, 4.2F, 2.4F);
 
-        objects.add(new GameObject("goal.png",4f,.27f,.1f,.1f,1.0f,BodyType.StaticBody, "bomb", this.world, .2f,-30f,-15f));
 
 
 
