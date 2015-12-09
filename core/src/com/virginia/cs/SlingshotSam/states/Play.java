@@ -73,7 +73,8 @@ public class Play extends GameState {
     private Boolean timeOut = false;
     private Boolean Trolled = false;
 
-    private float shot_offset = 0.3f;
+
+    private float shot_offset = 0.5f;
 
     private BitmapFont createFont(FreeTypeFontGenerator generator, float dp)
     {
@@ -112,15 +113,20 @@ public class Play extends GameState {
         slingshotSprite = new Sprite(slingshotTexture);
         slingshotSprite.scale((float) 0.0001);
 
+
+
         // Set up camera
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.update();
 
+
+
         this.sb = new SpriteBatch();
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Montserrat-Regular.ttf"));
         this.hello = createFont(generator, 32);
         generator.dispose();
+
 
 
         this.hello.setColor(Color.GREEN);
@@ -161,6 +167,8 @@ public class Play extends GameState {
                     Play.this.sam.respawn = true;
                 }
 
+
+
             }
 
             public void endContact(Contact c) {
@@ -171,6 +179,7 @@ public class Play extends GameState {
 
             public void postSolve(Contact c, ContactImpulse ci) {
             }
+
         });
 
         //this.b2dr = new Box2DDebugRenderer();
@@ -187,7 +196,7 @@ public class Play extends GameState {
         //objects.add(new TextScreen("Text Screen.png", ))
 
         //posx posy width height dx dy maxdist world
-        mplat.pos.set(1F,1F);
+//        mplat.pos.set(1F,1F);
 
         objects.add(new GameObject("bomb.png",4.1f,.27f,.1f,.1f,1.0f,BodyType.StaticBody, "bomb", this.world, 1.5f,-30f,-15f));
 
@@ -195,6 +204,10 @@ public class Play extends GameState {
 
         this.b2dCam = new OrthographicCamera();
         this.b2dCam.setToOrtho(false, 4.2F, 2.4F);
+
+
+        slingshotSprite.setPosition(this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).x - 500, this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).y - 295);
+
 
         // Set Input Processor for app to use TouchController
         // as a source of keyboard input (in case) and as a gesture
@@ -296,7 +309,7 @@ public class Play extends GameState {
 
     public void update(float dt) {
         this.world.step(dt, 6, 2);
-        mplat.update(dt, cam);
+//        mplat.update(dt, cam);
         shapeRenderer.setProjectionMatrix(this.b2dCam.combined);
         sam_sprite.setPosition(this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).x - 25f, this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).y -25f);
         if(sam.body.getPosition().y < 0){
@@ -311,7 +324,7 @@ public class Play extends GameState {
             sam.body.setTransform(sam.respawn_x, sam.respawn_y, 0);
             sam.body.setAwake(false);
             sam.respawn = false;
-            slingshotSprite.setPosition(this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).x - 200, this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).y);
+            slingshotSprite.setPosition(this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).x - 70, this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).y - 295);
         }
 
         for(GameObject obj: objects){
@@ -351,7 +364,9 @@ public class Play extends GameState {
             background.setPosition(this.b2dCam.project(new Vector3(0.0f, 0f, 0)).x, this.b2dCam.project(new Vector3(0f, 0f, 0)).y);
             background.scale(3);
             background.draw(this.sb);
-
+//            if (sam.firstShot) {
+//                slingshotSprite.setPosition(this.b2dCam.project(new Vector3(sam.body.getPosition().x, sam.body.getPosition().y, 0)).x, this.b2dCam.project(new Vector3(sam.body.getPosition().x - 400, sam.body.getPosition().y, 0)).y - 295);
+//            }
             slingshotSprite.draw(this.sb);
             //bomb_sprite.draw(this.sb);
             //hello.draw(this.sb, "Hello World!", 200,400);
