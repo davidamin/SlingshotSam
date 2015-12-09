@@ -56,7 +56,7 @@ public class Sam extends B2DSprite implements TouchController.BoundedTouchListen
 
         fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 0.5f;
+        fixtureDef.density = 1f;
         fixtureDef.friction = 1f;
         fixtureDef.filter.categoryBits = 4;
         fixtureDef.filter.maskBits = 2;
