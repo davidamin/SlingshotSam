@@ -272,6 +272,12 @@ public class Play3 extends GameState {
 
     public void update(float dt) {
         this.world.step(dt, 6, 2);
+<<<<<<< HEAD
+=======
+
+        shapeRenderer.setProjectionMatrix(this.b2dCam.combined);
+
+>>>>>>> 4cd28e9a4635a78b5c99c0ed4e938ed8f01aba1e
         mplat.update(dt, cam);
         mplat2.update(dt, cam);
         mplat3.update(dt, cam);
@@ -360,7 +366,7 @@ public class Play3 extends GameState {
             if(this.sam.won){
                 hello.draw(this.sb, "You win!", 80, height / 2);
                 ended = true;
-            }else {
+            } else {
                 hello.draw(this.sb, "Boom", 80, height / 2);
                 ended = true;
             }
