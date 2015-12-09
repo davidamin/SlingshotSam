@@ -190,7 +190,7 @@ public class Play3 extends GameState {
 
         //platform code
 
-        objects.add(new GameObject("building1.png",.3f,.77f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
+        objects.add(new GameObject("building1.png", .3f, .77f, .1f, .05f, 1.0f, BodyType.StaticBody, "ground", this.world, .05f, -60.0f, -490.0f));
         objects.add(new GameObject("building1.png",1.5f,0f,.1f,1.45f,1.0f,BodyType.StaticBody, "wall", this.world, .05f,-60.0f,-490.0f));
         objects.add(new GameObject("building1.png",1.5f,1.5f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
         objects.add(new GameObject("building1.png",1.8f,.3f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
@@ -198,15 +198,15 @@ public class Play3 extends GameState {
 
         //~~~~~~~~~~~~~~~~~~~~~    x      y    w    h    dx  dy  max  world
         mplat = new MovingPlatform(1.7f, 1f, .1f, .1f, .5f,  0f,  .4f, this.world);
-
+        objects.add(mplat);
         mplat2= new MovingPlatform(2.75f, .4f, .1f, .1f, 0f, .75f, .6f, this.world);
-
+        objects.add(mplat2);
         mplat3= new MovingPlatform(4.2f, 1f, .1f, .1f, 1f, 1f, 1f, this.world);
-
+        objects.add(mplat3);
         //End platform code
 
         BodyDef bdef = new BodyDef();
-        bdef.position.set(8f, 1f);
+        bdef.position.set(2f, 2.2f);
         bdef.type = BodyType.StaticBody;
 
         Body body = this.world.createBody(bdef);
@@ -272,12 +272,9 @@ public class Play3 extends GameState {
 
     public void update(float dt) {
         this.world.step(dt, 6, 2);
-<<<<<<< HEAD
-=======
 
         shapeRenderer.setProjectionMatrix(this.b2dCam.combined);
 
->>>>>>> 4cd28e9a4635a78b5c99c0ed4e938ed8f01aba1e
         mplat.update(dt, cam);
         mplat2.update(dt, cam);
         mplat3.update(dt, cam);
