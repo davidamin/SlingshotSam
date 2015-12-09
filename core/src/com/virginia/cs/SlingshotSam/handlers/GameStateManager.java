@@ -10,6 +10,7 @@ import com.virginia.cs.SlingshotSam.states.GameState;
 import com.virginia.cs.SlingshotSam.states.Menu;
 import com.virginia.cs.SlingshotSam.states.Play;
 import com.virginia.cs.SlingshotSam.states.Play2;
+import com.virginia.cs.SlingshotSam.states.Play3;
 
 import java.util.Stack;
 
@@ -74,6 +75,10 @@ public class GameStateManager {
             //Make this a play2 when we have that
             return  new Play2(this);
         }
+        if(state == PLAY3) {
+            return new Play3(this);
+        }
+
         return null;
     }
 

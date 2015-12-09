@@ -192,7 +192,6 @@ public class Play3 extends GameState {
         //platform code
 
         objects.add(new GameObject("building1.png",.3f,.4f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
-        objects.add(new GameObject("building1.png",1f,1.2f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
         objects.add(new GameObject("building1.png",1.5f,1.5f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
         objects.add(new GameObject("building1.png",1.7f,.3f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
         objects.add(new GameObject("building1.png",1.7f,.3f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
