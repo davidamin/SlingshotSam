@@ -200,7 +200,7 @@ public class Play3 extends GameState {
         objects.add(new GameObject("dino_plat1.png",5.5f,2.4f,1.1f,.02f,0f,BodyType.StaticBody, "wall", this.world, .05f,-60.0f,-490.0f));
 
 
-        objects.add(new GameObject("goal.png",5.8f,2.2f,.1f,.1f,1.0f,BodyType.StaticBody, "bomb", this.world, .05f,-20f,-15f));
+        objects.add(new GameObject("goal.png",5.8f,2.2f,.1f,.1f,1.0f,BodyType.StaticBody, "bomb", this.world, .05f,-50f,-50f));
 
 
         //~~~~~~~~~~~~~~~~~~~~~    x      y    w    h    dx  dy  max  world
