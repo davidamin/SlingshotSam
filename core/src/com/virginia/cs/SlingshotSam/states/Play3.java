@@ -93,7 +93,7 @@ public class Play3 extends GameState {
     public int width = Gdx.graphics.getWidth();
     public float samCamPosX;
 
-    public MovingPlatform mplat, mplat2, mplat3;
+    public MovingPlatform mplat, mplat2, mplat3, mplat4;
 
     private ShapeRenderer shapeRenderer;
     private TouchController touchController;
@@ -136,7 +136,7 @@ public class Play3 extends GameState {
 
         levelTime  = TimeUtils.millis();
 
-        bg_texture = new Texture(Gdx.files.internal("demo_level_scale.png"));
+        bg_texture = new Texture(Gdx.files.internal("black.png"));
         background = new Sprite(bg_texture);
 
         // bg_texture2 = new Texture(Gdx.files.internal("sky.png"));
@@ -196,9 +196,11 @@ public class Play3 extends GameState {
         objects.add(new GameObject("building1.png",1.8f,.3f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
         objects.add(new GameObject("building1.png",5.0f,.3f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
         objects.add(new GameObject("building1.png",5.8f,.7f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
+        objects.add(new GameObject("building1.png",5.5f,1.7f,.1f,.7f,0f,BodyType.StaticBody, "wall", this.world, .05f,-60.0f,-490.0f));
+        objects.add(new GameObject("dino_plat1.png",5.5f,2.5f,1.1f,.05f,0f,BodyType.StaticBody, "wall", this.world, .05f,-60.0f,-490.0f));
 
 
-        objects.add(new GameObject("goal.png",4.1f,.27f,.1f,.1f,1.0f,BodyType.StaticBody, "bomb", this.world, 1.5f,-30f,-15f));
+        objects.add(new GameObject("goal.png",5.8f,2.2f,.1f,.1f,1.0f,BodyType.StaticBody, "bomb", this.world, 1.5f,-30f,-15f));
 
 
         //~~~~~~~~~~~~~~~~~~~~~    x      y    w    h    dx  dy  max  world
@@ -206,8 +208,11 @@ public class Play3 extends GameState {
         objects.add(mplat);
         mplat2= new MovingPlatform(2.75f, .4f, .1f, .1f, 0f, .75f, .6f, this.world);
         objects.add(mplat2);
-        mplat3= new MovingPlatform(4.2f, 1f, .1f, .1f, 1f, 1f, 1f, this.world);
+        mplat3= new MovingPlatform(5.6f,  1.8f, .1f, .02f, 2f, 0f,  1.2f, this.world);
         objects.add(mplat3);
+        mplat4= new MovingPlatform(5.7f,  2f,   .1f, .02f, 1.5f, 0f,  1f, this.world);
+        objects.add(mplat4);
+
         //End platform code
 
         BodyDef bdef = new BodyDef();
@@ -344,13 +349,13 @@ public class Play3 extends GameState {
             }
 
             hello.draw(this.sb, screenText, 80, height - height / 10);
-            mplat.render(sb);
-            mplat2.render(sb);
+//            mplat.render(sb);
+//            mplat2.render(sb);
 
             sam_sprite.draw(this.sb);
-            for(GameObject obj: objects){
-                obj.render(this.sb);
-            }
+//            for(GameObject obj: objects){
+//                obj.render(this.sb);
+//            }
             this.sb.end();
             this.b2dr.render(this.world, this.b2dCam.combined);
 
