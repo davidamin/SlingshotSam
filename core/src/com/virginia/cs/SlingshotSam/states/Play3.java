@@ -196,11 +196,11 @@ public class Play3 extends GameState {
         objects.add(new GameObject("building1.png",1.8f,.3f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
         objects.add(new GameObject("building1.png",5.0f,.3f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
         objects.add(new GameObject("building1.png",5.8f,.7f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
-        objects.add(new GameObject("building1.png",5.5f,1.7f,.1f,.7f,0f,BodyType.StaticBody, "wall", this.world, .05f,-60.0f,-490.0f));
-        objects.add(new GameObject("dino_plat1.png",5.5f,2.5f,1.1f,.05f,0f,BodyType.StaticBody, "wall", this.world, .05f,-60.0f,-490.0f));
+        objects.add(new GameObject("building1.png",5.5f,1.7f,.02f,.7f,0f,BodyType.StaticBody, "wall", this.world, .05f,-60.0f,-490.0f));
+        objects.add(new GameObject("dino_plat1.png",5.5f,2.4f,1.1f,.02f,0f,BodyType.StaticBody, "wall", this.world, .05f,-60.0f,-490.0f));
 
 
-        objects.add(new GameObject("goal.png",5.8f,2.2f,.1f,.1f,1.0f,BodyType.StaticBody, "bomb", this.world, 1.5f,-30f,-15f));
+        objects.add(new GameObject("goal.png",5.8f,2.2f,.1f,.1f,1.0f,BodyType.StaticBody, "bomb", this.world, .05f,-20f,-15f));
 
 
         //~~~~~~~~~~~~~~~~~~~~~    x      y    w    h    dx  dy  max  world
@@ -351,7 +351,7 @@ public class Play3 extends GameState {
             hello.draw(this.sb, screenText, 80, height - height / 10);
 //            mplat.render(sb);
 //            mplat2.render(sb);
-
+            objects.get(8).render(sb);
             sam_sprite.draw(this.sb);
 //            for(GameObject obj: objects){
 //                obj.render(this.sb);
