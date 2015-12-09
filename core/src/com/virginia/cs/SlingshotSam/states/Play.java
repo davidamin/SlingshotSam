@@ -186,6 +186,7 @@ public class Play extends GameState {
             public void postSolve(Contact c, ContactImpulse ci) {
             }
         });
+        this.b2dr = new Box2DDebugRenderer();
 
         objects.add(new GameObject("building1.png",.3f,.77f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
         objects.add(new GameObject("building1.png",1.04f,.57f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
@@ -357,10 +358,10 @@ public class Play extends GameState {
         fdef.filter.maskBits = 13;
         body.createFixture(fdef).setUserData("object1");
     }
-
+*/
     public void handleInput() {
     }
-*/
+
     public void update(float dt) {
         this.world.step(dt, 6, 2);
         mplat.update(dt);

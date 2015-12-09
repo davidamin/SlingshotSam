@@ -12,7 +12,6 @@ import com.virginia.cs.SlingshotSam.states.Play;
 
 
 import com.virginia.cs.SlingshotSam.states.Play2;
-import com.virginia.cs.SlingshotSam.states.Player;
 
 import java.util.Stack;
 
@@ -23,7 +22,6 @@ public class GameStateManager {
 
     public static final int MENU = 8675309;
     public static final int PLAY2 = 123456789;
-    private Player player;
 
     public GameStateManager(Game game) {
         this.game = game;
