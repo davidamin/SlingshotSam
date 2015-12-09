@@ -35,7 +35,7 @@ public class MovingPlatform extends B2DSprite{
 			this.maxDist = maxDist;
 			fixtureDef = new FixtureDef();
 			fixtureDef.density = 0.5f;
-			fixtureDef.friction = 1f;
+			fixtureDef.friction = 0f;
 			fixtureDef.filter.categoryBits = 2;
 			fixtureDef.filter.maskBits = 12;
 			PolygonShape poly = new PolygonShape();

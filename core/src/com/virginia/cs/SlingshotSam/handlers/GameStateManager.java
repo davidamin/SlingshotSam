@@ -21,7 +21,7 @@ public class GameStateManager {
 
     public static final int MENU = 8675309;
     public static final int PLAY2 = 123456789;
-
+    public static final int PLAY3 = 123420;
 
     public GameStateManager(Game game) {
         this.game = game;
