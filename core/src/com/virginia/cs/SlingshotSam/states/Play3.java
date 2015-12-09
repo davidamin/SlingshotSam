@@ -118,7 +118,6 @@ public class Play3 extends GameState {
     public Play3(GameStateManager gsm) {
 
         super(gsm);
-
         time = new Timer();
 
         maxTime = 60000;
@@ -191,15 +190,16 @@ public class Play3 extends GameState {
 
         //platform code
 
-        objects.add(new GameObject("building1.png",.3f,.4f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
+        objects.add(new GameObject("building1.png",.3f,.77f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
+        objects.add(new GameObject("building1.png",1.5f,0f,.1f,1.45f,1.0f,BodyType.StaticBody, "wall", this.world, .05f,-60.0f,-490.0f));
         objects.add(new GameObject("building1.png",1.5f,1.5f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
-        objects.add(new GameObject("building1.png",1.7f,.3f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
-        objects.add(new GameObject("building1.png",1.7f,.3f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
+        objects.add(new GameObject("building1.png",1.8f,.3f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
+        objects.add(new GameObject("building1.png",5.0f,.3f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
 
-        //~~~~~~~~~~~~~~~~~~~~~    x  y    w    h    dx  dy  max  world
-        mplat = new MovingPlatform(1, 1f, .1f, .1f, .5f, 0f, 2f, this.world);
+        //~~~~~~~~~~~~~~~~~~~~~    x      y    w    h    dx  dy  max  world
+        mplat = new MovingPlatform(1.7f, 1f, .1f, .1f, .5f,  0f,  .4f, this.world);
 
-        mplat2= new MovingPlatform(2.75f, 1f, .1f, .1f, 0f, .75f, 1.5f, this.world);
+        mplat2= new MovingPlatform(2.75f, .4f, .1f, .1f, 0f, .75f, .6f, this.world);
 
         mplat3= new MovingPlatform(4.2f, 1f, .1f, .1f, 1f, 1f, 1f, this.world);
 
@@ -272,7 +272,6 @@ public class Play3 extends GameState {
 
     public void update(float dt) {
         this.world.step(dt, 6, 2);
-
         mplat.update(dt, cam);
         mplat2.update(dt, cam);
         mplat3.update(dt, cam);
@@ -344,6 +343,8 @@ public class Play3 extends GameState {
             }
 
             hello.draw(this.sb, screenText, 80, height - height / 10);
+            mplat.render(sb);
+            mplat2.render(sb);
 
             sam_sprite.draw(this.sb);
             for(GameObject obj: objects){
