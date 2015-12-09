@@ -7,19 +7,27 @@ package com.virginia.cs.SlingshotSam.handlers;
 
 import com.virginia.cs.SlingshotSam.main.Game;
 import com.virginia.cs.SlingshotSam.states.GameState;
+import com.virginia.cs.SlingshotSam.states.Menu;
 import com.virginia.cs.SlingshotSam.states.Play;
-import com.virginia.cs.SlingshotSam.states.Player;
+import com.virginia.cs.SlingshotSam.states.Play2;
+import com.virginia.cs.SlingshotSam.states.Play3;
+
 import java.util.Stack;
 
 public class GameStateManager {
     private Game game;
     private Stack<GameState> gameStates;
     public static final int PLAY = 912837;
-    private Player player;
+
+    public static final int MENU = 8675309;
+    public static final int PLAY2 = 123456789;
+    public static final int PLAY3 = 123420;
+
     public GameStateManager(Game game) {
         this.game = game;
         this.gameStates = new Stack();
-        this.pushState(912837);
+        this.pushState(MENU);
+        //this.pushState(912837);
     }
 
     public Game game() {
@@ -33,7 +41,22 @@ public class GameStateManager {
     }
     public void reset(){
         this.popState();
+        this.pushState(MENU);
+    }
+
+    public void start1(){
+        this.popState();
         this.pushState(912837);
+    }
+
+    public void start2(){
+        this.popState();
+        this.pushState(PLAY2);
+    }
+
+    public void start3(){
+        this.popState();
+        this.pushState(PLAY3);
     }
 
     public void render() {
@@ -41,7 +64,22 @@ public class GameStateManager {
     }
 
     private GameState getState(int state) {
-        return state == 912837?new Play(this):null;
+
+        if(state == 912837) {
+            return  new Play(this);
+        }
+        if(state == MENU) {
+            return  new Menu(this);
+        }
+        if(state == PLAY2) {
+            //Make this a play2 when we have that
+            return  new Play2(this);
+        }
+        if(state == PLAY3) {
+            return new Play3(this);
+        }
+
+        return null;
     }
 
     public void setState(int state) {

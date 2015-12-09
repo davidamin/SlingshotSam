@@ -3,14 +3,13 @@ package com.virginia.cs.SlingshotSam.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.virginia.cs.SlingshotSam.main.TouchController;
-
-import sun.rmi.runtime.Log;
 
 /**
  * Created by Michael Snider on 10/22/2015.
@@ -22,13 +21,22 @@ public class Sam extends B2DSprite implements TouchController.BoundedTouchListen
     protected float radius = 0.05F;
     public Body body;
     private World w;
-    public int Lives = 2;
-    public int Shots = 4;
+
+
+    public void setShots(int shots) {
+        Shots = shots;
+    }
+
+
+    public int Lives = 20;
+    public int Shots = 20;
+
     public boolean respawn = false;
     public float respawn_x = .3f;
     public float respawn_y = .87f;
     public boolean gameOver = false;
     public boolean won = false;
+    public Boolean firstShot = true;
 
     public boolean isFlying = false;
     protected TouchIndicator touchIndicator;
@@ -46,11 +54,11 @@ public class Sam extends B2DSprite implements TouchController.BoundedTouchListen
         this.body.setAwake(false);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(2 * radius, 2 * radius);
+        shape.setAsBox(radius, 2 * radius);
 
         fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 0.5f;
+        fixtureDef.density = 1f;
         fixtureDef.friction = 1f;
         fixtureDef.filter.categoryBits = 4;
         fixtureDef.filter.maskBits = 2;
@@ -82,8 +90,8 @@ public class Sam extends B2DSprite implements TouchController.BoundedTouchListen
     @Override
     public void handleTouchDown(float screenX, float screenY) {
         Gdx.app.log("SlingshotSam", String.format("Bounded Touch Down!\t\t%.4f, %.4f", screenX, screenY));
-        touchIndicator.setVisible(true);
         touchIndicator.setPosition(screenX, screenY);
+        touchIndicator.setVisible(true);
     }
 
     @Override
@@ -105,6 +113,10 @@ public class Sam extends B2DSprite implements TouchController.BoundedTouchListen
                 touchIndicator.setVisible(false);
                 Shots -= 1;
             }
+
+        }
+        if (firstShot) {
+            firstShot = false;
         }
     }
 

@@ -21,8 +21,12 @@ public class GameObject {
     private BodyDef bDef;
     private Body b;
     private FixtureDef fDef;
+    private float x_off;
+    private float y_off;
 
-    public GameObject(String textureFile, float x, float y, float length, float height, float fric, BodyDef.BodyType type, String userdata, World w, float scale){
+    public GameObject(){}
+
+    public GameObject(String textureFile, float x, float y, float length, float height, float fric, BodyDef.BodyType type, String userdata, World w, float scale, float x_offset, float y_offset){
         bDef = new BodyDef();
         bDef.position.set(x, y);
         bDef.type = type;
@@ -42,13 +46,17 @@ public class GameObject {
         t = new Texture(Gdx.files.internal(textureFile));
         s = new Sprite(t);
         s.scale(scale);
+        x_off = x_offset;
+        y_off = y_offset;
     }
 
     public void update(float timeElapsed, OrthographicCamera cam){
         Vector3 pos = cam.project(new Vector3(b.getPosition().x, b.getPosition().y, 0));
-        s.setPosition(pos.x,pos.y);
+        s.setPosition(pos.x+ x_off,pos.y+y_off);
      }
     public void render(SpriteBatch sb){
         s.draw(sb);
     }
+
 }
+
