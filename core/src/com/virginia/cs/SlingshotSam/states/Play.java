@@ -73,6 +73,8 @@ public class Play extends GameState {
     private Boolean timeOut = false;
     private Boolean Trolled = false;
 
+    private float shot_offset = 0.3f;
+
     private BitmapFont createFont(FreeTypeFontGenerator generator, float dp)
     {
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -129,18 +131,18 @@ public class Play extends GameState {
 
                 if (fb.getUserData().equals("foot") && fa.getUserData().equals("ground1")) {
                     Play.this.sam.respawn_x = (float) (Play.this.sam.getPosition().x);
-                    Play.this.sam.respawn_y = (float) (Play.this.sam.getPosition().y + .1);
+                    Play.this.sam.respawn_y = (float) (Play.this.sam.getPosition().y + shot_offset);
                     Play.this.sam.respawn = true;
                 }
                 if (fb.getUserData().equals("foot") && fa.getUserData().equals("ground2")) {
                     Play.this.sam.respawn_x = (float) (Play.this.sam.getPosition().x);
-                    Play.this.sam.respawn_y = (float) (Play.this.sam.getPosition().y + .1);
+                    Play.this.sam.respawn_y = (float) (Play.this.sam.getPosition().y + shot_offset);
                     Play.this.sam.respawn = true;
                     sam.setShots(sam.Shots + 2);
                 }
                 if (fb.getUserData().equals("foot") && fa.getUserData().equals("ground3")) {
                     Play.this.sam.respawn_x = (float) (Play.this.sam.getPosition().x);
-                    Play.this.sam.respawn_y = (float) (Play.this.sam.getPosition().y + .1);
+                    Play.this.sam.respawn_y = (float) (Play.this.sam.getPosition().y + shot_offset);
                     Play.this.sam.respawn = true;
                     sam.setShots(0);
                     Trolled = true;
@@ -155,7 +157,7 @@ public class Play extends GameState {
                 }
                 if (fb.getUserData().equals("foot") && fa.getUserData().equals("ground")) {
                     Play.this.sam.respawn_x = (float) (Play.this.sam.getPosition().x);
-                    Play.this.sam.respawn_y = (float) (Play.this.sam.getPosition().y + .1);
+                    Play.this.sam.respawn_y = (float) (Play.this.sam.getPosition().y + shot_offset);
                     Play.this.sam.respawn = true;
                 }
 
@@ -170,14 +172,14 @@ public class Play extends GameState {
             public void postSolve(Contact c, ContactImpulse ci) {
             }
         });
-        this.b2dr = new Box2DDebugRenderer();
+        //this.b2dr = new Box2DDebugRenderer();
 
         objects.add(new GameObject("building1.png",.3f,.77f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
         objects.add(new GameObject("building1.png",1.04f,.57f,.1f,.05f,1.0f,BodyType.StaticBody, "ground2", this.world, .05f,-60.0f,-490.0f));
         objects.add(new GameObject("building1.png",1.67f,.3f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
         objects.add(new GameObject("building1.png",2.35f,.46f,.1f,.05f,1.0f,BodyType.StaticBody, "ground2", this.world, .05f,-60.0f,-490.0f));
         objects.add(new GameObject("building1.png",2.55f,.31f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
-        objects.add(new GameObject("building1.png",2.97f,.57f,.1f,.05f,1.0f,BodyType.StaticBody, "ground2", this.world, .05f,-60.0f,-490.0f));
+        objects.add(new GameObject("building1.png", 2.97f, .57f, .1f, .05f, 1.0f, BodyType.StaticBody, "ground2", this.world, .05f, -60.0f,-490.0f));
         objects.add(new GameObject("building1.png",3.53f,.34f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
         objects.add(new GameObject("building1.png",4.1f,.07f,.1f,.05f,1.0f,BodyType.StaticBody, "ground2", this.world, .05f,-60.0f,-490.0f));
         objects.add(new GameObject("94-the-golden-snitch.png", 1.67f, 1.0f, .1f, .05f, 1.0f, BodyType.StaticBody, "ground3", this.world, .05f,-.0f,-.0f));
