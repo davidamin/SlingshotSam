@@ -167,11 +167,11 @@ public class Play2 extends GameState {
         objects.add(new GameObject("building1.png",5f,1f,.1f,.05f,1.0f,BodyType.StaticBody, "ground", this.world, .05f,-60.0f,-490.0f));
 
         //~~~~~~~~~~~~~~~~~~~~~    x  y   w     h   dx   dy max  world
-        mplat = new MovingPlatform(1, 1f, .4f, .4f, .5f, 0f, 2f, "teleport", this.world);
+        mplat = new MovingPlatform(1, 1f, .2f, .1f, .5f, 0f, 2f, "teleport", this.world);
 
         mplat2= new MovingPlatform(2.75f, 1f, .1f, .1f, 0f, .75f, 1.5f, "ground", this.world);
 
-        mplat3= new MovingPlatform(4.2f, 1f, .4f, .4f, 1f, 1f, 1f, "teleport", this.world);
+        mplat3= new MovingPlatform(4.2f, 1f, .2f, .1f, 1f, 1f, 1f, "teleport", this.world);
 
         //End platform code
 
