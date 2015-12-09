@@ -376,6 +376,9 @@ public class Play extends GameState {
         }
 
         if(sam.respawn){
+            if(sam.Shots < 1){
+                sam.gameOver= true;
+            }
             sam.isFlying = false;
             sam.body.setTransform(sam.respawn_x, sam.respawn_y, 0);
             sam.body.setAwake(false);
