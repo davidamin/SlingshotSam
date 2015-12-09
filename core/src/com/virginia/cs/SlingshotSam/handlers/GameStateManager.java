@@ -12,7 +12,6 @@ import com.virginia.cs.SlingshotSam.states.Play;
 
 
 import com.virginia.cs.SlingshotSam.states.Play2;
-import com.virginia.cs.SlingshotSam.states.Player;
 
 import java.util.Stack;
 
